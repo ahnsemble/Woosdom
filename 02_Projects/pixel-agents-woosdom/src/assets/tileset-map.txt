@@ -1,0 +1,556 @@
+# Donarg Office Interior 16x16 Tileset Analysis
+# Image: 256x512 pixels
+# Grid: 16 cols x 32 rows = 512 tiles
+# Tile size: 16x16
+
+## Tile Map (col, row) -> avg_color, transparency
+
+### Row 0 (y=0-15)
+  [ 1, 0] rgb(177,148, 94) trans=25% (partial)
+  [ 2, 0] rgb(183,155, 99) trans=0%
+  [ 3, 0] rgb(177,148, 95) trans=25% (partial)
+  [ 4, 0] rgb(192,154,100) trans=25% (partial)
+  [ 5, 0] rgb(200,163,107) trans=0%
+  [ 6, 0] rgb(192,154,100) trans=25% (partial)
+  [ 7, 0] rgb(114,111,122) trans=56% (partial)
+  [ 8, 0] rgb(169,140, 91) trans=75% (partial)
+  [ 9, 0] rgb(173,145, 94) trans=75% (partial)
+  [10, 0] rgb(169,140, 91) trans=75% (partial)
+  [11, 0] rgb(168,170,178) trans=75% (partial)
+  [12, 0] rgb(176,178,185) trans=75% (partial)
+  [13, 0] rgb(168,170,178) trans=75% (partial)
+  [14, 0] rgb(138,105, 73) trans=68% (partial)
+  [15, 0] rgb(138,105, 73) trans=68% (partial)
+  (1 empty tiles)
+
+### Row 1 (y=16-31)
+  [ 1, 1] rgb( 87, 49, 45) trans=83% (partial)
+  [ 2, 1] rgb( 86, 47, 44) trans=88% (partial)
+  [ 3, 1] rgb( 87, 49, 45) trans=83% (partial)
+  [ 4, 1] rgb( 88, 64, 75) trans=88% (partial)
+  [ 5, 1] rgb( 57, 22, 36) trans=94% (partial)
+  [ 6, 1] rgb( 88, 64, 75) trans=88% (partial)
+  [ 7, 1] rgb(134, 89,106) trans=56% (partial)
+  [ 8, 1] rgb(156,124, 82) trans=8%
+  [ 9, 1] rgb(161,129, 85) trans=6%
+  [10, 1] rgb(156,124, 82) trans=8%
+  [11, 1] rgb(144,141,151) trans=7%
+  [12, 1] rgb(173,172,177) trans=6%
+  [13, 1] rgb(164,163,169) trans=7%
+  [14, 1] rgb(142,110, 82) trans=65% (partial)
+  [15, 1] rgb(141,107, 76) trans=66% (partial)
+  (1 empty tiles)
+
+### Row 2 (y=32-47)
+  [ 0, 2] rgb(136,145,162) trans=25% (partial)
+  [ 1, 2] rgb(143,154,170) trans=0%
+  [ 2, 2] rgb(136,145,162) trans=25% (partial)
+  [ 3, 2] rgb(110,105,116) trans=59% (partial)
+  [ 4, 2] rgb(110,105,116) trans=59% (partial)
+  [ 5, 2] rgb(215,215,208) trans=25% (partial)
+  [ 6, 2] rgb(215,215,208) trans=25% (partial)
+  [ 7, 2] rgb(223,222,215) trans=25% (partial)
+  [ 8, 2] rgb(130,138,156) trans=75% (partial)
+  [ 9, 2] rgb(134,144,161) trans=75% (partial)
+  [10, 2] rgb(130,138,156) trans=75% (partial)
+  [11, 2] rgb(129,138,155) trans=75% (partial)
+  [12, 2] rgb(134,144,161) trans=75% (partial)
+  [13, 2] rgb(129,138,155) trans=75% (partial)
+  [14, 2] rgb(142,142,148) trans=22% (partial)
+  [15, 2] rgb(144,144,149) trans=22% (partial)
+
+### Row 3 (y=48-63)
+  [ 0, 3] rgb( 88, 64, 75) trans=88% (partial)
+  [ 1, 3] rgb( 58, 25, 39) trans=92% (partial)
+  [ 2, 3] rgb(132,120,128) trans=74% (partial)
+  [ 3, 3] rgb(128, 85,101) trans=59% (partial)
+  [ 4, 3] rgb(128, 85,101) trans=59% (partial)
+  [ 5, 3] rgb(139,109, 89) trans=59% (partial)
+  [ 6, 3] rgb(139,109, 89) trans=59% (partial)
+  [ 7, 3] rgb(145,115, 92) trans=56% (partial)
+  [ 8, 3] rgb(116,118,135) trans=7%
+  [ 9, 3] rgb(133,136,153) trans=6%
+  [10, 3] rgb(127,129,146) trans=7%
+  [11, 3] rgb(124,127,145) trans=7%
+  [12, 3] rgb(125,129,147) trans=6%
+  [13, 3] rgb(124,127,145) trans=7%
+  [14, 3] rgb(134,135,140) trans=22% (partial)
+  [15, 3] rgb(139,141,144) trans=22% (partial)
+
+### Row 4 (y=64-79)
+  [ 0, 4] rgb(178,149, 95) trans=0%
+  [ 1, 4] rgb(179,150, 96) trans=0%
+  [ 2, 4] rgb(182,184,190) trans=25% (partial)
+  [ 3, 4] rgb(193,195,199) trans=0%
+  [ 4, 4] rgb(182,184,190) trans=25% (partial)
+  [ 5, 4] rgb(179,182,187) trans=25% (partial)
+  [ 6, 4] rgb(192,194,198) trans=0%
+  [ 7, 4] rgb(179,182,187) trans=25% (partial)
+  [ 8, 4] rgb(166,169,178) trans=75% (partial)
+  [ 9, 4] rgb(176,178,185) trans=75% (partial)
+  [10, 4] rgb(166,169,178) trans=75% (partial)
+  [11, 4] rgb(150,152,157) trans=17% (partial)
+  [12, 4] rgb(150,152,157) trans=22% (partial)
+  [13, 4] rgb(147,146,149) trans=17% (partial)
+  [14, 4] rgb(147,139,146) trans=22% (partial)
+  [15, 4] rgb(138,139,145) trans=29% (partial)
+
+### Row 5 (y=80-95)
+  [ 0, 5] rgb( 87, 49, 45) trans=80% (partial)
+  [ 1, 5] rgb( 87, 49, 45) trans=80% (partial)
+  [ 2, 5] rgb(138,148,165) trans=25% (partial)
+  [ 3, 5] rgb(145,156,172) trans=0%
+  [ 4, 5] rgb(138,148,165) trans=25% (partial)
+  [ 5, 5] rgb(190,151, 99) trans=25% (partial)
+  [ 6, 5] rgb(199,162,107) trans=0%
+  [ 7, 5] rgb(190,151, 99) trans=25% (partial)
+  [ 8, 5] rgb(158,159,167) trans=7%
+  [ 9, 5] rgb(160,161,169) trans=6%
+  [10, 5] rgb(158,159,167) trans=7%
+  [15, 5] rgb(130,132,139) trans=29% (partial)
+  (4 empty tiles)
+
+### Row 6 (y=96-111)
+  [ 0, 6] rgb(194,156,102) trans=0%
+  [ 1, 6] rgb(194,156,102) trans=0%
+  [ 2, 6] rgb(177,149, 95) trans=25% (partial)
+  [ 3, 6] rgb(185,158,101) trans=0%
+  [ 4, 6] rgb(177,149, 95) trans=25% (partial)
+  [ 5, 6] rgb(174,146, 94) trans=25% (partial)
+  [ 6, 6] rgb(183,157,101) trans=0%
+  [ 7, 6] rgb(174,146, 94) trans=25% (partial)
+  [ 8, 6] rgb(142,110, 81) trans=59% (partial)
+  [ 9, 6] rgb(141,107, 78) trans=45% (partial)
+  [10, 6] rgb(142,109, 79) trans=59% (partial)
+  [11, 6] rgb(126, 91, 66) trans=43% (partial)
+  [12, 6] rgb(127, 92, 66) trans=43% (partial)
+  [13, 6] rgb(125, 93, 77) trans=39% (partial)
+  [14, 6] rgb(131, 99, 76) trans=39% (partial)
+  [15, 6] rgb(141,143,148) trans=25% (partial)
+
+### Row 7 (y=112-127)
+  [ 0, 7] rgb( 84, 59, 70) trans=87% (partial)
+  [ 1, 7] rgb( 84, 59, 70) trans=87% (partial)
+  [ 2, 7] rgb(185,187,192) trans=0%
+  [ 3, 7] rgb(185,187,192) trans=0%
+  [ 4, 7] rgb(140,150,166) trans=0%
+  [ 5, 7] rgb(140,150,166) trans=0%
+  [ 6, 7] rgb(179,151, 97) trans=0%
+  [ 7, 7] rgb(179,151, 97) trans=0%
+  [ 8, 7] rgb(142,110, 81) trans=59% (partial)
+  [ 9, 7] rgb(139,104, 74) trans=46% (partial)
+  [10, 7] rgb(139,106, 74) trans=61% (partial)
+  [11, 7] rgb(116, 78, 58) trans=75% (partial)
+  [12, 7] rgb(118, 80, 59) trans=75% (partial)
+  [13, 7] rgb(109, 78, 59) trans=75% (partial)
+  [14, 7] rgb(107, 94, 76) trans=75% (partial)
+  [15, 7] rgb(140,137,141) trans=25% (partial)
+
+### Row 8 (y=128-143)
+  [ 0, 8] rgb(138,147,164) trans=0%
+  [ 1, 8] rgb(138,147,164) trans=0%
+  [ 2, 8] rgb(182,185,190) trans=0%
+  [ 3, 8] rgb(182,185,190) trans=0%
+  [ 4, 8] rgb(192,154,101) trans=0%
+  [ 5, 8] rgb(192,154,101) trans=0%
+  [ 6, 8] rgb(177,148, 95) trans=0%
+  [ 7, 8] rgb(177,148, 95) trans=0%
+  [ 9, 8] rgb(115, 73, 52) trans=94% (partial)
+  [11, 8] rgb(176,183,186) trans=69% (partial)
+  [12, 8] rgb(178,184,187) trans=69% (partial)
+  [13, 8] rgb(176,183,186) trans=69% (partial)
+  [14, 8] rgb(178,184,187) trans=69% (partial)
+  (3 empty tiles)
+
+### Row 9 (y=144-159)
+  [ 0, 9] rgb( 84, 59, 70) trans=87% (partial)
+  [ 1, 9] rgb( 84, 59, 70) trans=87% (partial)
+  [ 8, 9] rgb(126, 95, 77) trans=28% (partial)
+  [ 9, 9] rgb(127, 93, 74) trans=3%
+  [10, 9] rgb(130,101, 79) trans=27% (partial)
+  [11, 9] rgb(118,117,124) trans=6%
+  [12, 9] rgb(120,119,125) trans=6%
+  [13, 9] rgb(109,100,105) trans=6%
+  [14, 9] rgb(110,104,108) trans=6%
+  [15, 9] rgb(150,116, 77) trans=83% (partial)
+  (6 empty tiles)
+
+### Row 10 (y=160-175)
+  [ 0,10] rgb(199,161,105) trans=0%
+  [ 1,10] rgb(199,161,105) trans=0%
+  [ 2,10] rgb(191,193,197) trans=0%
+  [ 3,10] rgb(191,193,197) trans=0%
+  [ 4,10] rgb(142,153,169) trans=0%
+  [ 5,10] rgb(142,153,169) trans=0%
+  [ 6,10] rgb(182,155,100) trans=0%
+  [ 7,10] rgb(182,155,100) trans=0%
+  [ 8,10] rgb(108, 81, 61) trans=71% (partial)
+  [ 9,10] rgb(110, 84, 66) trans=60% (partial)
+  [10,10] rgb(106, 94, 75) trans=71% (partial)
+  [11,10] rgb(133,129,136) trans=63% (partial)
+  [12,10] rgb(137,132,139) trans=63% (partial)
+  [13,10] rgb(128,114,122) trans=63% (partial)
+  [14,10] rgb(132,127,138) trans=63% (partial)
+  [15,10] rgb(128, 92, 65) trans=75% (partial)
+
+### Row 11 (y=176-191)
+  [ 0,11] rgb(205,167,109) trans=0%
+  [ 1,11] rgb(205,167,109) trans=0%
+  [ 2,11] rgb(198,200,204) trans=0%
+  [ 3,11] rgb(198,200,204) trans=0%
+  [ 4,11] rgb(146,158,174) trans=0%
+  [ 5,11] rgb(146,158,174) trans=0%
+  [ 6,11] rgb(187,161,103) trans=0%
+  [ 7,11] rgb(187,161,103) trans=0%
+  [ 8,11] rgb(155,164,167) trans=79% (partial)
+  [ 9,11] rgb(155,164,167) trans=79% (partial)
+  [10,11] rgb(165,173,175) trans=75% (partial)
+  [11,11] rgb(165,173,175) trans=75% (partial)
+  [12,11] rgb(177,183,185) trans=64% (partial)
+  [13,11] rgb(176,182,184) trans=66% (partial)
+  [14,11] rgb(177,183,185) trans=64% (partial)
+  [15,11] rgb(176,182,184) trans=66% (partial)
+
+### Row 12 (y=192-207)
+  [ 0,12] rgb(200,162,106) trans=0%
+  [ 1,12] rgb(200,162,106) trans=0%
+  [ 2,12] rgb(192,194,198) trans=0%
+  [ 3,12] rgb(192,194,198) trans=0%
+  [ 4,12] rgb(144,155,171) trans=0%
+  [ 5,12] rgb(144,155,171) trans=0%
+  [ 6,12] rgb(184,157,100) trans=0%
+  [ 7,12] rgb(184,157,100) trans=0%
+  [ 8,12] rgb(123,119,126) trans=0%
+  [ 9,12] rgb(116,104,110) trans=0%
+  [10,12] rgb(127,125,131) trans=0%
+  [11,12] rgb(121,116,122) trans=0%
+  [12,12] rgb(128,129,135) trans=6%
+  [13,12] rgb(129,129,135) trans=12% (partial)
+  [14,12] rgb(120,114,122) trans=6%
+  [15,12] rgb(122,108,113) trans=12% (partial)
+
+### Row 13 (y=208-223)
+  [ 0,13] rgb(142,152,169) trans=0%
+  [ 1,13] rgb(142,152,169) trans=0%
+  [ 2,13] rgb(181,154, 99) trans=0%
+  [ 3,13] rgb(181,154, 99) trans=0%
+  [ 4,13] rgb(198,160,104) trans=0%
+  [ 5,13] rgb(198,160,104) trans=0%
+  [ 6,13] rgb(190,192,196) trans=0%
+  [ 7,13] rgb(190,192,196) trans=0%
+  [ 8,13] rgb(110,103,111) trans=60% (partial)
+  [ 9,13] rgb(104, 96,107) trans=60% (partial)
+  [10,13] rgb(113,105,113) trans=60% (partial)
+  [11,13] rgb(113,105,113) trans=60% (partial)
+  [12,13] rgb(117,112,119) trans=64% (partial)
+  [13,13] rgb(119,115,122) trans=66% (partial)
+  [14,13] rgb(117,112,119) trans=64% (partial)
+  [15,13] rgb(119,115,122) trans=66% (partial)
+
+### Row 14 (y=224-239)
+  [ 0,14] rgb(146,156,173) trans=0%
+  [ 1,14] rgb(146,156,173) trans=0%
+  [ 2,14] rgb(186,159,102) trans=0%
+  [ 3,14] rgb(186,159,102) trans=0%
+  [ 4,14] rgb(204,166,108) trans=0%
+  [ 5,14] rgb(204,166,108) trans=0%
+  [ 6,14] rgb(197,199,202) trans=0%
+  [ 7,14] rgb(197,199,202) trans=0%
+  [ 8,14] rgb(155,118, 75) trans=25% (partial)
+  [ 9,14] rgb(154,163,167) trans=25% (partial)
+  [10,14] rgb(152,114, 73) trans=25% (partial)
+  [11,14] rgb(149,159,163) trans=25% (partial)
+  [12,14] rgb(120,125,144) trans=25% (partial)
+  [13,14] rgb(117,122,141) trans=25% (partial)
+  [14,14] rgb(147,157,160) trans=83% (partial)
+  [15,14] rgb(114,120,138) trans=83% (partial)
+
+### Row 15 (y=240-255)
+  [ 0,15] rgb(142,152,168) trans=0%
+  [ 1,15] rgb(142,152,168) trans=0%
+  [ 2,15] rgb(181,154, 99) trans=0%
+  [ 3,15] rgb(181,154, 99) trans=0%
+  [ 4,15] rgb(198,159,104) trans=0%
+  [ 5,15] rgb(198,159,104) trans=0%
+  [ 6,15] rgb(190,192,196) trans=0%
+  [ 7,15] rgb(190,192,196) trans=0%
+  [ 8,15] rgb(148,108, 69) trans=19% (partial)
+  [ 9,15] rgb(147,152,157) trans=19% (partial)
+  [10,15] rgb(144,104, 67) trans=19% (partial)
+  [11,15] rgb(142,147,153) trans=19% (partial)
+  [12,15] rgb(116,116,136) trans=19% (partial)
+  [13,15] rgb(113,113,133) trans=19% (partial)
+  [14,15] rgb(128,124,131) trans=75% (partial)
+  [15,15] rgb(103, 97,114) trans=75% (partial)
+
+### Row 16 (y=256-271)
+  [ 0,16] rgb(145, 84,107) trans=35% (partial)
+  [ 1,16] rgb(127, 67, 93) trans=45% (partial)
+  [ 2,16] rgb(147, 86,108) trans=48% (partial)
+  [ 3,16] rgb(147, 86,108) trans=48% (partial)
+  [ 4,16] rgb(151,158,163) trans=38% (partial)
+  [ 5,16] rgb(134,137,143) trans=45% (partial)
+  [ 6,16] rgb(151,157,162) trans=51% (partial)
+  [ 7,16] rgb(151,157,162) trans=51% (partial)
+  [ 9,16] rgb(169,185,197) trans=85% (partial)
+  [10,16] rgb(169,185,197) trans=85% (partial)
+  [12,16] rgb(167,175,177) trans=57% (partial)
+  [13,16] rgb(167,175,177) trans=57% (partial)
+  [14,16] rgb(150,178,197) trans=66% (partial)
+  [15,16] rgb(151,178,198) trans=63% (partial)
+  (2 empty tiles)
+
+### Row 17 (y=272-287)
+  [ 0,17] rgb( 68, 38, 51) trans=93% (partial)
+  [ 1,17] rgb( 68, 38, 51) trans=93% (partial)
+  [ 2,17] rgb( 68, 38, 51) trans=93% (partial)
+  [ 3,17] rgb( 68, 38, 51) trans=93% (partial)
+  [ 8,17] rgb(124,115,124) trans=80% (partial)
+  [ 9,17] rgb(147,144,154) trans=29% (partial)
+  [10,17] rgb(147,144,154) trans=29% (partial)
+  [11,17] rgb(124,115,124) trans=80% (partial)
+  [12,17] rgb(150,149,155) trans=0%
+  [13,17] rgb(144,145,151) trans=0%
+  [14,17] rgb(109, 98,111) trans=31% (partial)
+  [15,17] rgb( 95, 91,107) trans=25% (partial)
+  (4 empty tiles)
+
+### Row 18 (y=288-303)
+  [ 0,18] rgb(154,122, 81) trans=52% (partial)
+  [ 1,18] rgb(157,119, 75) trans=25% (partial)
+  [ 2,18] rgb(147,155,169) trans=25% (partial)
+  [ 3,18] rgb(122,126,146) trans=25% (partial)
+  [ 4,18] rgb(156,119, 75) trans=69% (partial)
+  [ 5,18] rgb(156,119, 75) trans=69% (partial)
+  [ 6,18] rgb(147,154,168) trans=69% (partial)
+  [ 7,18] rgb(147,154,168) trans=69% (partial)
+  [ 8,18] rgb( 97, 91,110) trans=87% (partial)
+  [ 9,18] rgb(117,109,117) trans=68% (partial)
+  [10,18] rgb(117,109,117) trans=68% (partial)
+  [11,18] rgb( 97, 91,110) trans=87% (partial)
+  [12,18] rgb(128,127,134) trans=57% (partial)
+  [13,18] rgb(128,127,134) trans=57% (partial)
+  [14,18] rgb(123,106,115) trans=70% (partial)
+  [15,18] rgb(147,135,142) trans=68% (partial)
+
+### Row 19 (y=304-319)
+  [ 0,19] rgb( 80, 43, 43) trans=95% (partial)
+  [ 1,19] rgb(140,102, 68) trans=32% (partial)
+  [ 2,19] rgb(136,137,151) trans=32% (partial)
+  [ 3,19] rgb(111,109,128) trans=32% (partial)
+  [ 4,19] rgb(141,104, 69) trans=52% (partial)
+  [ 5,19] rgb(141,104, 69) trans=52% (partial)
+  [ 6,19] rgb(135,134,148) trans=52% (partial)
+  [ 7,19] rgb(135,134,148) trans=52% (partial)
+  [ 8,19] rgb(132,138,148) trans=85% (partial)
+  [10,19] rgb(132,138,148) trans=85% (partial)
+  [12,19] rgb(141,152,155) trans=92% (partial)
+  [13,19] rgb(137,120,112) trans=80% (partial)
+  [14,19] rgb(137,120,112) trans=80% (partial)
+  [15,19] rgb(137,120,112) trans=80% (partial)
+  (2 empty tiles)
+
+### Row 20 (y=320-335)
+  [ 0,20] rgb(121,126,145) trans=69% (partial)
+  [ 1,20] rgb(121,126,145) trans=69% (partial)
+  [ 2,20] rgb(136,113,100) trans=75% (partial)
+  [ 3,20] rgb(137,115,104) trans=77% (partial)
+  [ 4,20] rgb(143,150,163) trans=75% (partial)
+  [ 5,20] rgb(139,147,161) trans=77% (partial)
+  [ 6,20] rgb(143,150,163) trans=75% (partial)
+  [ 7,20] rgb(139,147,161) trans=77% (partial)
+  [ 8,20] rgb(127,121,132) trans=31% (partial)
+  [ 9,20] rgb(137,120,112) trans=80% (partial)
+  [10,20] rgb(126,117,127) trans=33% (partial)
+  [11,20] rgb(137,120,112) trans=80% (partial)
+  [12,20] rgb( 97, 90, 94) trans=67% (partial)
+  [13,20] rgb(137,120,112) trans=80% (partial)
+  [14,20] rgb(137,120,112) trans=80% (partial)
+  (1 empty tiles)
+
+### Row 21 (y=336-351)
+  [ 0,21] rgb(109,106,124) trans=52% (partial)
+  [ 1,21] rgb(109,106,124) trans=52% (partial)
+  [ 2,21] rgb(156,142,131) trans=52% (partial)
+  [ 3,21] rgb(157,145,137) trans=56% (partial)
+  [ 4,21] rgb(148,154,168) trans=49% (partial)
+  [ 5,21] rgb(147,154,168) trans=53% (partial)
+  [ 6,21] rgb(155,163,176) trans=49% (partial)
+  [ 7,21] rgb(147,154,168) trans=53% (partial)
+  [ 8,21] rgb(102,138,120) trans=72% (partial)
+  [ 9,21] rgb(124,127,151) trans=72% (partial)
+  [10,21] rgb(154, 99,124) trans=72% (partial)
+  [11,21] rgb(171,138, 90) trans=72% (partial)
+  [12,21] rgb(102,138,120) trans=72% (partial)
+  [13,21] rgb(124,127,151) trans=72% (partial)
+  [14,21] rgb(154, 99,124) trans=72% (partial)
+  [15,21] rgb(171,138, 90) trans=72% (partial)
+
+### Row 22 (y=352-367)
+  [ 0,22] rgb(129,154,163) trans=92% (partial)
+  [ 1,22] rgb(195, 98,111) trans=92% (partial)
+  [ 2,22] rgb(195,171,112) trans=92% (partial)
+  [ 3,22] rgb(163,107,129) trans=92% (partial)
+  [ 4,22] rgb(134,146,149) trans=92% (partial)
+  [ 5,22] rgb(132,108, 95) trans=72% (partial)
+  [ 6,22] rgb(136,143,158) trans=73% (partial)
+  [ 7,22] rgb(138,145,159) trans=73% (partial)
+  [ 8,22] rgb(169,168,177) trans=61% (partial)
+  [ 9,22] rgb(161,160,170) trans=79% (partial)
+  [10,22] rgb(175,182,196) trans=61% (partial)
+  [11,22] rgb(161,160,170) trans=79% (partial)
+  [12,22] rgb(106, 90,103) trans=50% (partial)
+  [14,22] rgb(126,147,186) trans=50% (partial)
+  (2 empty tiles)
+
+### Row 23 (y=368-383)
+  [ 0,23] rgb(145,145,156) trans=70% (partial)
+  [ 1,23] rgb(176,122,131) trans=70% (partial)
+  [ 2,23] rgb(171,153,136) trans=70% (partial)
+  [ 3,23] rgb(157,123,138) trans=70% (partial)
+  [ 4,23] rgb(141,136,141) trans=70% (partial)
+  [ 5,23] rgb(152,135,124) trans=47% (partial)
+  [ 6,23] rgb(143,149,163) trans=45% (partial)
+  [ 7,23] rgb(149,157,170) trans=45% (partial)
+  [ 8,23] rgb(110, 98,111) trans=42% (partial)
+  [ 9,23] rgb(126,119,131) trans=73% (partial)
+  [10,23] rgb(120,127,154) trans=42% (partial)
+  [11,23] rgb(126,119,131) trans=73% (partial)
+  [12,23] rgb(116,106,119) trans=45% (partial)
+  [13,23] rgb(138,123,117) trans=77% (partial)
+  [14,23] rgb(123,126,148) trans=45% (partial)
+  [15,23] rgb(138,123,117) trans=77% (partial)
+
+### Row 24 (y=384-399)
+  [ 0,24] rgb(137,112, 88) trans=71% (partial)
+  [ 1,24] rgb(137,112, 88) trans=71% (partial)
+  [ 2,24] rgb(138,112, 89) trans=71% (partial)
+  [ 3,24] rgb(139,113, 89) trans=71% (partial)
+  [ 4,24] rgb(129,100, 74) trans=73% (partial)
+  [ 5,24] rgb(135,105, 78) trans=73% (partial)
+  [ 6,24] rgb(129,100, 76) trans=73% (partial)
+  [ 7,24] rgb(144,111, 86) trans=73% (partial)
+  [ 8,24] rgb(148,150,162) trans=86% (partial)
+  [ 9,24] rgb(148,150,162) trans=86% (partial)
+  [10,24] rgb(153,158,175) trans=41% (partial)
+  [11,24] rgb(153,158,175) trans=41% (partial)
+  [14,24] rgb(127,105,115) trans=94% (partial)
+  [15,24] rgb(140,121,129) trans=72% (partial)
+  (2 empty tiles)
+
+### Row 25 (y=400-415)
+  [ 0,25] rgb(131,138,124) trans=36% (partial)
+  [ 1,25] rgb(127,136,123) trans=36% (partial)
+  [ 2,25] rgb(118,126,116) trans=36% (partial)
+  [ 3,25] rgb(132,137,140) trans=36% (partial)
+  [ 4,25] rgb(109, 92, 79) trans=40% (partial)
+  [ 5,25] rgb(110,105, 86) trans=40% (partial)
+  [ 6,25] rgb(102, 88, 90) trans=40% (partial)
+  [ 7,25] rgb(136,111,107) trans=40% (partial)
+  [ 8,25] rgb(132,122,134) trans=34% (partial)
+  [ 9,25] rgb(140,145,165) trans=34% (partial)
+  [10,25] rgb( 66, 44, 60) trans=93% (partial)
+  [11,25] rgb( 66, 44, 60) trans=93% (partial)
+  [12,25] rgb(144,140,151) trans=81% (partial)
+  [13,25] rgb(144,140,151) trans=81% (partial)
+  [14,25] rgb(144,126,134) trans=78% (partial)
+  [15,25] rgb(140,121,129) trans=72% (partial)
+
+### Row 26 (y=416-431)
+  [ 0,26] rgb(124,103, 79) trans=74% (partial)
+  [ 1,26] rgb(122,102, 77) trans=74% (partial)
+  [ 2,26] rgb(159,168,171) trans=64% (partial)
+  [ 3,26] rgb(158,166,170) trans=64% (partial)
+  [ 4,26] rgb(153,155,165) trans=64% (partial)
+  [ 5,26] rgb(158,166,170) trans=64% (partial)
+  [ 6,26] rgb(160,162,168) trans=59% (partial)
+  [ 7,26] rgb(159,159,167) trans=59% (partial)
+  [ 8,26] rgb(168,170,181) trans=84% (partial)
+  [ 9,26] rgb(153,157,167) trans=76% (partial)
+  [10,26] rgb(156,160,170) trans=78% (partial)
+  [11,26] rgb(132,118,115) trans=74% (partial)
+  [12,26] rgb(156,155,165) trans=29% (partial)
+  [13,26] rgb(150,147,157) trans=57% (partial)
+  [14,26] rgb(137,120,112) trans=80% (partial)
+  [15,26] rgb(144,141,152) trans=53% (partial)
+
+### Row 27 (y=432-447)
+  [ 0,27] rgb( 94,107, 86) trans=53% (partial)
+  [ 1,27] rgb( 88,102, 77) trans=53% (partial)
+  [ 2,27] rgb(147,151,153) trans=39% (partial)
+  [ 3,27] rgb(157,163,172) trans=39% (partial)
+  [ 4,27] rgb(138,146,148) trans=39% (partial)
+  [ 5,27] rgb(161,166,173) trans=39% (partial)
+  [ 6,27] rgb(148,148,155) trans=24% (partial)
+  [ 7,27] rgb(159,156,160) trans=24% (partial)
+  [ 8,27] rgb(125,117,128) trans=73% (partial)
+  [ 9,27] rgb(120,112,124) trans=76% (partial)
+  [10,27] rgb(121,113,125) trans=80% (partial)
+  [11,27] rgb(128,128,135) trans=57% (partial)
+  [12,27] rgb(128,131,138) trans=57% (partial)
+  [13,27] rgb(129,129,136) trans=61% (partial)
+  [14,27] rgb(127,128,136) trans=61% (partial)
+  [15,27] rgb(167,130, 84) trans=34% (partial)
+
+### Row 28 (y=448-463)
+  [ 0,28] rgb(155,148,160) trans=59% (partial)
+  [ 1,28] rgb(158,158,166) trans=59% (partial)
+  [ 2,28] rgb( 83,102, 69) trans=75% (partial)
+  [ 3,28] rgb( 82,112, 87) trans=75% (partial)
+  [ 4,28] rgb( 68, 97, 70) trans=48% (partial)
+  [ 5,28] rgb( 68, 97, 70) trans=48% (partial)
+  [ 6,28] rgb( 76,105, 71) trans=57% (partial)
+  [ 7,28] rgb( 76,105, 71) trans=57% (partial)
+  [ 8,28] rgb(176,138, 87) trans=75% (partial)
+  [ 9,28] rgb(180,142, 89) trans=70% (partial)
+  [11,28] rgb(180,142, 89) trans=70% (partial)
+  [12,28] rgb(180,142, 89) trans=70% (partial)
+  [14,28] rgb(175,138, 87) trans=86% (partial)
+  [15,28] rgb(172,135, 85) trans=94% (partial)
+  (2 empty tiles)
+
+### Row 29 (y=464-479)
+  [ 0,29] rgb(141,142,147) trans=24% (partial)
+  [ 1,29] rgb(158,157,166) trans=24% (partial)
+  [ 2,29] rgb(116, 80, 59) trans=82% (partial)
+  [ 3,29] rgb(142,136,144) trans=73% (partial)
+  [ 4,29] rgb( 69,100, 75) trans=48% (partial)
+  [ 5,29] rgb( 69,100, 75) trans=48% (partial)
+  [ 6,29] rgb( 75,110, 80) trans=57% (partial)
+  [ 7,29] rgb( 75,110, 80) trans=57% (partial)
+  [ 8,29] rgb(159,122, 82) trans=24% (partial)
+  [ 9,29] rgb(170,133, 86) trans=24% (partial)
+  [10,29] rgb(167,130, 84) trans=34% (partial)
+  [11,29] rgb(170,133, 86) trans=24% (partial)
+  [12,29] rgb(170,133, 86) trans=24% (partial)
+  [13,29] rgb(167,130, 84) trans=34% (partial)
+  [14,29] rgb(163,125, 83) trans=27% (partial)
+  [15,29] rgb(162,124, 82) trans=31% (partial)
+
+### Row 30 (y=480-495)
+  [ 0,30] rgb(163,183,193) trans=48% (partial)
+  [ 1,30] rgb(163,183,193) trans=48% (partial)
+  [ 2,30] rgb(195,181,165) trans=48% (partial)
+  [ 3,30] rgb(195,181,165) trans=48% (partial)
+  [ 4,30] rgb(112,117,142) trans=48% (partial)
+  [ 5,30] rgb(112,117,142) trans=48% (partial)
+  [ 6,30] rgb(123,114,121) trans=80% (partial)
+  [ 7,30] rgb(141,137,143) trans=40% (partial)
+  (8 empty tiles)
+
+### Row 31 (y=496-511)
+  [ 0,31] rgb(141,151,137) trans=48% (partial)
+  [ 1,31] rgb(141,151,137) trans=48% (partial)
+  [ 2,31] rgb(129, 99,129) trans=48% (partial)
+  [ 3,31] rgb(129, 99,129) trans=48% (partial)
+  [ 4,31] rgb(148,156,135) trans=48% (partial)
+  [ 5,31] rgb(148,156,135) trans=48% (partial)
+  [ 6,31] rgb(123,114,121) trans=80% (partial)
+  [ 7,31] rgb(135,135,139) trans=40% (partial)
+  (8 empty tiles)
+
+
+## Summary
+Total tiles: 512
+Non-empty tiles: 466
+Empty tiles: 46

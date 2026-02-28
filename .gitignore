@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Obsidian
+.obsidian/workspace
+.obsidian/workspace.json
+.obsidian/plugins/*/data.json
+.trash/
+
+# Developer Tools
+.vscode/
+.idea/
+
+# General Environment
+.env
+.env.local
+
+# Pixel Agents build artifacts
+02_Projects/pixel-agents-woosdom/node_modules/
+02_Projects/pixel-agents-woosdom/dist/
+02_Projects/pixel-agents-woosdom/dist-electron/
+02_Projects/pixel-agents-woosdom/release/

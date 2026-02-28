@@ -1,0 +1,17 @@
+appId: com.woosdom.pixel-agents
+productName: Pixel Agents Woosdom
+mac:
+  category: public.app-category.developer-tools
+  target:
+    - target: dmg
+      arch:
+        - arm64
+        - x64
+directories:
+  output: release
+  buildResources: build
+files:
+  - "!**/*"
+  - dist
+  - dist-electron
+asar: true

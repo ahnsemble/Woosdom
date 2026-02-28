@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-electron/
+release/
+*.asar
+
+# Dev temp files
+tmp_*.js
+tmp_*.ts
+
+# Licensed tilesets (not redistributable)
+src/assets/tilesets/vx_ace/*.png
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+
+# Test artifacts
+src/test_quant.py

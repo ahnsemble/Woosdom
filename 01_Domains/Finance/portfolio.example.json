@@ -1,0 +1,13 @@
+{
+  "name": "Your Portfolio Name",
+  "version": "v1",
+  "benchmark": "SPY",
+  "mdd_limit": -0.40,
+  "holdings": [
+    {"ticker": "VOO", "role": "sp500_core", "weight": 1.00}
+  ],
+  "dca": {
+    "frequency": "monthly",
+    "amount": "customize_this"
+  }
+}
