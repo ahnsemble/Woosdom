@@ -1,0 +1,19 @@
+{# ─── includes/_summary_cards.html ──────────────────────────────────────────── #}
+<section class="summary-cards">
+  <div class="card card-project">
+    <div class="card-number">{{ stats.n_projects }}</div>
+    <div class="card-label">🚀 진행 프로젝트</div>
+  </div>
+  <div class="card card-action">
+    <div class="card-number">{{ stats.n_actions }}</div>
+    <div class="card-label">📋 액션 아이템</div>
+  </div>
+  <div class="card card-week">
+    <div class="card-number">{{ stats.n_this_week }}</div>
+    <div class="card-label">📅 이번 주 할 일</div>
+  </div>
+  <div class="card card-done">
+    <div class="card-number">{{ stats.n_recent_done }}</div>
+    <div class="card-label">✅ 최근 7일 완료</div>
+  </div>
+</section>

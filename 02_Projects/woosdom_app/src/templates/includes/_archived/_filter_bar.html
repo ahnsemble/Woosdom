@@ -1,0 +1,18 @@
+{# ─── includes/_filter_bar.html ─────────────────────────────────────────────── #}
+<section class="filter-bar">
+  <div class="filter-group">
+    <span class="filter-label">도메인:</span>
+    <button class="filter-btn active" data-domain="all">전체</button>
+    {% for dm in domains %}
+    {% set dm_info = DOMAIN_LABELS.get(dm, ("📌 Other", "#b2bec3")) %}
+    <button class="filter-btn" data-domain="{{ dm }}" style="border-color:{{ dm_info[1] }}44;color:{{ dm_info[1] }};">{{ dm_info[0] }}</button>
+    {% endfor %}
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">우선순위:</span>
+    <button class="filter-btn active" data-section="all">전체</button>
+    {% for sec, sec_info in SECTION_LABELS.items() %}{% if sec != "done" %}
+    <button class="filter-btn" data-section="{{ sec }}" style="color:{{ sec_info[1] }};">{{ sec_info[0] }}</button>
+    {% endif %}{% endfor %}
+  </div>
+</section>

@@ -1,0 +1,11 @@
+{# ─── partials/standing-rules.html — Standing Rules ─────────────────────── #}
+{% if standing_rules %}
+<section class="board-section">
+  <div class="board-section-title">❗ 상시 규칙</div>
+  <div class="rules-grid">
+    {% for r in standing_rules %}
+    <div class="rule-item">⚠️ {{ r | e }}</div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

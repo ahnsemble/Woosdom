@@ -93,7 +93,7 @@ export default function ActivityLogPanel() {
               {entry.agentDisplayName}
             </span>
             {' \u2014 '}
-            <span style={{ color: '#ccc' }}>{entry.action}</span>
+            <span style={{ color: '#ccc' }}>{entry.detail ? `${entry.action} (${entry.detail})` : entry.action}</span>
           </div>
         ))}
       </div>

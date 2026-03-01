@@ -830,8 +830,8 @@
     2,
     0,
     0,
-    0,
-    0,
+    1,
+    1,
     0,
     0,
     0,
@@ -4004,12 +4004,14 @@
       "sy": 4
     },
     "17,27": {
-      "sx": 3,
-      "sy": 5
+      "sx": 7,
+      "sy": 4,
+      "tilesetIdx": 0
     },
     "18,27": {
-      "sx": 3,
-      "sy": 4
+      "sx": 7,
+      "sy": 4,
+      "tilesetIdx": 0
     },
     "19,27": {
       "sx": 3,
@@ -6064,52 +6066,6 @@
       ]
     },
     {
-      "uid": "edit_1086",
-      "type": "vx_6_4_4_2_2",
-      "col": 5,
-      "row": 17,
-      "tiles": [
-        {
-          "sx": 4,
-          "sy": 4,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1087",
-      "type": "vx_6_4_4_2_2",
-      "col": 7,
-      "row": 17,
-      "tiles": [
-        {
-          "sx": 4,
-          "sy": 4,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
       "uid": "edit_1090",
       "type": "vx_6_4_6_2_2",
       "col": 5,
@@ -6141,98 +6097,6 @@
         {
           "sx": 4,
           "sy": 6,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1093",
-      "type": "vx_6_22_16_2_2",
-      "col": 5,
-      "row": 17,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1094",
-      "type": "vx_6_20_16_2_2",
-      "col": 7,
-      "row": 17,
-      "tiles": [
-        {
-          "sx": 20,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1096",
-      "type": "vx_6_4_4_2_2",
-      "col": 5,
-      "row": 14,
-      "tiles": [
-        {
-          "sx": 4,
-          "sy": 4,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1097",
-      "type": "vx_6_4_4_2_2",
-      "col": 7,
-      "row": 14,
-      "tiles": [
-        {
-          "sx": 4,
-          "sy": 4,
           "offsetCol": 0,
           "offsetRow": 0,
           "tilesetIdx": 6,
@@ -6294,52 +6158,6 @@
       ]
     },
     {
-      "uid": "edit_1100",
-      "type": "vx_6_22_16_2_2",
-      "col": 5,
-      "row": 14,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1101",
-      "type": "vx_6_20_16_2_2",
-      "col": 7,
-      "row": 14,
-      "tiles": [
-        {
-          "sx": 20,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
       "uid": "edit_1102",
       "type": "vx_6_14_0_2_2",
       "col": 12,
@@ -6371,52 +6189,6 @@
         {
           "sx": 4,
           "sy": 6,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1104",
-      "type": "vx_6_4_4_2_2",
-      "col": 11,
-      "row": 14,
-      "tiles": [
-        {
-          "sx": 4,
-          "sy": 4,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1105",
-      "type": "vx_6_20_16_2_2",
-      "col": 11,
-      "row": 14,
-      "tiles": [
-        {
-          "sx": 20,
-          "sy": 16,
           "offsetCol": 0,
           "offsetRow": 0,
           "tilesetIdx": 6,
@@ -6524,52 +6296,6 @@
       ]
     },
     {
-      "uid": "edit_1110",
-      "type": "vx_6_2_4_2_2",
-      "col": 24,
-      "row": 23,
-      "tiles": [
-        {
-          "sx": 2,
-          "sy": 4,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1111",
-      "type": "vx_6_2_4_2_2",
-      "col": 24,
-      "row": 20,
-      "tiles": [
-        {
-          "sx": 2,
-          "sy": 4,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
       "uid": "edit_1112",
       "type": "vx_6_2_6_2_2",
       "col": 24,
@@ -6624,144 +6350,6 @@
         {
           "sx": 2,
           "sy": 6,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1115",
-      "type": "vx_6_2_4_2_2",
-      "col": 24,
-      "row": 14,
-      "tiles": [
-        {
-          "sx": 2,
-          "sy": 4,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1116",
-      "type": "vx_6_2_4_2_2",
-      "col": 24,
-      "row": 17,
-      "tiles": [
-        {
-          "sx": 2,
-          "sy": 4,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1117",
-      "type": "vx_6_22_16_2_2",
-      "col": 24,
-      "row": 14,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1118",
-      "type": "vx_6_22_16_2_2",
-      "col": 24,
-      "row": 17,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1119",
-      "type": "vx_6_22_16_2_2",
-      "col": 24,
-      "row": 20,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1120",
-      "type": "vx_6_22_16_2_2",
-      "col": 24,
-      "row": 23,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
           "offsetCol": 0,
           "offsetRow": 0,
           "tilesetIdx": 6,
@@ -6992,75 +6580,6 @@
         {
           "sx": 6,
           "sy": 6,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1007",
-      "type": "vx_6_22_16_2_2",
-      "col": 5,
-      "row": 31,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1008",
-      "type": "vx_6_22_16_2_2",
-      "col": 9,
-      "row": 31,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1009",
-      "type": "vx_6_22_16_2_2",
-      "col": 9,
-      "row": 28,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
           "offsetCol": 0,
           "offsetRow": 0,
           "tilesetIdx": 6,
@@ -7421,75 +6940,6 @@
       ]
     },
     {
-      "uid": "edit_1007",
-      "type": "vx_6_2_4_2_2",
-      "col": 11,
-      "row": 4,
-      "tiles": [
-        {
-          "sx": 2,
-          "sy": 4,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1008",
-      "type": "vx_6_12_0_2_2",
-      "col": 10,
-      "row": 4,
-      "tiles": [
-        {
-          "sx": 12,
-          "sy": 0,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
-      "uid": "edit_1009",
-      "type": "vx_6_22_16_2_2",
-      "col": 11,
-      "row": 4,
-      "tiles": [
-        {
-          "sx": 22,
-          "sy": 16,
-          "offsetCol": 0,
-          "offsetRow": 0,
-          "tilesetIdx": 6,
-          "sw": 2,
-          "sh": 2
-        }
-      ],
-      "blockedOffsets": [
-        [
-          0,
-          0
-        ]
-      ]
-    },
-    {
       "uid": "edit_1010",
       "type": "vx_6_8_26_2_2",
       "col": 21,
@@ -7605,7 +7055,306 @@
       ]
     },
     {
+      "uid": "edit_1000",
+      "type": "vx_6_14_0_2_2",
+      "col": 8,
+      "row": 14,
+      "tiles": [
+        {
+          "sx": 14,
+          "sy": 0,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1000",
+      "type": "vx_6_4_4_2_2",
+      "col": 5,
+      "row": 14,
+      "tiles": [
+        {
+          "sx": 4,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
       "uid": "edit_1001",
+      "type": "vx_6_4_4_2_2",
+      "col": 5,
+      "row": 17,
+      "tiles": [
+        {
+          "sx": 4,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1002",
+      "type": "vx_6_4_4_2_2",
+      "col": 7,
+      "row": 17,
+      "tiles": [
+        {
+          "sx": 4,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1003",
+      "type": "vx_6_4_4_2_2",
+      "col": 7,
+      "row": 14,
+      "tiles": [
+        {
+          "sx": 4,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1004",
+      "type": "vx_6_4_4_2_2",
+      "col": 11,
+      "row": 14,
+      "tiles": [
+        {
+          "sx": 4,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1005",
+      "type": "vx_6_2_4_2_2",
+      "col": 24,
+      "row": 14,
+      "tiles": [
+        {
+          "sx": 2,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1006",
+      "type": "vx_6_2_4_2_2",
+      "col": 24,
+      "row": 17,
+      "tiles": [
+        {
+          "sx": 2,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1007",
+      "type": "vx_6_2_4_2_2",
+      "col": 24,
+      "row": 20,
+      "tiles": [
+        {
+          "sx": 2,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1008",
+      "type": "vx_6_2_4_2_2",
+      "col": 24,
+      "row": 23,
+      "tiles": [
+        {
+          "sx": 2,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1009",
+      "type": "vx_6_6_4_2_2",
+      "col": 5,
+      "row": 31,
+      "tiles": [
+        {
+          "sx": 6,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1010",
+      "type": "vx_6_6_4_2_2",
+      "col": 9,
+      "row": 31,
+      "tiles": [
+        {
+          "sx": 6,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1011",
+      "type": "vx_6_6_4_2_2",
+      "col": 9,
+      "row": 28,
+      "tiles": [
+        {
+          "sx": 6,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1012",
       "type": "vx_6_6_4_2_2",
       "col": 5,
       "row": 28,
@@ -7628,7 +7377,7 @@
       ]
     },
     {
-      "uid": "edit_1002",
+      "uid": "edit_1013",
       "type": "vx_6_22_16_2_2",
       "col": 5,
       "row": 28,
@@ -7651,14 +7400,290 @@
       ]
     },
     {
-      "uid": "edit_1000",
-      "type": "vx_6_14_0_2_2",
-      "col": 8,
+      "uid": "edit_1014",
+      "type": "vx_6_22_16_2_2",
+      "col": 5,
+      "row": 31,
+      "tiles": [
+        {
+          "sx": 22,
+          "sy": 16,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1015",
+      "type": "vx_6_22_16_2_2",
+      "col": 5,
       "row": 14,
       "tiles": [
         {
-          "sx": 14,
-          "sy": 0,
+          "sx": 22,
+          "sy": 16,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1016",
+      "type": "vx_6_22_16_2_2",
+      "col": 5,
+      "row": 17,
+      "tiles": [
+        {
+          "sx": 22,
+          "sy": 16,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1017",
+      "type": "vx_6_22_16_2_2",
+      "col": 24,
+      "row": 14,
+      "tiles": [
+        {
+          "sx": 22,
+          "sy": 16,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1018",
+      "type": "vx_6_22_16_2_2",
+      "col": 24,
+      "row": 17,
+      "tiles": [
+        {
+          "sx": 22,
+          "sy": 16,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1019",
+      "type": "vx_6_22_16_2_2",
+      "col": 24,
+      "row": 20,
+      "tiles": [
+        {
+          "sx": 22,
+          "sy": 16,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1020",
+      "type": "vx_6_22_16_2_2",
+      "col": 24,
+      "row": 23,
+      "tiles": [
+        {
+          "sx": 22,
+          "sy": 16,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1021",
+      "type": "vx_6_22_16_2_2",
+      "col": 9,
+      "row": 31,
+      "tiles": [
+        {
+          "sx": 22,
+          "sy": 16,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1022",
+      "type": "vx_6_22_16_2_2",
+      "col": 9,
+      "row": 28,
+      "tiles": [
+        {
+          "sx": 22,
+          "sy": 16,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1023",
+      "type": "vx_6_2_4_2_2",
+      "col": 11,
+      "row": 4,
+      "tiles": [
+        {
+          "sx": 2,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1024",
+      "type": "vx_6_2_4_2_2",
+      "col": 11,
+      "row": 4,
+      "tiles": [
+        {
+          "sx": 2,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1025",
+      "type": "vx_6_2_4_2_2",
+      "col": 11,
+      "row": 4,
+      "tiles": [
+        {
+          "sx": 2,
+          "sy": 4,
+          "offsetCol": 0,
+          "offsetRow": 0,
+          "tilesetIdx": 6,
+          "sw": 2,
+          "sh": 2
+        }
+      ],
+      "blockedOffsets": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "uid": "edit_1026",
+      "type": "vx_6_2_4_2_2",
+      "col": 11,
+      "row": 4,
+      "tiles": [
+        {
+          "sx": 2,
+          "sy": 4,
           "offsetCol": 0,
           "offsetRow": 0,
           "tilesetIdx": 6,

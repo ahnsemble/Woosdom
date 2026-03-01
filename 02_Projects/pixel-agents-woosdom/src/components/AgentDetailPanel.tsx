@@ -82,11 +82,13 @@ export default function AgentDetailPanel() {
 
   // Periodic refresh for "time since" display
   useEffect(() => {
+    if (!selectedAgent) return
+
     const interval = setInterval(() => {
-      if (!selectedAgent) return
       setRecentLogs(EventLogStore.getEntriesForAgent(selectedAgent.role, 10))
       setEventCount(EventLogStore.getAgentEventCount(selectedAgent.role))
     }, 2000)
+
     return () => clearInterval(interval)
   }, [selectedAgent])
 

@@ -22,42 +22,56 @@ function mapFileToAgAgent(filePath: string): string {
 export function startAGWatcher(eventBus: EventBus): () => void {
     console.log('[AGWatcher] Initialized (inactive until AG dispatch)')
 
+    function activateAG() {
+        if (isActive) return
+        isActive = true
+        console.log('[AGWatcher] AG team activated — watching src/')
+        const PROJECT_SRC = path.join(process.env.APP_ROOT!, 'src')
+
+        watcher = watch(PROJECT_SRC, {
+            persistent: true,
+            ignoreInitial: true,
+            depth: 5,
+            ignored: ['**/node_modules/**', '**/.git/**', '**/dist/**'],
+            awaitWriteFinish: { stabilityThreshold: 300, pollInterval: 100 },
+        })
+
+        watcher.on('change', (filePath: string) => {
+            const agentRole = mapFileToAgAgent(filePath)
+            const toolName = path.extname(filePath) === '.css' ? 'Style' :
+                path.extname(filePath) === '.json' ? 'Configure' : 'Edit'
+            eventBus.emit({ type: 'ag:file-change', agentRole, toolName, filePath: path.basename(filePath) })
+        })
+
+        watcher.on('add', (filePath: string) => {
+            const agentRole = mapFileToAgAgent(filePath)
+            eventBus.emit({ type: 'ag:file-change', agentRole, toolName: 'Create', filePath: path.basename(filePath) })
+        })
+    }
+
+    function deactivateAG() {
+        if (!isActive) return
+        isActive = false
+        watcher?.close()
+        watcher = null
+        console.log('[AGWatcher] AG team deactivated')
+    }
+
     eventBus.on('vault:to-hands', (event) => {
-        if (String(event.engine).startsWith('antigravity') && !isActive) {
-            isActive = true
-            const PROJECT_SRC = path.join(process.env.APP_ROOT!, 'src')
-            console.log('[AGWatcher] AG team activated — watching src/')
-
-            watcher = watch(PROJECT_SRC, {
-                persistent: true,
-                ignoreInitial: true,
-                depth: 5,
-                ignored: ['**/node_modules/**', '**/.git/**', '**/dist/**'],
-                awaitWriteFinish: { stabilityThreshold: 300, pollInterval: 100 },
-            })
-
-            watcher.on('change', (filePath: string) => {
-                const agentRole = mapFileToAgAgent(filePath)
-                const toolName = path.extname(filePath) === '.css' ? 'Style' :
-                    path.extname(filePath) === '.json' ? 'Configure' : 'Edit'
-                eventBus.emit({ type: 'ag:file-change', agentRole, toolName, filePath: path.basename(filePath) })
-            })
-
-            watcher.on('add', (filePath: string) => {
-                const agentRole = mapFileToAgAgent(filePath)
-                eventBus.emit({ type: 'ag:file-change', agentRole, toolName: 'Create', filePath: path.basename(filePath) })
-            })
+        if (String(event.engine).startsWith('antigravity')) {
+            activateAG()
         }
     })
 
     eventBus.on('vault:from-hands', (event) => {
-        if (String(event.engine).startsWith('antigravity') && isActive) {
-            isActive = false
-            watcher?.close()
-            watcher = null
-            console.log('[AGWatcher] AG team deactivated')
+        if (String(event.engine).startsWith('antigravity')) {
+            deactivateAG()
         }
     })
+
+    // v3 전용 이벤트
+    eventBus.on('vault:to-ag', () => { activateAG() })
+    eventBus.on('vault:from-ag', () => { deactivateAG() })
 
     return () => { watcher?.close(); isActive = false }
 }

@@ -1,12 +1,13 @@
-import { TILE_SIZE, DEFAULT_ZOOM, SITTING_OFFSET_PX } from '../constants.ts'
+import { TILE_SIZE, DEFAULT_ZOOM, SITTING_OFFSET_PX, VOID_TILE_COLOR } from '../constants.ts'
 import { TileType, CharacterState, DIRECTION_TO_SPRITE_ROW, WALK_FRAME_SEQUENCE, BUBBLE_TEXT, BUBBLE_FADE_SEC } from './types.ts'
 import type { Character, FurniturePlacement } from './types.ts'
-import { getFloorColor, getFloorTileRef, getOfficeDimensions } from './OfficeLayout.ts'
-import { getLayoutSync } from '../config/LayoutLoader.ts'
+import { getOfficeDimensions } from './OfficeLayout.ts'
+import { getLayoutSync, getFloorColor, getFloorTileRef } from '../config/LayoutLoader.ts'
 
 const WALL_COLOR = '#e8e0d4'
 const WALL_BORDER_COLOR = '#8a7e70'
-const VOID_COLOR = '#2a2a3e'
+const SPEECH_BUBBLE_MAX_WIDTH = 200
+const SPEECH_BUBBLE_ELLIPSIS = '...'
 
 export interface RenderState {
   tileGrid: TileType[][]
@@ -32,13 +33,13 @@ export function createRenderState(): RenderState {
   }
 }
 
-export function renderFrame(ctx: CanvasRenderingContext2D, state: RenderState): void {
+export function renderFrame(ctx: CanvasRenderingContext2D, state: RenderState, isCustomize = false): void {
   const { zoom, cameraX, cameraY } = state
   const canvasW = ctx.canvas.width
   const canvasH = ctx.canvas.height
 
   // Clear
-  ctx.fillStyle = VOID_COLOR
+  ctx.fillStyle = VOID_TILE_COLOR
   ctx.fillRect(0, 0, canvasW, canvasH)
 
   ctx.save()
@@ -61,7 +62,6 @@ export function renderFrame(ctx: CanvasRenderingContext2D, state: RenderState): 
   renderRoomLabels(ctx)
 
   // 6. Grid overlay for customize mode
-  const isCustomize = (window as unknown as Record<string, unknown>).__customizeMode as boolean | undefined
   if (isCustomize) {
     renderGridOverlay(ctx)
     renderSeatMarkers(ctx, state)
@@ -213,7 +213,9 @@ function renderFurnitureAndCharacters(ctx: CanvasRenderingContext2D, state: Rend
       const isVxTile = (f.tile.tilesetIdx ?? 0) >= 2
 
       if (isVxTile && (sw > 1 || sh > 1)) {
-        // VX multi-tile -> shrink 32x32 source into 16x16 tile bounds
+        // VX multi-tile: compress oversized source into single 16×16 grid cell.
+        // Each FurniturePlacement is already decomposed per-tile by createFurniturePlacements(),
+        // so sw/sh here refers to the source region in the tileset, not destination span.
         ctx.drawImage(
           tileImg,
           f.tile.sx * TILE_SIZE, f.tile.sy * TILE_SIZE,
@@ -222,7 +224,6 @@ function renderFurnitureAndCharacters(ctx: CanvasRenderingContext2D, state: Rend
           TILE_SIZE, TILE_SIZE,
         )
       } else {
-        // Default mapping
         ctx.drawImage(
           tileImg,
           f.tile.sx * TILE_SIZE, f.tile.sy * TILE_SIZE,
@@ -295,6 +296,28 @@ function renderCharacterOverlays(ctx: CanvasRenderingContext2D, state: RenderSta
   }
 }
 
+function truncateSpeechBubbleText(ctx: CanvasRenderingContext2D, text: string): string {
+  if (ctx.measureText(text).width <= SPEECH_BUBBLE_MAX_WIDTH) return text
+
+  const ellipsisWidth = ctx.measureText(SPEECH_BUBBLE_ELLIPSIS).width
+  if (ellipsisWidth >= SPEECH_BUBBLE_MAX_WIDTH) return SPEECH_BUBBLE_ELLIPSIS
+
+  let low = 0
+  let high = text.length
+
+  while (low < high) {
+    const mid = Math.ceil((low + high) / 2)
+    const candidate = `${text.slice(0, mid)}${SPEECH_BUBBLE_ELLIPSIS}`
+    if (ctx.measureText(candidate).width <= SPEECH_BUBBLE_MAX_WIDTH) {
+      low = mid
+    } else {
+      high = mid - 1
+    }
+  }
+
+  return `${text.slice(0, low)}${SPEECH_BUBBLE_ELLIPSIS}`
+}
+
 function renderSpeechBubble(
   ctx: CanvasRenderingContext2D,
   x: number, y: number,
@@ -308,7 +331,8 @@ function renderSpeechBubble(
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
 
-  const metrics = ctx.measureText(text)
+  const displayText = truncateSpeechBubbleText(ctx, text)
+  const metrics = ctx.measureText(displayText)
   const padX = 3
   const padY = 2
   const textW = metrics.width
@@ -357,7 +381,7 @@ function renderSpeechBubble(
 
   // Text
   ctx.fillStyle = isError ? '#c62828' : '#333'
-  ctx.fillText(text, x, by + bubbleH / 2)
+  ctx.fillText(displayText, x, by + bubbleH / 2)
 
   ctx.restore()
 }

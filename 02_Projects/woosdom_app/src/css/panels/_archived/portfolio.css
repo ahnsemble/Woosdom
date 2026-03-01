@@ -1,0 +1,24 @@
+/* ─── panels/portfolio.css ────────────────────────────────────────── */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.portfolio-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+}
+.portfolio-ticker { font-size: 1rem; font-weight: 700; color: var(--accent); }
+.portfolio-weight { font-size: .8rem; color: var(--muted); margin-top: 3px; }
+.portfolio-bar {
+  height: 5px; background: var(--border);
+  border-radius: 3px; margin-top: 8px;
+}
+.portfolio-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, #4ecdc4, #a29bfe);
+}
+
+body.light .portfolio-bar-fill {
+  background: linear-gradient(90deg, #2da89e, #7a6bfe);
+}

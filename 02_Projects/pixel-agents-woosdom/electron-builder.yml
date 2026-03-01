@@ -2,6 +2,7 @@ appId: com.woosdom.pixel-agents
 productName: Pixel Agents Woosdom
 mac:
   category: public.app-category.developer-tools
+  identity: null
   target:
     - target: dmg
       arch:
@@ -14,4 +15,7 @@ files:
   - "!**/*"
   - dist
   - dist-electron
+  - config
 asar: true
+asarUnpack:
+  - "config/**"

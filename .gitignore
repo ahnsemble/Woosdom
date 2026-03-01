@@ -22,3 +22,11 @@
 02_Projects/pixel-agents-woosdom/dist/
 02_Projects/pixel-agents-woosdom/dist-electron/
 02_Projects/pixel-agents-woosdom/release/
+
+# Agent task exchange files (private)
+00_System/Templates/to_claude_code.md
+00_System/Templates/from_claude_code.md
+00_System/Templates/to_codex.md
+00_System/Templates/from_codex.md
+00_System/Templates/to_antigravity*.md
+00_System/Templates/from_antigravity*.md

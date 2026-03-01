@@ -95,5 +95,15 @@ export function startCodexWatcher(eventBus: EventBus): () => void {
         }
     })
 
+    // v3 전용 이벤트
+    eventBus.on('vault:from-codex', () => {
+        if (isActive) {
+            isActive = false
+            watcher?.close()
+            watcher = null
+            console.log('[CodexWatcher] Codex team deactivated via from_codex.md')
+        }
+    })
+
     return () => { watcher?.close(); isActive = false }
 }

@@ -1,0 +1,37 @@
+{# ─── partials/completed.html — Recently Completed Items ────────────────────── #}
+{% if completed %}
+{% set visible = completed[:5] %}
+{% set hidden  = completed[5:] %}
+<section class="board-section">
+  <div class="board-section-title">✅ 최근 완료</div>
+  {% for c in visible %}
+  {% set domain = c.get('domain', 'other') %}
+  {% set dm_info = DOMAIN_LABELS.get(domain, ("📌 Other", "#b2bec3")) %}
+  <div class="completed-item">
+    <div class="compl-row">
+      <span class="compl-title">{{ c.get('title', '') | e }}</span>
+      <span class="badge-sm" style="background:{{ dm_info[1] }}22;color:{{ dm_info[1] }};border:1px solid {{ dm_info[1] }}44;">{{ dm_info[0] }}</span>
+      {% if c.get('date') %}<span class="compl-date">{{ c.get('date', '') | e }}</span>{% endif %}
+    </div>
+    {% if c.get('summary') %}<div class="compl-summary">{{ c.get('summary', '')[:120] | e }}</div>{% endif %}
+  </div>
+  {% endfor %}
+  <div id="hidden-completed">
+    {% for c in hidden %}
+    {% set domain = c.get('domain', 'other') %}
+    {% set dm_info = DOMAIN_LABELS.get(domain, ("📌 Other", "#b2bec3")) %}
+    <div class="completed-item hidden-item">
+      <div class="compl-row">
+        <span class="compl-title">{{ c.get('title', '') | e }}</span>
+        <span class="badge-sm" style="background:{{ dm_info[1] }}22;color:{{ dm_info[1] }};border:1px solid {{ dm_info[1] }}44;">{{ dm_info[0] }}</span>
+        {% if c.get('date') %}<span class="compl-date">{{ c.get('date', '') | e }}</span>{% endif %}
+      </div>
+      {% if c.get('summary') %}<div class="compl-summary">{{ c.get('summary', '')[:120] | e }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% if hidden %}
+  <button class="more-btn" onclick="toggleMore()" id="more-btn">▼ {{ hidden | length }}개 더 보기</button>
+  {% endif %}
+</section>
+{% endif %}

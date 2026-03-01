@@ -1,12 +1,12 @@
 import { EditorTool } from '../editor/EditorState.ts'
-import type { SelectedTile } from '../editor/EditorState.ts'
+import type { EditorTool as EditorToolValue, SelectedTile } from '../editor/EditorState.ts'
 import TilePalette from '../editor/TilePalette.tsx'
 
 interface Props {
   onSave: () => void
   onCancel: () => void
-  tool: string
-  onToolChange: (tool: string) => void
+  tool: EditorToolValue
+  onToolChange: (tool: EditorToolValue) => void
   tilesets: HTMLImageElement[]
   onSelectFloorTile: (tile: SelectedTile) => void
   onSelectWallTile: (tile: SelectedTile) => void
@@ -16,7 +16,7 @@ interface Props {
   selectedFurniturePreset: string | null
 }
 
-const TOOLS = [
+const TOOLS: Array<{ id: EditorToolValue; label: string; icon: string }> = [
   { id: EditorTool.FLOOR_PAINT, label: 'Floor', icon: '\u2B1B' },
   { id: EditorTool.WALL_PAINT, label: 'Wall', icon: '\uD83E\uDDF1' },
   { id: EditorTool.FURNITURE_PLACE, label: 'Furniture', icon: '\uD83E\uDE91' },
@@ -35,7 +35,6 @@ export default function EditorToolbar({
       display: 'flex',
       flexDirection: 'column',
     }}>
-      {/* Toolbar header */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -77,7 +76,6 @@ export default function EditorToolbar({
         </button>
       </div>
 
-      {/* Tool buttons */}
       <div style={{
         display: 'flex',
         gap: '4px',
@@ -103,9 +101,8 @@ export default function EditorToolbar({
         ))}
       </div>
 
-      {/* Tile palette */}
       <TilePalette
-        tool={tool as any}
+        tool={tool}
         tilesets={tilesets}
         onSelectFloorTile={onSelectFloorTile}
         onSelectWallTile={onSelectWallTile}

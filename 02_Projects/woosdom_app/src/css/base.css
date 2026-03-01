@@ -1,0 +1,303 @@
+/* ─── base.css — 디자인 토큰, 리셋, 전역 컴포넌트 ─────────────────────────── */
+
+/* ── CSS Variables (기존 이름 유지 + ARCHITECTURE.md 표준 alias) ── */
+:root {
+  /* 기존 변수 (레거시 CSS와 호환) */
+  --bg:      #0d0d1a;
+  --bg2:     #13132b;
+  --card:    #181830;
+  --hover:   #1e1e40;
+  --text:    #e2e2f0;
+  --muted:   #7a7a9a;
+  --dim:     #50506a;
+  --accent:  #4ecdc4;
+  --border:  #252545;
+  --radius:  14px;
+  --shadow:  0 6px 30px rgba(0,0,0,.4);
+  --section-bg: var(--card);
+
+  /* ARCHITECTURE.md 표준 토큰 (Phase 2+ 마이그레이션용) */
+  --color-bg:      #0d0d1a;
+  --color-surface: #181830;
+  --color-border:  #252545;
+  --color-text:    #e2e2f0;
+  --color-muted:   #7a7a9a;
+  --color-accent:  #4ecdc4;
+
+  /* 도메인 색상 */
+  --color-finance: #4ecdc4;
+  --color-game:    #ff6b6b;
+  --color-system:  #a29bfe;
+  --color-career:  #ffeaa7;
+  --color-health:  #55efc4;
+
+  /* 상태 색상 */
+  --color-active:  #00b894;
+  --color-warning: #fdcb6e;
+  --color-error:   #e74c3c;
+  --color-idle:    #636e72;
+
+  /* 간격 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 36px;
+
+  /* 타이포그래피 */
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', monospace;
+  --font-size-xs:   0.7rem;
+  --font-size-sm:   0.78rem;
+  --font-size-base: 0.88rem;
+  --font-size-lg:   1.1rem;
+  --font-size-xl:   1.75rem;
+
+  /* 라운딩 */
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-pill: 20px;
+  --shadow-card:  0 6px 30px rgba(0,0,0,.4);
+  --shadow-hover: 0 8px 40px rgba(0,0,0,.5);
+}
+
+/* ── Light Theme ──────────────────────────────────────────────────── */
+body.light {
+  --bg:      #f5f5f8;
+  --bg2:     #eeeef2;
+  --card:    #ffffff;
+  --hover:   #f0f0f5;
+  --text:    #1a1a2e;
+  --muted:   #6b6b8a;
+  --dim:     #9090a8;
+  --accent:  #2da89e;
+  --border:  #d8d8e8;
+  --shadow:  0 4px 20px rgba(0,0,0,.08);
+
+  --color-bg:      #f5f5f8;
+  --color-surface: #ffffff;
+  --color-border:  #d8d8e8;
+  --color-text:    #1a1a2e;
+  --color-muted:   #6b6b8a;
+  --color-accent:  #2da89e;
+}
+body.light .ql-toast {
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0,0,0,.12);
+}
+
+/* ── Reset ────────────────────────────────────────────────────────── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Theme Toggle ─────────────────────────────────────────────────── */
+.theme-toggle {
+  background: rgba(255,255,255,.1);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.theme-toggle:hover {
+  background: rgba(78,205,196,.2);
+  border-color: var(--accent);
+  transform: rotate(30deg);
+}
+body.light .theme-toggle {
+  background: rgba(0,0,0,.05);
+}
+
+/* ── Global Badge ─────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 5px 13px;
+  border-radius: 20px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+.badge-phase   { background: rgba(78,205,196,.12); color: #4ecdc4; border: 1px solid rgba(78,205,196,.3); }
+.badge-ruleset { background: rgba(162,155,254,.12); color: #a29bfe; border: 1px solid rgba(162,155,254,.3); }
+.badge-date    { background: rgba(255,255,255,.07); color: var(--muted); border: 1px solid var(--border); }
+
+.badge-sm {
+  font-size: var(--font-size-xs);
+  padding: 3px 9px;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Utility ──────────────────────────────────────────────────────── */
+.hidden { display: none !important; }
+.empty-msg { color: var(--muted); text-align: center; }
+
+/* ── Footer ───────────────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding: 22px;
+  color: var(--dim);
+  font-size: var(--font-size-xs);
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+/* ── Collapsible Toggle ───────────────────────────────────────────── */
+.collapsible-toggle {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  transition: all .2s;
+  margin-bottom: 4px;
+  text-align: left;
+}
+.collapsible-toggle:hover {
+  background: rgba(78,205,196,.08);
+  border-color: var(--accent);
+  color: var(--text);
+}
+.toggle-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(78,205,196,.1);
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-left: 4px;
+}
+.collapsible-body { margin-top: 8px; }
+
+/* ── Week Timeline ────────────────────────────────────────────────── */
+.week-timeline { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+.week-chip {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: default;
+  transition: transform .15s;
+}
+.week-chip:hover { transform: scale(1.1); }
+
+/* ── Quick Launcher ───────────────────────────────────────────────── */
+.ql-bar {
+  max-width: 1440px;
+  margin: 12px auto 0;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ql-btn {
+  background: rgba(255,255,255,.07);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  transition: all .18s;
+  letter-spacing: .01em;
+}
+.ql-btn:hover {
+  background: rgba(78,205,196,.16);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+.ql-btn:active { transform: translateY(0); }
+.ql-icon {
+  width: 20px; height: 20px;
+  vertical-align: middle;
+  border-radius: 4px;
+  margin-right: 3px;
+  object-fit: contain;
+}
+.ql-emoji { vertical-align: middle; }
+.ql-engine {
+  background: rgba(162,155,254,.1);
+  border-color: rgba(162,155,254,.35);
+  color: #a29bfe;
+}
+.ql-engine:hover {
+  background: rgba(162,155,254,.22);
+  border-color: #a29bfe;
+  color: #a29bfe;
+  transform: translateY(-1px);
+}
+.ql-backup {
+  background: rgba(253,203,110,.1);
+  border-color: rgba(253,203,110,.35);
+  color: #fdcb6e;
+}
+.ql-backup:hover {
+  background: rgba(253,203,110,.22);
+  border-color: #fdcb6e;
+  color: #fdcb6e;
+  transform: translateY(-1px);
+}
+
+/* ── Toast Notification ───────────────────────────────────────────── */
+.ql-toast {
+  position: fixed; top: 20px; right: 20px;
+  background: var(--card);
+  border: 1px solid #00b894;
+  border-left: 4px solid #00b894;
+  color: var(--text);
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  z-index: 9999;
+  box-shadow: 0 6px 30px rgba(0,0,0,.4);
+  animation: fadeInOut 4s ease forwards;
+}
+.ql-toast.error {
+  border-color: #e17055;
+  border-left-color: #e17055;
+}
+@keyframes fadeInOut {
+  0%   { opacity: 0; transform: translateY(-10px); }
+  10%  { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── More / Hidden items ──────────────────────────────────────────── */
+.hidden-item { display: none; }
+.more-btn {
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: .8rem;
+  display: block;
+  margin: 8px auto 0;
+  transition: all .2s;
+}
+.more-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Responsive (global) ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ql-bar  { gap: 6px; }
+  .ql-btn  { font-size: var(--font-size-xs); padding: 5px 10px; }
+}

@@ -6,6 +6,7 @@ export interface LogEntry {
   agentDisplayName: string
   emoji: string
   action: string
+  detail?: string
 }
 
 /** 이벤트 타입별 이모지 매핑 */

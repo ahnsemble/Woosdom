@@ -1,0 +1,39 @@
+{# ─── partials/briefing.html — Daily Briefing Hero ──────────────────────────── #}
+{% if briefing %}
+<section class="briefing-section">
+  <div class="briefing-card" id="briefing-card">
+    <div class="briefing-header">
+      <div class="briefing-title">☀️ 오늘의 브리핑 — {{ date_str | e }}</div>
+      <button class="briefing-toggle" onclick="toggleBriefing()" id="briefing-toggle">▲ 접기</button>
+    </div>
+    <div class="briefing-body" id="briefing-body">
+      <div class="briefing-top-priority">
+        <span class="priority-label">🎯 최우선</span>
+        <span class="priority-text">{{ briefing.get('top_priority', '') | e }}</span>
+      </div>
+      <div class="briefing-row">
+        <span class="briefing-key">📋 오늘 할 일</span>
+        <ol class="briefing-list">
+          {% for a in briefing.get('today_actions', []) %}<li>{{ a | e }}</li>{% endfor %}
+        </ol>
+      </div>
+      {% if briefing.get('warnings') %}
+      <div class="briefing-row">
+        <span class="briefing-key">⚠️ 주의</span>
+        <ul class="briefing-list warning-list">
+          {% for w in briefing.get('warnings', []) %}<li class="warning-item">⚠️ {{ w | e }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if briefing.get('this_week') %}
+      <div class="briefing-row">
+        <span class="briefing-key">📅 이번 주</span>
+        <ul class="briefing-list">
+          {% for w in briefing.get('this_week', []) %}<li>{{ w | e }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}

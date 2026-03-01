@@ -8,11 +8,11 @@ interface AppContextValue {
   setCustomizeMode: (mode: boolean) => void
   panelView: 'log' | 'agent'
   setPanelView: (view: 'log' | 'agent') => void
-  // Imperative character list ref (updated by game loop, not React state)
   charactersRef: React.MutableRefObject<Character[]>
-  // Trigger panel re-render (called on IPC events)
   triggerPanelRefresh: () => void
   panelRefreshCounter: number
+  editorTileClickRef: React.MutableRefObject<((col: number, row: number) => void) | null>
+  refreshLayoutRef: React.MutableRefObject<(() => void) | null>
 }
 
 const AppContext = createContext<AppContextValue | null>(null)
@@ -23,12 +23,13 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   const [panelView, setPanelView] = useState<'log' | 'agent'>('log')
   const [panelRefreshCounter, setPanelRefreshCounter] = useState(0)
   const charactersRef = useRef<Character[]>([])
+  const editorTileClickRef = useRef<((col: number, row: number) => void) | null>(null)
+  const refreshLayoutRef = useRef<(() => void) | null>(null)
 
   const triggerPanelRefresh = useCallback(() => {
     setPanelRefreshCounter(c => c + 1)
   }, [])
 
-  // When an agent is selected, switch to agent view
   const handleSelectAgent = useCallback((agent: Character | null) => {
     setSelectedAgent(agent)
     if (agent) {
@@ -49,6 +50,8 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       charactersRef,
       triggerPanelRefresh,
       panelRefreshCounter,
+      editorTileClickRef,
+      refreshLayoutRef,
     }}>
       {children}
     </AppContext.Provider>

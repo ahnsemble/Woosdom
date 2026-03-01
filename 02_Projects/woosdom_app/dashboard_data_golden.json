@@ -1,0 +1,465 @@
+{
+  "projects": [],
+  "standalone_tasks": [
+    {
+      "title": "Crossy Week 1 프로토 (우선순위 1)",
+      "section": "next",
+      "domain": "game",
+      "status": "waiting",
+      "detail": "",
+      "sub_items": []
+    },
+    {
+      "title": "Sprint 5-5 (틈새)",
+      "section": "next",
+      "domain": "other",
+      "status": "waiting",
+      "detail": "",
+      "sub_items": []
+    },
+    {
+      "title": "영앤리치 GitHub 정리 + FastAPI 배포",
+      "section": "next",
+      "domain": "system",
+      "status": "waiting",
+      "detail": "",
+      "sub_items": []
+    },
+    {
+      "title": "3월 말 첫 드리프트 점검",
+      "section": "next",
+      "domain": "finance",
+      "status": "waiting",
+      "detail": "",
+      "sub_items": []
+    }
+  ],
+  "completed": [],
+  "briefing": {
+    "generated_at": "2026-02-24 23:44",
+    "top_priority": "",
+    "today_actions": [
+      "Crossy Week 1 프로토 (우선순위 1)",
+      "Sprint 5-5 (틈새)",
+      "영앤리치 GitHub 정리 + FastAPI 배포",
+      "3월 말 첫 드리프트 점검"
+    ],
+    "warnings": [],
+    "this_week": []
+  },
+  "portfolio": {},
+  "standing_rules": [
+    "LLM에 수학 연산/매매 판단 위임 절대 금지",
+    "DCA v5 비율 유지, 동적 규칙 폐기, ±10% 드리프트 시 리밸런싱",
+    "적립식: 초기 400만 + 월 150만, 정수주",
+    "SPMO 6개월 모니터링 (2026-08까지)",
+    "승인 질문 금지: 다음 단계 명확하면 묻지 말고 착수"
+  ],
+  "rules_summary": [],
+  "engines": {
+    "Brain": {
+      "model": "Claude (이 프롬프트의 주체)",
+      "role": "전략·판단·분석",
+      "status": "active"
+    },
+    "Hands-4": {
+      "model": "Claude Code (CLI)",
+      "role": "**로컬 오케스트레이터 & MCP 허브**",
+      "status": "active"
+    },
+    "Hands-3": {
+      "model": "Codex 5.3",
+      "role": "클라우드 비동기 연산 전담",
+      "status": "active"
+    },
+    "Hands-1": {
+      "model": "Antigravity (Sonnet 4.6 / Sonnet 4.5 / Opus 4.6)",
+      "role": "GUI 보조 — 시각적 검증",
+      "status": "active"
+    },
+    "Hands-2": {
+      "model": "Antigravity (Gemini 3.1 Pro gemini-3.1-pro-preview)",
+      "role": "GUI 보조 — 웹 리서치",
+      "status": "active"
+    },
+    "Memory": {
+      "model": "Obsidian Vault (MCP)",
+      "role": "장기 기억",
+      "status": "active"
+    }
+  },
+  "training": {
+    "today": {
+      "day": "화",
+      "morning": "—",
+      "evening": "복싱 (테크니컬)",
+      "load": "MOD-HIGH"
+    },
+    "today_exercises": [],
+    "weekly": [
+      {
+        "day": "월",
+        "morning": "하체 근력+파워+택티컬",
+        "evening": "복싱",
+        "load": "HIGH",
+        "is_today": false
+      },
+      {
+        "day": "화",
+        "morning": "—",
+        "evening": "복싱 (테크니컬)",
+        "load": "MOD-HIGH",
+        "is_today": true
+      },
+      {
+        "day": "수",
+        "morning": "Zone 2 러닝 5km + 모빌리티",
+        "evening": "—",
+        "load": "LOW",
+        "is_today": false
+      },
+      {
+        "day": "목",
+        "morning": "상체 근력+파워 (웨이티드 캘리스테닉스)",
+        "evening": "복싱",
+        "load": "HIGH",
+        "is_today": false
+      },
+      {
+        "day": "금",
+        "morning": "속도 전용 + 능동적 회복",
+        "evening": "—",
+        "load": "LOW-MOD",
+        "is_today": false
+      },
+      {
+        "day": "토",
+        "morning": "Contrast Training + 전신 파워",
+        "evening": "—",
+        "load": "HIGH",
+        "is_today": false
+      },
+      {
+        "day": "일",
+        "morning": "완전 휴식",
+        "evening": "—",
+        "load": "ZERO",
+        "is_today": false
+      }
+    ],
+    "progression": [
+      {
+        "exercise": "웨이티드 턱걸이",
+        "current": "+15kg×5",
+        "target_12w": "+25kg×5",
+        "long_term": "+40kg×3"
+      },
+      {
+        "exercise": "웨이티드 딥스",
+        "current": "+20kg×8",
+        "target_12w": "+30kg×5",
+        "long_term": "+50kg×3"
+      },
+      {
+        "exercise": "피스톨 스쿼트",
+        "current": "미확인",
+        "target_12w": "자체중량 5회",
+        "long_term": "+10kg 고블릿 5회"
+      }
+    ],
+    "stats": {
+      "weight": "73kg → 69kg",
+      "big3": "430kg (Elite)",
+      "protocol": "Tactical Hexagon v2.3",
+      "phase": "12주 블록 주기화"
+    }
+  },
+  "roadmap": {
+    "axes": [
+      {
+        "icon": "💰",
+        "name": "재산",
+        "status": "Trinity v5 DCA 시작",
+        "metric": "P50 FIRE 49세 (사업소득 시 43세)"
+      },
+      {
+        "icon": "🔧",
+        "name": "기술",
+        "status": "AEC FDE 전환 준비 중",
+        "metric": "포트폴리오 프로젝트 3개 확정"
+      },
+      {
+        "icon": "💪",
+        "name": "체력",
+        "status": "Hex v2.3 실행 중",
+        "metric": "Big 3 430kg / 73→69kg 커팅"
+      },
+      {
+        "icon": "🏠",
+        "name": "가정",
+        "status": "불변 기반축",
+        "metric": "—"
+      }
+    ],
+    "milestones": [
+      {
+        "time": "2026 Q1",
+        "milestone": "첫 매수 완료 + DCA 루틴 정착",
+        "axis": "재산",
+        "status": "in_progress"
+      },
+      {
+        "time": "2026 Q2",
+        "milestone": "Project Crossy 정식 출시",
+        "axis": "기술",
+        "status": "waiting"
+      },
+      {
+        "time": "2026 Q2",
+        "milestone": "69kg 커팅 달성",
+        "axis": "체력",
+        "status": "waiting"
+      },
+      {
+        "time": "2026 Q3",
+        "milestone": "포트폴리오 프로젝트 #1 데모 공개",
+        "axis": "기술",
+        "status": "waiting"
+      },
+      {
+        "time": "2026 Q4",
+        "milestone": "포트폴리오 프로젝트 #2 완성",
+        "axis": "기술",
+        "status": "waiting"
+      },
+      {
+        "time": "2027 H1",
+        "milestone": "3개 프로젝트 데모세트 완성 + FDE 지원",
+        "axis": "기술",
+        "status": "waiting"
+      },
+      {
+        "time": "2027 H2",
+        "milestone": "FDE/SA 이직 실행",
+        "axis": "기술",
+        "status": "waiting"
+      }
+    ]
+  },
+  "agent_activity": {
+    "current": [
+      {
+        "time": "2026-02-24",
+        "agent": "Hands-4 (CC팀 Foreman)",
+        "domain": "system",
+        "task": "Pixel Agents HQ 시각화 구현",
+        "status": "done",
+        "note": "commit a5f0ba0"
+      },
+      {
+        "time": "2026-02-24",
+        "agent": "CC팀",
+        "domain": "system",
+        "task": "A-3 전체 체이닝 E2E",
+        "status": "done",
+        "note": "Engineer→Critic→GitOps→VaultKeeper 4단계 완료, pytest 3/3 PASS"
+      },
+      {
+        "time": "03:30",
+        "agent": "Brain",
+        "domain": "system",
+        "task": "task_bridge.py 자동실행 완전 제거 (v3.1)",
+        "status": "done",
+        "note": "알림+Redis만 유지, run_claude_code 제거"
+      },
+      {
+        "time": "03:15",
+        "agent": "Brain",
+        "domain": "system",
+        "task": "Hands-4 시스템 등록 — brain_directive + engine_router + dashboard_data",
+        "status": "done",
+        "note": "CC 추가, 위임 프로토콜 분리 (A: to_hands / B: CC직접)"
+      },
+      {
+        "time": "03:15",
+        "agent": "Hands-1",
+        "domain": "system",
+        "task": "woosdom_app parser+build 리빌드",
+        "status": "done",
+        "note": "AG 실행 완료, Hands-4 등록 + 경로수정 + regex확장"
+      },
+      {
+        "time": "00:10",
+        "agent": "Hands-1",
+        "domain": "system",
+        "task": "MC v0.5 업데이트 — LiteLLM 패널 + Crossy 타임라인 + Sprint 진행률",
+        "status": "done",
+        "note": "3개 섹션 추가, py_compile PASS"
+      },
+      {
+        "time": "23:20",
+        "agent": "Hands-3",
+        "domain": "system",
+        "task": "Sprint 1 캐시 디버깅 — exact match 전환 PASS",
+        "status": "done",
+        "note": "2.03s→0.014s, ratio 0.67%"
+      },
+      {
+        "time": "22:00",
+        "agent": "Hands-3",
+        "domain": "system",
+        "task": "Sprint 1 Config Fix — Provider 3종 PASS, 캐시 FAIL",
+        "status": "done",
+        "note": "결과: 260222_phase4_sprint1_config_fix.md"
+      },
+      {
+        "time": "",
+        "agent": "Hands-4",
+        "domain": "",
+        "task": "",
+        "status": "idle",
+        "note": "Claude Code (CLI)"
+      },
+      {
+        "time": "",
+        "agent": "Hands-2",
+        "domain": "",
+        "task": "",
+        "status": "idle",
+        "note": "Antigravity (Gemini 3.1 Pro gemini-3.1-pro-preview)"
+      },
+      {
+        "time": "",
+        "agent": "Memory",
+        "domain": "",
+        "task": "",
+        "status": "idle",
+        "note": "Obsidian Vault (MCP)"
+      }
+    ],
+    "recent_done": [
+      {
+        "time": "21:45",
+        "agent": "Hands-3",
+        "domain": "system",
+        "task": "Phase 4 DD Track B — 기술 검증",
+        "duration": "~20min",
+        "summary": "LiteLLM Docker스켈레톤 + Redis Pub/Sub 프로토 + 동기화비교표 → 260222_phase4_dd_tech_verify.md"
+      },
+      {
+        "time": "21:35",
+        "agent": "Hands-1",
+        "domain": "system",
+        "task": "Phase 4 DD Track A — 웹 리서치",
+        "duration": "~10min",
+        "summary": "LiteLLM ✅ / MCP원격 🟡 / A2A 🔄우회 / IDE트리거 ❌ → 260222_phase4_dd_web_research.md"
+      },
+      {
+        "time": "21:20",
+        "agent": "Brain",
+        "domain": "system",
+        "task": "Templates 정리 — 4개 아카이브 이동",
+        "duration": "3min",
+        "summary": "swarm_dispatch/to_codex_gemini/to_gemini_deep/deep_research_meta → 04_Archive/templates_retired/"
+      },
+      {
+        "time": "17:30",
+        "agent": "Hands-1",
+        "domain": "system",
+        "task": "MC v0.5 에이전트 패널 구현",
+        "duration": "~30min",
+        "summary": "parser+build 교체, HTML 검증 완료"
+      },
+      {
+        "time": "17:07",
+        "agent": "Hands-1",
+        "domain": "system",
+        "task": "MC v0.4 검증 + py2app",
+        "duration": "11min",
+        "summary": "parser+build 정상, Woosdom.app 104MB"
+      },
+      {
+        "time": "16:56",
+        "agent": "Hands-1",
+        "domain": "system",
+        "task": "RAG 데몬 등록",
+        "duration": "15min",
+        "summary": "launchd rag-server+watcher 등록, 4641 docs"
+      },
+      {
+        "time": "16:22",
+        "agent": "Hands-1",
+        "domain": "system",
+        "task": "Gemini 임베딩 교체",
+        "duration": "8min",
+        "summary": "openai→google-genai, 문법검증 5개 OK"
+      },
+      {
+        "time": "16:15",
+        "agent": "Hands-1",
+        "domain": "system",
+        "task": "Obsidian RAG 파이프라인 구축",
+        "duration": "35min",
+        "summary": "indexer/server/watcher/test_search 생성"
+      },
+      {
+        "time": "15:09",
+        "agent": "Hands-1",
+        "domain": "system",
+        "task": "desktop.py 동기화 패치",
+        "duration": "4min",
+        "summary": "training/roadmap 파싱 추가, 문법OK"
+      }
+    ],
+    "logs": [
+      {
+        "time": "23:25",
+        "from": "Brain",
+        "to": "codex",
+        "msg": "Woosdom App — desktop.py + Pixel Agents HQ 6건 수정",
+        "status": "pending"
+      },
+      {
+        "time": "02-24",
+        "from": "codex",
+        "to": "Brain",
+        "msg": "Woosdom App — 6건 수정 완료",
+        "status": "done"
+      }
+    ]
+  },
+  "litellm": {
+    "proxy_up": false,
+    "redis_up": true,
+    "models": [],
+    "error": "HTTP Error 401: Unauthorized"
+  },
+  "sprint_progress": [
+    {
+      "name": "Sprint 1",
+      "label": "LiteLLM + Redis",
+      "status": "done"
+    },
+    {
+      "name": "Sprint 2",
+      "label": "Redis Pub/Sub",
+      "status": "next"
+    },
+    {
+      "name": "Sprint 3",
+      "label": "Claude Code CLI",
+      "status": "waiting"
+    },
+    {
+      "name": "Sprint 4",
+      "label": "Persona Council",
+      "status": "waiting"
+    }
+  ],
+  "meta": {
+    "updated": "2026-02-24",
+    "updated_note": "5-1~5-4 완료",
+    "ruleset": "",
+    "phase": ""
+  }
+}

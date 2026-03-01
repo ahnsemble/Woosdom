@@ -1,0 +1,99 @@
+/* ─── layout.css — 헤더, 그리드, 필터바, 보드 섹션 ──────────────────────── */
+
+/* ── Header ───────────────────────────────────────────────────────── */
+.header {
+  background: linear-gradient(135deg, #13132b, #181842, #0e2060);
+  border-bottom: 1px solid var(--border);
+  padding: 22px 36px;
+}
+.header-content {
+  max-width: 1440px; margin: 0 auto;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 14px;
+}
+.header h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  background: linear-gradient(135deg, #4ecdc4, #a29bfe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle { color: var(--muted); font-size: .85rem; margin-top: 3px; }
+.header-right { display: flex; gap: 8px; flex-wrap: wrap; }
+
+body.light .header {
+  background: linear-gradient(135deg, #e8e8f0, #dddde8, #d0d0e0);
+}
+body.light .header h1 {
+  background: linear-gradient(135deg, #2da89e, #7a6bfe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Summary Cards ────────────────────────────────────────────────── */
+.summary-cards {
+  max-width: 1440px; margin: 22px auto; padding: 0 36px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: center;
+  transition: transform .2s, box-shadow .2s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.card-number { font-size: 2.2rem; font-weight: 800; }
+.card-label  { font-size: var(--font-size-sm); color: var(--muted); margin-top: 4px; }
+.card-project .card-number { color: #a29bfe; }
+.card-action  .card-number { color: #fdcb6e; }
+.card-week    .card-number { color: #74b9ff; }
+.card-done    .card-number { color: #00b894; }
+
+/* ── Filter Bar ───────────────────────────────────────────────────── */
+.filter-bar {
+  max-width: 1440px; margin: 0 auto 22px; padding: 0 36px;
+  display: flex; flex-wrap: wrap; gap: 14px;
+}
+.filter-group { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.filter-label { font-size: var(--font-size-sm); font-weight: 600; color: var(--muted); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 5px 13px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: all .2s;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--text); }
+.filter-btn.active {
+  background: rgba(78,205,196,.14);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Board Section ────────────────────────────────────────────────── */
+.board-section {
+  max-width: 1440px; margin: 0 auto 28px; padding: 0 36px;
+}
+.board-section-title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .header { padding: 14px 16px; }
+  .header h1 { font-size: 1.3rem; }
+  .summary-cards,
+  .filter-bar,
+  .board-section { padding: 0 14px; }
+}

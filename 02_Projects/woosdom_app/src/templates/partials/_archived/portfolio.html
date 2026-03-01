@@ -1,0 +1,17 @@
+{# ─── partials/portfolio.html — Portfolio Trinity v5 ────────────────────────── #}
+{% if portfolio %}
+{% set max_w = portfolio.values() | max if portfolio else 1 %}
+<section class="board-section">
+  <div class="board-section-title">📊 포트폴리오 — Trinity v5</div>
+  <div class="portfolio-grid">
+    {% for ticker, weight in portfolio.items() | sort(attribute=1, reverse=true) %}
+    {% set pct = ((weight / max_w) * 100) | int %}
+    <div class="portfolio-item">
+      <div class="portfolio-ticker">{{ ticker | e }}</div>
+      <div class="portfolio-weight">{{ weight }}%</div>
+      <div class="portfolio-bar"><div class="portfolio-bar-fill" style="width:{{ pct }}%;"></div></div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

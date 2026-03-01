@@ -1,0 +1,7 @@
+{# ─── includes/_footer.html ─────────────────────────────────────────────────── #}
+<footer class="footer">
+  <p>Generated: {{ generated_at }} | Woosdom Mission Control v0.2</p>
+</footer>
+
+{% for js in js_files %}<script src="{{ js }}"></script>
+{% endfor %}

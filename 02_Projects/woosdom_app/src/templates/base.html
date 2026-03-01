@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woosdom Mission Control</title>
+{% for css in css_files %}<link rel="stylesheet" href="{{ css }}">
+{% endfor %}</head>
+<body>
+
+<!-- ── Header + Quick Launcher ──────────────────────────────────── -->
+<header class="header">
+  <div class="header-content">
+    <div class="header-left">
+      <h1>🧠 Woosdom Mission Control</h1>
+      <p class="subtitle">Active Context Dashboard</p>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" onclick="toggleTheme()" id="theme-toggle" title="다크/라이트 모드 전환">🌙</button>
+      <span class="badge badge-phase">{{ meta.get('phase', 'N/A') }}</span>
+      <span class="badge badge-ruleset">{{ meta.get('ruleset', 'N/A') }}</span>
+      <span class="badge badge-date">📅 {{ meta.get('updated', 'N/A') }}</span>
+    </div>
+  </div>
+  <div class="ql-bar">
+    {{ ql_buttons }}
+    <button class="ql-btn ql-engine" id="ql-engine-btn" onclick="launchEngineWatch()" title="Engine Watch 스캔">🔍 Engine Watch</button>
+    <button class="ql-btn ql-backup" id="ql-backup-btn" onclick="launchBackup()" title="Vault 백업">💾 Backup</button>
+  </div>
+</header>
+
+<!-- ── Pixel Agents HQ (유일한 패널) ─────────────────────────────── -->
+{% include 'partials/pixel-agents.html' %}
+
+<!-- ── Footer ────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <p>Generated: {{ generated_at }} | Woosdom Mission Control v0.3</p>
+</footer>
+
+{% for js in js_files %}<script src="{{ js }}"></script>
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,30 @@
+{# ─── partials/standalone-now.html — Critical / Now Tasks ─────────────────── #}
+{% if critical_tasks %}
+{% set sec_info = SECTION_LABELS.get('critical', ('🔴 최우선', '#e74c3c')) %}
+<section class="board-section">
+  <div class="board-section-title" style="color:{{ sec_info[1] }};">{{ sec_info[0] }}</div>
+  <div class="standalone-grid">
+    {% for t in critical_tasks %}
+    {% set domain   = t.get('domain',  'other') %}
+    {% set section  = t.get('section', '') %}
+    {% set status   = t.get('status',  'waiting') %}
+    {% set dm_info  = DOMAIN_LABELS.get(domain,  ('📌 Other', '#b2bec3')) %}
+    {% set st_info  = STATUS_LABELS.get(status,  ('?', '#b2bec3')) %}
+    {% set sec_col  = SECTION_LABELS.get(section, ('', '#b2bec3'))[1] %}
+    {% set subs     = t.get('sub_items', []) %}
+    <div class="task-card" data-domain="{{ domain }}" data-section="{{ section }}"
+         style="border-left-color:{{ sec_col }};">
+      <div class="task-header">
+        <div class="task-title">{{ t.get('title', '') | e }}</div>
+        <div class="task-badges">
+          <span class="badge-sm" style="background:{{ dm_info[1] }}22;color:{{ dm_info[1] }};border:1px solid {{ dm_info[1] }}44;">{{ dm_info[0] }}</span>
+          <span class="badge-sm" style="background:{{ st_info[1] }}22;color:{{ st_info[1] }};border:1px solid {{ st_info[1] }}44;">{{ st_info[0] }}</span>
+        </div>
+      </div>
+      {% if t.get('detail') %}<div class="task-detail">{{ t.get('detail', '')[:250] | e }}</div>{% endif %}
+      {% if subs %}<ul class="task-sub">{% for s in subs[:8] %}<li>{{ s | e }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

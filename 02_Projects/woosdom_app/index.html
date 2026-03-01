@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woosdom Mission Control</title>
+<link rel="stylesheet" href="src/css/base.css">
+<link rel="stylesheet" href="src/css/layout.css">
+<link rel="stylesheet" href="src/css/panels/pixel-agents.css">
+</head>
+<body>
+
+<!-- ── Header + Quick Launcher ──────────────────────────────────── -->
+<header class="header">
+  <div class="header-content">
+    <div class="header-left">
+      <h1>🧠 Woosdom Mission Control</h1>
+      <p class="subtitle">Active Context Dashboard</p>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" onclick="toggleTheme()" id="theme-toggle" title="다크/라이트 모드 전환">🌙</button>
+      <span class="badge badge-phase"></span>
+      <span class="badge badge-ruleset"></span>
+      <span class="badge badge-date">📅 2026-02-25</span>
+    </div>
+  </div>
+  <div class="ql-bar">
+    <button class="ql-btn" onclick="launchApp('open_claude')" title="Claude"><span class="ql-emoji">🧠</span> Claude</button><button class="ql-btn" onclick="launchApp('open_gpt')" title="GPT"><span class="ql-emoji">💬</span> GPT</button><button class="ql-btn" onclick="launchApp('open_gemini')" title="Gemini"><span class="ql-emoji">✨</span> Gemini</button><button class="ql-btn" onclick="launchApp('open_antigravity')" title="Antigravity"><span class="ql-emoji">🚀</span> Antigravity</button><button class="ql-btn" onclick="launchApp('open_codex')" title="Codex"><span class="ql-emoji">💻</span> Codex</button><button class="ql-btn" onclick="launchApp('open_obsidian')" title="Obsidian"><span class="ql-emoji">📓</span> Obsidian</button>
+    <button class="ql-btn ql-engine" id="ql-engine-btn" onclick="launchEngineWatch()" title="Engine Watch 스캔">🔍 Engine Watch</button>
+    <button class="ql-btn ql-backup" id="ql-backup-btn" onclick="launchBackup()" title="Vault 백업">💾 Backup</button>
+  </div>
+</header>
+
+<!-- ── Pixel Agents HQ (유일한 패널) ─────────────────────────────── -->
+
+<!-- Pixel Agents HQ — Canvas + ai-town sprites/tiles (MIT) -->
+<section class="pa-section">
+  <div class="pa-header">
+    <h3>🏢 Pixel Agents HQ</h3>
+    <span class="pa-credit">Sprites &amp; tiles:
+      <a href="https://github.com/a16z-infra/ai-town" target="_blank">ai-town</a>
+      (MIT) &mdash; 방 제목 클릭 시 팀 상세 보기</span>
+  </div>
+  <div class="pa-wrap">
+    <canvas id="agentCanvas" width="760" height="420"
+      data-team-status='{"brain": "done", "cc": "done", "codex": "done", "ag": "done"}'
+      data-agent-tasks='{"Hands-4": "A-3 \uc804\uccb4 \uccb4\uc774\ub2dd E2E", "Brain": "Hands-4 \uc2dc\uc2a4\ud15c \ub4f1\ub85d \u2014 brain_directive + engine_router +", "Hands-1": "MC v0.5 \uc5c5\ub370\uc774\ud2b8 \u2014 LiteLLM \ud328\ub110 + Crossy \ud0c0\uc784\ub77c\uc778 + Sprint \uc9c4", "Hands-3": "Sprint 1 Config Fix \u2014 Provider 3\uc885 PASS, \uce90\uc2dc FAIL"}'
+      data-agent-logs='[{"time": "02-24", "from": "Brain", "to": "claude_code", "msg": "Woosdom App \u2014 desktop.py + Pixel Agents HQ 6\uac74 \uc218\uc815", "status": "pending"}, {"time": "02-24", "from": "claude_code", "to": "Brain", "msg": "Woosdom App \u2014 6\uac74 \uc218\uc815 \uc644\ub8cc", "status": "done"}, {"time": "02-25", "from": "Brain", "to": "claude_code", "msg": "Woosdom Dashboard \uac04\uc18c\ud654 + Pixel Agents HQ Donarg \ud0c0\uc77c\uc14b \uad50\uccb4", "status": "pending"}]'
+      title="방 제목 클릭 → 팀 상세"></canvas>
+    <div id="pa-popup-overlay" onclick="closePaPopup()">
+      <div id="pa-popup" onclick="event.stopPropagation()">
+        <div id="pa-popup-header">
+          <span id="pa-popup-title">팀 정보</span>
+          <button id="pa-popup-close" onclick="closePaPopup()">✕</button>
+        </div>
+        <div id="pa-popup-content"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <p>Generated: 2026-02-25 22:02 | Woosdom Mission Control v0.3</p>
+</footer>
+
+<script src="src/js/core.js"></script>
+<script src="src/js/launcher.js"></script>
+<script src="src/js/panels/pixel-agents.js"></script>
+
+</body>
+</html>

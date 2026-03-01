@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { background: #0d0d1a; color: #e2e2f0; font-family: -apple-system, sans-serif; padding: 32px; }
+    #out { color: #4ecdc4; font-size: 1.5em; }
+  </style>
+</head>
+<body>
+  <h1>State PoC B</h1>
+  <p>State: <span id="out">waiting...</span></p>
+  <p>기대: 3초 후 counter=1, 5초 후 counter=2, 7초 후 message 표시</p>
+  <script>
+  window.addEventListener('pywebviewready', function() {
+    console.log('[PoC B] pywebviewready fired');
+    if (window.pywebview && window.pywebview.state) {
+      window.pywebview.state.addEventListener('change', function(e) {
+        const s = window.pywebview.state;
+        document.getElementById('out').textContent =
+          'counter=' + (s.counter !== undefined ? s.counter : '?') +
+          ' msg=' + (s.message || '');
+        console.log('[STATE CHANGE]', e);
+      });
+    } else {
+      document.getElementById('out').textContent = 'window.state NOT supported';
+      console.warn('[PoC B] window.pywebview.state not available');
+    }
+  });
+  </script>
+</body>
+</html>

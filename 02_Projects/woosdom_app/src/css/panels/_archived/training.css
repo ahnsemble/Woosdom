@@ -1,0 +1,62 @@
+/* ─── panels/training.css ─────────────────────────────────────────── */
+.training-hero {
+  background: linear-gradient(135deg, rgba(255,107,107,.06), rgba(162,155,254,.06));
+  border: 1px solid rgba(255,107,107,.2);
+  border-radius: var(--radius); padding: 18px; margin-bottom: 16px;
+}
+.rest-day { font-size: 1.2rem; padding: 20px; text-align: center; color: var(--muted); }
+.training-today-card { margin-bottom: 12px; }
+.training-load { font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+.training-sessions { display: flex; gap: 20px; flex-wrap: wrap; }
+.session-block { display: flex; align-items: center; gap: 8px; }
+.session-label { font-size: .75rem; color: var(--muted); font-weight: 600; }
+.session-name  { font-size: .88rem; font-weight: 600; }
+.training-stats {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  padding-top: 10px; border-top: 1px solid rgba(255,255,255,.06);
+}
+.stat-item { font-size: .78rem; color: var(--muted); }
+.training-exercises { margin-bottom: 16px; overflow-x: auto; }
+.ex-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.ex-table th { text-align: left; padding: 8px 10px; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; }
+.ex-table td { padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,.04); }
+.ex-order   { color: var(--accent); font-weight: 700; width: 40px; }
+.ex-name    { font-weight: 600; }
+.ex-spec    { color: var(--muted); }
+.ex-rest    { color: var(--dim); }
+.ex-purpose { color: var(--muted); font-style: italic; }
+.week-schedule-title { font-size: .85rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
+.week-schedule {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+  margin-bottom: 16px;
+}
+.week-day {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 8px; text-align: center;
+  font-size: .72rem; transition: all .2s;
+}
+.week-day.today {
+  border-color: var(--accent); background: rgba(78,205,196,.08);
+  box-shadow: 0 0 12px rgba(78,205,196,.15);
+}
+.week-day-name { font-weight: 800; font-size: .85rem; margin-bottom: 4px; }
+.week-day-load { font-weight: 700; font-size: .7rem; margin-bottom: 4px; }
+.week-day-am   { color: var(--muted); font-size: .65rem; margin-bottom: 2px; }
+.week-day-pm   { color: var(--dim); font-size: .65rem; }
+.prog-section { margin-top: 4px; }
+.prog-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.prog-table th { text-align: left; padding: 8px 10px; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; }
+.prog-table td { padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,.04); }
+.prog-target { color: #fdcb6e; font-weight: 600; }
+.prog-long   { color: #ff6b6b; font-weight: 600; }
+
+/* Light mode overrides */
+body.light .training-hero {
+  background: linear-gradient(135deg, rgba(255,107,107,.04), rgba(122,107,254,.04));
+  border-color: rgba(255,107,107,.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .week-schedule { grid-template-columns: repeat(4, 1fr); }
+}

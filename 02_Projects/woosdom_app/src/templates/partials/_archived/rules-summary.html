@@ -1,0 +1,11 @@
+{# ─── partials/rules-summary.html — Constitution Summary ─────────────────── #}
+{% if rules_summary %}
+<section class="board-section">
+  <div class="board-section-title">📋 헌법 요약</div>
+  <ul class="rules-list">
+    {% for r in rules_summary %}
+    <li class="{{ 'rule-deprecated' if ('폐기' in r or '보류' in r) else 'rule-active' }}">{{ r | e }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}

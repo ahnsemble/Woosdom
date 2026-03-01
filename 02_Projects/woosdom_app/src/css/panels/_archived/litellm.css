@@ -1,0 +1,25 @@
+/* ─── panels/litellm.css ──────────────────────────────────────────── */
+.ll-section { margin-bottom: 16px; }
+.ll-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+.ll-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px;
+}
+.ll-card-label  { font-size: .72rem; color: var(--muted); margin-bottom: 6px; }
+.ll-card-status { font-size: .85rem; font-weight: 700; }
+.ll-models { display: flex; flex-wrap: wrap; gap: 6px; }
+.ll-model-badge {
+  font-size: var(--font-size-xs); padding: 3px 8px; border-radius: 999px;
+  background: rgba(0,184,148,.15); color: #00b894; border: 1px solid rgba(0,184,148,.3);
+}
+.ll-unhealthy {
+  background: rgba(231,76,60,.15); color: #e74c3c; border-color: rgba(231,76,60,.3);
+}
+.ll-error {
+  font-size: var(--font-size-xs); color: #e74c3c; margin-top: 8px;
+  padding: 6px 10px; background: rgba(231,76,60,.1); border-radius: 6px;
+}

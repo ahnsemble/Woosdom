@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Build artifacts
+build/
+dist/
+poc/build/
+poc/dist/
+*.spec
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# PyInstaller
+*.spec
+
+# Editor
+.vscode/
+.idea/

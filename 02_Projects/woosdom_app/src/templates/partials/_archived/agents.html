@@ -1,0 +1,89 @@
+{# ─── partials/agents.html — Agent Activity Panel ────────────────────────── #}
+{% if agent_activity %}
+{% set current = agent_activity.get('current', []) %}
+{% set recent  = agent_activity.get('recent_done', []) %}
+{% set AGENT_ICONS = {
+    "Brain":   "🧠",
+    "Hands-1": "🔧",
+    "Hands-2": "🌐",
+    "Hands-3": "💻",
+    "Hands-4": "⌨️",
+    "Memory":  "📓"
+} %}
+{% set PRIORITY = {"active": 0, "conflict": 1, "waiting": 2, "idle": 3, "failed": 4, "done": 5} %}
+{% set DOT_COLOR = {
+    "active":   "#00b894",
+    "waiting":  "#fdcb6e",
+    "idle":     "#636e72",
+    "conflict": "#e74c3c",
+    "failed":   "#e74c3c",
+    "done":     "#00b894"
+} %}
+{% set DOT_PULSE = {"active": true, "conflict": true} %}
+{% set STATUS_LABEL = {
+    "active":   "🟢 Active",
+    "waiting":  "⏳ Wait",
+    "idle":     "🔵 Idle",
+    "conflict": "⚡ Conflict",
+    "failed":   "❌ Failed",
+    "done":     "✅ Done"
+} %}
+{% set sorted_agents = current | sort(attribute='status') %}
+<section class="board-section">
+  <div class="board-section-title">🤖 에이전트 현황</div>
+  <div class="agent-grid">
+    {% if current %}
+    {% for ag in current | sort(attribute='status') %}
+    {% set name   = ag.get('agent', '') %}
+    {% set status = ag.get('status', 'idle') %}
+    {% set task_t = ag.get('task', '') %}
+    {% set domain = ag.get('domain', '') %}
+    {% set note   = ag.get('note', '') %}
+    {% set icon   = AGENT_ICONS.get(name, '🤖') %}
+    {% set color  = DOT_COLOR.get(status, '#636e72') %}
+    {% set pulse  = DOT_PULSE.get(status, false) %}
+    {% set status_label = STATUS_LABEL.get(status, status | upper) %}
+    {% if status == 'active' %}{% set card_cls = 'agent-card active' %}
+    {% elif status == 'conflict' %}{% set card_cls = 'agent-card conflict' %}
+    {% else %}{% set card_cls = 'agent-card' %}{% endif %}
+    <div class="{{ card_cls }}">
+      <div class="agent-icon">{{ icon }}</div>
+      <div class="agent-name">{{ name | e }}</div>
+      <div class="agent-model">{{ note | e }}</div>
+      <div style="margin-top:8px;">
+        <span class="agent-status-dot {{ status }}" style="background:{{ color }};{{ 'animation:pulse 1.5s infinite;' if pulse else '' }}"></span>
+        <span style="font-size:.72rem;color:{{ color }};">{{ status_label }}</span>
+      </div>
+      {% if task_t and status not in ['idle', 'done'] %}
+      <div class="agent-task">{{ task_t | e }}
+        {% if domain %}<span class="badge-sm" style="background:#6c5ce722;color:#6c5ce7;border:1px solid #6c5ce744;">{{ domain | e }}</span>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <div style="color:var(--muted);font-size:.85rem;padding:16px;">🔵 활동 중인 에이전트 없음</div>
+    {% endif %}
+  </div>
+  {% if recent %}
+  <div class="card" style="margin-top:12px;">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('collapsed')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;">
+      <span style="font-size:.82rem;font-weight:600;">📋 최근 에이전트 작업 ({{ [recent | length, 10] | min }}건)</span>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="card-body">
+      {% for r in recent[:10] %}
+      <div class="agent-history-item">
+        <span class="ah-time">{{ r.get('time', '') | e }}</span>
+        <span class="ah-agent">{{ r.get('agent', '') | e }}</span>
+        <span class="ah-task">{{ r.get('task', '') | e }}
+          <span style="color:var(--muted);font-size:.7rem;">{{ r.get('summary', '')[:60] | e }}</span>
+        </span>
+        <span class="ah-duration">{{ r.get('duration', '') | e }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endif %}

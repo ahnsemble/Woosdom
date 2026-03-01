@@ -1,28 +1,28 @@
 import { watch } from 'chokidar'
 import * as fs from 'node:fs'
-import path from 'path'
+import * as path from 'node:path'
 import type { EventBus } from './EventBus.ts'
 
-// Vault root = 레포 루트 
-// process.env.APP_ROOT는 main.ts에서 pixel-agents-woosdom/ 로 설정됨
-// pixel-agents-woosdom/ -> ../ = 02_Projects/ -> ../ = 레포 루트 = 볼트 루트
-const VAULT_ROOT = process.env.WOOSDOM_VAULT
-  ?? path.resolve(process.env.APP_ROOT!, '..', '..')
+function safeLog(...args: unknown[]) {
+  try { safeLog(...args) } catch { /* EIO/EPIPE 무시 */ }
+}
+function safeError(...args: unknown[]) {
+  try { safeError(...args) } catch { /* EIO/EPIPE 무시 */ }
+}
 
-const WATCH_FILES = [
-  path.join(VAULT_ROOT, '00_System/Templates/from_hands.md'),
-  path.join(VAULT_ROOT, '00_System/Templates/to_codex.md'),
-  path.join(VAULT_ROOT, '00_System/Prompts/Ontology/active_context.md'),
-]
-
-/** Set of basenames we care about */
-const WATCH_BASENAMES = new Set(WATCH_FILES.map(p => path.basename(p)))
-
-/** Map basename → full path for reading */
-const BASENAME_TO_PATH = new Map(WATCH_FILES.map(p => [path.basename(p), p]))
-
-/** Unique parent directories to watch */
-const WATCH_DIRS = [...new Set(WATCH_FILES.map(p => path.dirname(p)))]
+function buildWatchFiles(vaultRoot: string): string[] {
+  return [
+    path.join(vaultRoot, '00_System', 'Templates', 'to_hands.md'),
+    path.join(vaultRoot, '00_System', 'Templates', 'from_hands.md'),
+    path.join(vaultRoot, '00_System', 'Templates', 'to_codex.md'),
+    path.join(vaultRoot, '00_System', 'Templates', 'from_codex.md'),
+    path.join(vaultRoot, '00_System', 'Templates', 'to_claude_code.md'),
+    path.join(vaultRoot, '00_System', 'Templates', 'from_claude_code.md'),
+    path.join(vaultRoot, '00_System', 'Templates', 'to_antigravity.md'),
+    path.join(vaultRoot, '00_System', 'Templates', 'from_antigravity.md'),
+    path.join(vaultRoot, '00_System', 'Prompts', 'Ontology', 'active_context.md'),
+  ]
+}
 
 /** Parse YAML frontmatter engine field */
 function parseEngine(content: string): string | null {
@@ -33,11 +33,22 @@ function parseEngine(content: string): string | null {
   return engineMatch ? engineMatch[1] : null
 }
 
-export function startVaultWatcher(eventBus: EventBus): () => void {
-  console.log('[VaultWatcher] Starting vault file watcher for dirs:', WATCH_DIRS)
+export function startVaultWatcher(eventBus: EventBus, vaultRoot: string): () => void {
+  const watchFiles = buildWatchFiles(vaultRoot)
+
+  /** Set of basenames we care about */
+  const watchBasenames = new Set(watchFiles.map(p => path.basename(p)))
+
+  /** Map basename -> full path for reading */
+  const basenameToPath = new Map(watchFiles.map(p => [path.basename(p), p]))
+
+  /** Unique parent directories to watch */
+  const watchDirs = [...new Set(watchFiles.map(p => path.dirname(p)))]
+
+  safeLog('[VaultWatcher] Starting vault file watcher for dirs:', watchDirs)
 
   // Watch parent directories instead of individual files for reliable macOS detection
-  const watcher = watch(WATCH_DIRS, {
+  const watcher = watch(watchDirs, {
     persistent: true,
     ignoreInitial: true,
     depth: 0,
@@ -49,12 +60,12 @@ export function startVaultWatcher(eventBus: EventBus): () => void {
 
   watcher.on('change', (filePath: string) => {
     const basename = path.basename(filePath)
-    if (!WATCH_BASENAMES.has(basename)) return
+    if (!watchBasenames.has(basename)) return
 
-    console.log(`[VaultWatcher] File changed: ${basename}`)
+    safeLog(`[VaultWatcher] File changed: ${basename}`)
 
     // Use the canonical path for reading (in case chokidar returns a different path format)
-    const readPath = BASENAME_TO_PATH.get(basename) ?? filePath
+    const readPath = basenameToPath.get(basename) ?? filePath
 
     try {
       switch (basename) {
@@ -73,7 +84,7 @@ export function startVaultWatcher(eventBus: EventBus): () => void {
             targetRoom,
             content,
           })
-          console.log(`[VaultWatcher] to_hands.md → engine=${engine ?? 'unknown'}, room=${targetRoom}`)
+          safeLog(`[VaultWatcher] to_hands.md -> engine=${engine ?? 'unknown'}, room=${targetRoom}`)
           break
         }
         case 'from_hands.md': {
@@ -84,31 +95,56 @@ export function startVaultWatcher(eventBus: EventBus): () => void {
             engine: engine ?? 'unknown',
             content,
           })
-          console.log(`[VaultWatcher] from_hands.md → engine=${engine}`)
+          safeLog(`[VaultWatcher] from_hands.md -> engine=${engine}`)
           break
         }
         case 'to_codex.md': {
           eventBus.emit({ type: 'vault:to-codex' })
-          console.log(`[VaultWatcher] to_codex.md changed`)
+          safeLog('[VaultWatcher] to_codex.md changed')
+          break
+        }
+        case 'from_codex.md': {
+          eventBus.emit({ type: 'vault:from-codex' })
+          safeLog('[VaultWatcher] from_codex.md changed')
+          break
+        }
+        case 'to_claude_code.md': {
+          eventBus.emit({ type: 'vault:to-cc' })
+          safeLog('[VaultWatcher] to_claude_code.md changed')
+          break
+        }
+        case 'from_claude_code.md': {
+          eventBus.emit({ type: 'vault:from-cc' })
+          safeLog('[VaultWatcher] from_claude_code.md changed')
+          break
+        }
+        case 'to_antigravity.md': {
+          eventBus.emit({ type: 'vault:to-ag' })
+          safeLog('[VaultWatcher] to_antigravity.md changed')
+          break
+        }
+        case 'from_antigravity.md': {
+          eventBus.emit({ type: 'vault:from-ag' })
+          safeLog('[VaultWatcher] from_antigravity.md changed')
           break
         }
         case 'active_context.md': {
           eventBus.emit({ type: 'vault:active-context' })
-          console.log(`[VaultWatcher] active_context.md changed`)
+          safeLog('[VaultWatcher] active_context.md changed')
           break
         }
       }
     } catch (err) {
-      console.error(`[VaultWatcher] Error processing ${basename}:`, err)
+      safeError(`[VaultWatcher] Error processing ${basename}:`, err)
     }
   })
 
   watcher.on('ready', () => {
-    console.log('[VaultWatcher] Watcher ready — monitoring', WATCH_DIRS.length, 'directories')
+    safeLog('[VaultWatcher] Watcher ready - monitoring', watchDirs.length, 'directories')
   })
 
   watcher.on('error', (err) => {
-    console.error('[VaultWatcher] Watcher error:', err)
+    safeError('[VaultWatcher] Watcher error:', err)
   })
 
   return () => {

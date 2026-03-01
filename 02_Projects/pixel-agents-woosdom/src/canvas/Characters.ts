@@ -43,6 +43,10 @@ function randomInt(min: number, max: number): number {
   return min + Math.floor(Math.random() * (max - min + 1))
 }
 
+function debugPathNotFound(ch: Character, fromCol: number, fromRow: number, toCol: number, toRow: number): void {
+  console.debug(`[Character] ${ch.id}: path not found from (${fromCol},${fromRow}) to (${toCol},${toRow})`)
+}
+
 export function createCharacter(def: AgentDefinition, seat: Seat | null): Character {
   const col = seat ? seat.seatCol : 5
   const row = seat ? seat.seatRow : 5
@@ -140,6 +144,7 @@ export function updateCharacter(
             ch.frame = 0
             ch.frameTimer = 0
           } else {
+            debugPathNotFound(ch, ch.tileCol, ch.tileRow, seat.seatCol, seat.seatRow)
             ch.state = CharacterState.TYPE
             ch.dir = seat.facingDir
             ch.frame = 0
@@ -165,6 +170,7 @@ export function updateCharacter(
               ch.frameTimer = 0
               break
             }
+            debugPathNotFound(ch, ch.tileCol, ch.tileRow, seat.seatCol, seat.seatRow)
           }
         }
         // Pick random walkable tile
@@ -178,6 +184,8 @@ export function updateCharacter(
             ch.frame = 0
             ch.frameTimer = 0
             ch.wanderCount++
+          } else {
+            debugPathNotFound(ch, ch.tileCol, ch.tileRow, target.col, target.row)
           }
         }
         ch.wanderTimer = randomRange(WANDER_PAUSE_MIN_SEC, WANDER_PAUSE_MAX_SEC)
@@ -265,6 +273,8 @@ export function updateCharacter(
             if (newPath.length > 0) {
               ch.path = newPath
               ch.moveProgress = 0
+            } else {
+              debugPathNotFound(ch, ch.tileCol, ch.tileRow, seat.seatCol, seat.seatRow)
             }
           }
         }

@@ -1,0 +1,39 @@
+{# ─── partials/litellm.html — LiteLLM Proxy Status ───────────────────────── #}
+{% if litellm %}
+{% set proxy_up = litellm.get('proxy_up', false) %}
+{% set redis_up = litellm.get('redis_up', false) %}
+{% set models   = litellm.get('models', []) %}
+{% set ll_error = litellm.get('error', none) %}
+<section class="board-section ll-section">
+  <div class="board-section-title">⚡ LiteLLM Proxy 상태</div>
+  <div class="ll-grid">
+    <div class="ll-card">
+      <div class="ll-card-label">Proxy</div>
+      <div class="ll-card-status" style="color:{{ '#00b894' if proxy_up else '#e74c3c' }};">
+        {{ '🟢' if proxy_up else '🔴' }} {{ 'Online' if proxy_up else 'Offline' }}
+      </div>
+    </div>
+    <div class="ll-card">
+      <div class="ll-card-label">Redis</div>
+      <div class="ll-card-status" style="color:{{ '#00b894' if redis_up else '#e74c3c' }};">
+        {{ '🟢' if redis_up else '🔴' }} {{ 'Online' if redis_up else 'Offline' }}
+      </div>
+    </div>
+    <div class="ll-card">
+      <div class="ll-card-label">모델</div>
+      <div class="ll-models">
+        {% if models %}
+        {% for m in models %}
+        <span class="ll-model-badge ll-{{ m.get('status', '') | e }}">{{ m.get('name', '') | e }}</span>
+        {% endfor %}
+        {% else %}
+        <span style="color:var(--muted);font-size:.78rem;">모델 없음</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% if ll_error and not proxy_up %}
+  <div class="ll-error">⚠️ {{ ll_error[:80] | e }}</div>
+  {% endif %}
+</section>
+{% endif %}

@@ -2,11 +2,21 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'node:path'
 import fs from 'node:fs'
 import { EventBus } from './watchers/EventBus.ts'
+
+process.stdout.on('error', (err) => {
+  if (err.code === 'EIO' || err.code === 'EPIPE') return // 파이프 끊김 무시
+  console.error('[Main] stdout error:', err)
+})
+process.stderr.on('error', (err) => {
+  if (err.code === 'EIO' || err.code === 'EPIPE') return
+})
 import { startVaultWatcher } from './watchers/VaultWatcher.ts'
 import { startCCWatcher } from './watchers/CCWatcher.ts'
 import { startAGWatcher } from './watchers/AGWatcher.ts'
 import { startCodexWatcher } from './watchers/CodexWatcher.ts'
 import { loadWindowState, saveWindowState, applyWindowState } from './windowState.ts'
+import { getVaultRoot } from './config/appConfig.ts'
+import { ENGINEER_TOOLS, GITOPS_TOOLS, READING_TOOLS } from '../src/shared/toolDefs.ts'
 
 const __dirname = path.dirname(__filename)
 
@@ -14,12 +24,17 @@ process.env.APP_ROOT = path.join(__dirname, '..')
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 
+const HMR_DEBOUNCE_MS = 500
+const AGENT_ROLES: string[] = ['foreman', 'engineer', 'critic', 'gitops', 'vault_keeper']
+const FILE_CHANGE_TOOL_DONE_MS = 1500
+
 let mainWindow: BrowserWindow | null = null
 const eventBus = new EventBus()
 let cleanupVault: (() => void) | null = null
 let cleanupCC: (() => void) | null = null
 let cleanupAG: (() => void) | null = null
 let cleanupCodex: (() => void) | null = null
+const vaultRoot = getVaultRoot()
 
 function createWindow(): void {
   const savedState = loadWindowState()
@@ -67,27 +82,47 @@ function forwardToRenderer(channel: string, data: unknown): void {
   }
 }
 
-function mapToolToCCAgent(toolName: string, toolInput?: Record<string, unknown>): string {
+function extractToolDetail(toolName: string, toolInput?: Record<string, unknown>): string | undefined {
+  if (!toolInput) return undefined
+
+  const pathValue = toolInput.path ?? toolInput.file_path ?? toolInput.filePath
+  if (typeof pathValue === 'string' && pathValue.trim().length > 0) {
+    return path.basename(pathValue.trim())
+  }
+
+  if (toolName === 'Bash' || toolName === 'bash') {
+    const cmdValue = toolInput.command ?? toolInput.cmd
+    if (typeof cmdValue === 'string' && cmdValue.trim().length > 0) {
+      return cmdValue.trim()
+    }
+  }
+
+  return undefined
+}
+
+function mapToolToCCAgent(toolName: string, configuredVaultRoot: string, toolInput?: Record<string, unknown>): string {
   // GitOps: Bash에서 git 명령어
   if (toolName === 'Bash' || toolName === 'bash') {
     const cmd = String(toolInput?.command ?? toolInput?.cmd ?? '')
     if (/\bgit\b/.test(cmd)) return 'gitops'
   }
 
-  // VaultKeeper: Obsidian vault 경로 접근
+  // VaultKeeper: configured vault 경로 접근
   if (toolInput) {
     const filePath = String(toolInput.path ?? toolInput.file_path ?? '')
-    if (filePath.includes('Woosdom_Brain')) return 'vault_keeper'
+    const normalizedFilePath = filePath.replace(/\\/g, '/')
+    const normalizedVaultRoot = configuredVaultRoot.replace(/\\/g, '/')
+    if (normalizedFilePath.includes(normalizedVaultRoot)) return 'vault_keeper'
   }
 
   // Engineer: 코드 작성/수정
-  if (['Edit', 'Write', 'MultiEdit', 'Create', 'InsertCodeBlock'].includes(toolName)) return 'engineer'
+  if (ENGINEER_TOOLS.has(toolName)) return 'engineer'
 
   // Critic: 코드 읽기/검토
-  if (['Read', 'Grep', 'Glob', 'LS', 'ListDir'].includes(toolName)) return 'critic'
+  if (READING_TOOLS.has(toolName)) return 'critic'
 
   // GitOps: git 전용 도구
-  if (['GitDiff', 'GitLog', 'GitCommit', 'GitStatus'].includes(toolName)) return 'gitops'
+  if (GITOPS_TOOLS.has(toolName)) return 'gitops'
 
   // Foreman: 기본값
   return 'foreman'
@@ -96,7 +131,7 @@ function mapToolToCCAgent(toolName: string, toolInput?: Record<string, unknown>)
 let lastActiveAgentRole = 'foreman'
 
 function setupEventForwarding(): void {
-  // Vault events → Renderer
+  // Vault events -> Renderer
   eventBus.on('vault:to-hands', (event) => {
     forwardToRenderer('vault:to-hands', {
       engine: event.engine,
@@ -114,20 +149,46 @@ function setupEventForwarding(): void {
     forwardToRenderer('vault:to-codex', {})
   })
 
+  eventBus.on('vault:from-codex', () => {
+    forwardToRenderer('vault:from-codex', {})
+  })
+
+  eventBus.on('vault:to-cc', () => {
+    forwardToRenderer('vault:to-cc', {})
+  })
+
+  eventBus.on('vault:from-cc', () => {
+    forwardToRenderer('vault:from-cc', {})
+  })
+
+  eventBus.on('vault:to-ag', () => {
+    forwardToRenderer('vault:to-ag', {})
+  })
+
+  eventBus.on('vault:from-ag', () => {
+    forwardToRenderer('vault:from-ag', {})
+  })
+
   eventBus.on('vault:active-context', () => {
     forwardToRenderer('vault:active-context', {})
   })
 
-  // CC JSONL events → Renderer
+  // CC JSONL events -> Renderer
   eventBus.on('cc:tool-start', (event) => {
     const agentRole = mapToolToCCAgent(
       event.toolName as string,
-      event.toolInput as Record<string, unknown> | undefined
+      vaultRoot,
+      event.toolInput as Record<string, unknown> | undefined,
+    )
+    const detail = extractToolDetail(
+      event.toolName as string,
+      event.toolInput as Record<string, unknown> | undefined,
     )
     lastActiveAgentRole = agentRole
     forwardToRenderer('agent:tool-start', {
       agentRole,
       toolName: event.toolName,
+      detail,
     })
   })
 
@@ -138,36 +199,38 @@ function setupEventForwarding(): void {
   })
 
   eventBus.on('cc:turn-end', () => {
-    for (const role of ['foreman', 'engineer', 'critic', 'gitops', 'vault_keeper']) {
+    for (const role of AGENT_ROLES) {
       forwardToRenderer('agent:status', { agentRole: role, status: 'idle' })
     }
   })
 
   eventBus.on('cc:idle', () => {
-    for (const role of ['foreman', 'engineer', 'critic', 'gitops', 'vault_keeper']) {
+    for (const role of AGENT_ROLES) {
       forwardToRenderer('agent:status', { agentRole: role, status: 'idle' })
     }
   })
 
-  // AG & Codex File JSONL/Chokidar events → Renderer
+  // AG & Codex File JSONL/Chokidar events -> Renderer
   eventBus.on('ag:file-change', (event) => {
     forwardToRenderer('agent:tool-start', {
       agentRole: event.agentRole,
-      toolName: `${event.toolName}: ${event.filePath}`,
+      toolName: event.toolName,
+      detail: event.filePath,
     })
     setTimeout(() => {
       forwardToRenderer('agent:tool-done', { agentRole: event.agentRole as string })
-    }, 1500)
+    }, FILE_CHANGE_TOOL_DONE_MS)
   })
 
   eventBus.on('codex:file-change', (event) => {
     forwardToRenderer('agent:tool-start', {
       agentRole: event.agentRole,
-      toolName: `${event.toolName}: ${event.filePath}`,
+      toolName: event.toolName,
+      detail: event.filePath,
     })
     setTimeout(() => {
       forwardToRenderer('agent:tool-done', { agentRole: event.agentRole as string })
-    }, 1500)
+    }, FILE_CHANGE_TOOL_DONE_MS)
   })
 }
 
@@ -198,23 +261,39 @@ ipcMain.handle('layout:write', async (_event, layoutData: unknown) => {
 
 // IPC: renderer ready signal (guard against duplicate calls from HMR)
 let watchersStarted = false
+let appReadyDebounceTimer: ReturnType<typeof setTimeout> | null = null
 ipcMain.on('app:ready', () => {
   if (watchersStarted) {
-    console.log('[Main] app:ready received again (HMR) — skipping duplicate init')
+    console.log('[Main] app:ready received again (HMR) - skipping duplicate init')
     return
   }
-  watchersStarted = true
-  console.log('[Main] Renderer is ready — starting watchers')
-  setupEventForwarding()
-  cleanupVault = startVaultWatcher(eventBus)
-  cleanupCC = startCCWatcher(eventBus)
-  cleanupAG = startAGWatcher(eventBus)
-  cleanupCodex = startCodexWatcher(eventBus)
+
+  if (appReadyDebounceTimer) {
+    clearTimeout(appReadyDebounceTimer)
+  }
+
+  appReadyDebounceTimer = setTimeout(() => {
+    if (watchersStarted) return
+
+    watchersStarted = true
+    appReadyDebounceTimer = null
+    console.log('[Main] Renderer is ready - starting watchers')
+    console.log('[Main] Using vault root:', vaultRoot)
+    setupEventForwarding()
+    cleanupVault = startVaultWatcher(eventBus, vaultRoot)
+    cleanupCC = startCCWatcher(eventBus)
+    cleanupAG = startAGWatcher(eventBus)
+    cleanupCodex = startCodexWatcher(eventBus)
+  }, HMR_DEBOUNCE_MS)
 })
 
 app.whenReady().then(createWindow)
 
 app.on('window-all-closed', () => {
+  if (appReadyDebounceTimer) {
+    clearTimeout(appReadyDebounceTimer)
+    appReadyDebounceTimer = null
+  }
   cleanupVault?.()
   cleanupCC?.()
   cleanupAG?.()

@@ -1,0 +1,49 @@
+{# ─── partials/roadmap.html — Life Roadmap Hexagonal ──────────────────────── #}
+{% if roadmap and (roadmap.get('axes') or roadmap.get('milestones')) %}
+{% set axis_colors = {"재산": "#4ecdc4", "기술": "#a29bfe", "체력": "#ff6b6b", "가정": "#ffeaa7"} %}
+{% set axes = roadmap.get('axes', []) %}
+{% set milestones = roadmap.get('milestones', []) %}
+{% set n_done = milestones | selectattr('status', 'equalto', 'done') | list | length %}
+{% set n_prog = milestones | selectattr('status', 'equalto', 'in_progress') | list | length %}
+<section class="board-section">
+  <div class="board-section-title">🏗️ 인생 로드맵 — Hexagonal Life</div>
+  <div class="axes-grid">
+    {% for ax in axes %}
+    {% set color = axis_colors.get(ax.get('name', ''), '#b2bec3') %}
+    <div class="axis-card clickable" style="border-top:3px solid {{ color }};" onclick="filterMilestones('{{ ax.get('name','') | e }}')" title="클릭하여 마일스톤 보기">
+      <div class="axis-icon">{{ ax.get('icon', '') | e }}</div>
+      <div class="axis-name" style="color:{{ color }};">{{ ax.get('name', '') | e }}</div>
+      <div class="axis-status">{{ ax.get('status', '') | e }}</div>
+      <div class="axis-metric">{{ ax.get('metric', '') | e }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="ms-filter-hint">💡 축 카드를 클릭하면 해당 마일스톤만 표시됩니다
+    <button class="ms-reset-btn" onclick="filterMilestones('all')">전체 보기</button>
+    <span class="toggle-badge">{{ n_done + n_prog }}/{{ milestones | length }} 진행</span>
+  </div>
+  <div class="milestone-timeline" id="ms-timeline">
+    {% for ms in milestones %}
+    {% set status = ms.get('status', 'waiting') %}
+    {% if status == 'in_progress' %}
+      {% set dot_cls = 'ms-dot active' %}{% set line_cls = 'ms-line active' %}
+    {% elif status == 'done' %}
+      {% set dot_cls = 'ms-dot done' %}{% set line_cls = 'ms-line done' %}
+    {% else %}
+      {% set dot_cls = 'ms-dot' %}{% set line_cls = 'ms-line' %}
+    {% endif %}
+    <div class="ms-item" data-axis="{{ ms.get('axis', '') | e }}">
+      <div class="ms-left">
+        <div class="{{ dot_cls }}"></div>
+        <div class="{{ line_cls }}"></div>
+      </div>
+      <div class="ms-content">
+        <span class="ms-time">{{ ms.get('time', '') | e }}</span>
+        <span class="ms-text">{{ ms.get('milestone', '') | e }}</span>
+        <span class="ms-axis badge-sm" style="background:rgba(255,255,255,.06);">{{ ms.get('axis', '') | e }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

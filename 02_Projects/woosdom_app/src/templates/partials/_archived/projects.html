@@ -1,0 +1,88 @@
+{# ─── partials/projects.html — Project Cards Grid ─────────────────────────── #}
+{% if projects %}
+<section class="board-section">
+  <div class="project-grid">
+    {% for p in projects %}
+    {% set domain   = p.get('domain',   'other') %}
+    {% set section  = p.get('section',  'next') %}
+    {% set status   = p.get('status',   'waiting') %}
+    {% set dm_info  = DOMAIN_LABELS.get(domain,  ('📌 Other', '#b2bec3')) %}
+    {% set st_info  = STATUS_LABELS.get(status,  ('?', '#b2bec3')) %}
+    {% set sec_info = SECTION_LABELS.get(section, ('', '#b2bec3')) %}
+    {% set d_label  = dm_info[0] %}{% set d_color  = dm_info[1] %}
+    {% set s_label  = st_info[0] %}{% set s_color  = st_info[1] %}
+    {% set sec_label= sec_info[0] %}{% set sec_color= sec_info[1] %}
+    {% set meta         = p.get('metadata', {}) %}
+    {% set actions      = p.get('action_items', []) %}
+    {% set notes        = p.get('notes', []) %}
+    {% set compl        = p.get('completed_items', []) %}
+    {% set current_stage= meta.get('현재 단계', meta.get('현재단계', '')) %}
+    {% set weeks        = meta.get('weeks', []) %}
+    {% set card_id      = 'compl-' ~ loop.index %}
+    <div class="project-card" data-domain="{{ domain }}" data-section="{{ section }}">
+      <div class="proj-header">
+        <div class="proj-title-row">
+          <span class="proj-domain-icon">{{ d_label.split()[0] }}</span>
+          <div class="proj-name-block">
+            <div class="proj-name">{{ p.get('name', '') | e }}</div>
+            {% if p.get('subtitle') %}<div class="proj-subtitle">{{ p.get('subtitle', '') | e }}</div>{% endif %}
+          </div>
+        </div>
+        <div class="proj-badges">
+          <span class="badge-sm" style="background:{{ sec_color }}22;color:{{ sec_color }};border:1px solid {{ sec_color }}44;">{{ sec_label }}</span>
+          <span class="badge-sm" style="background:{{ s_color }}22;color:{{ s_color }};border:1px solid {{ s_color }}44;">{{ s_label }}</span>
+        </div>
+      </div>
+      {% if current_stage %}<div class="proj-stage">{{ current_stage | e }}</div>{% endif %}
+      {% if weeks %}
+      <div class="week-timeline">
+        {% for w in weeks %}
+        {% set wst = w.get('status', 'waiting') %}
+        {% if wst == 'done' %}{% set wc = '#00b89433' %}{% set wb = '#00b894' %}
+        {% elif wst in ['next', 'in_progress'] %}{% set wc = '#0984e322' %}{% set wb = '#0984e3' %}
+        {% else %}{% set wc = 'transparent' %}{% set wb = 'var(--border)' %}{% endif %}
+        <span class="week-chip week-{{ wst }}" title="{{ w.get('label', '') | e }}" style="background:{{ wc }};border:1px solid {{ wb }};">W{{ w.get('week', '') | e }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if actions %}
+      <div class="proj-section">
+        <div class="proj-section-label">📋 다음 액션</div>
+        <ul class="action-list">
+          {% for a in actions %}<li class="action-item"><span class="check-box">□</span> {{ a | e }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if notes %}
+      <div class="proj-section">
+        <ul class="notes-list">
+          {% for n in notes[:4] %}<li>{{ n | e }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if compl %}
+      <div class="proj-section">
+        <button class="compl-toggle" onclick="toggleCompl('{{ card_id }}')">✅ 완료 항목 보기 ({{ compl | length }})</button>
+        <ul class="compl-list hidden" id="{{ card_id }}">
+          {% for c in compl[:8] %}<li>{{ c | e }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% set meta_keys = ['프로젝트 폴더', '기술 스택', '구현'] %}
+      {% set has_meta = meta_keys | selectattr('in', meta) | list %}
+      {% if meta.get('프로젝트 폴더') or meta.get('기술 스택') or meta.get('구현') %}
+      <div class="proj-meta-footer">
+        {% if meta.get('프로젝트 폴더') %}<span class="meta-tag"><strong>프로젝트 폴더</strong>: {{ meta['프로젝트 폴더'][:80] | e }}</span>{% endif %}
+        {% if meta.get('기술 스택') %}<span class="meta-tag"><strong>기술 스택</strong>: {{ meta['기술 스택'][:80] | e }}</span>{% endif %}
+        {% if meta.get('구현') %}<span class="meta-tag"><strong>구현</strong>: {{ meta['구현'][:80] | e }}</span>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% else %}
+<section class="board-section">
+  <p class="empty-msg">프로젝트가 없습니다.</p>
+</section>
+{% endif %}

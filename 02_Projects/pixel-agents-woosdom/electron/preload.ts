@@ -25,12 +25,27 @@ const electronAPI = {
   onVaultToCodex: (callback: (data: Record<string, never>) => void) => {
     return onIpc('vault:to-codex', callback)
   },
+  onVaultFromCodex: (callback: (data: Record<string, never>) => void) => {
+    return onIpc('vault:from-codex', callback)
+  },
+  onVaultToCC: (callback: (data: Record<string, never>) => void) => {
+    return onIpc('vault:to-cc', callback)
+  },
+  onVaultFromCC: (callback: (data: Record<string, never>) => void) => {
+    return onIpc('vault:from-cc', callback)
+  },
+  onVaultToAG: (callback: (data: Record<string, never>) => void) => {
+    return onIpc('vault:to-ag', callback)
+  },
+  onVaultFromAG: (callback: (data: Record<string, never>) => void) => {
+    return onIpc('vault:from-ag', callback)
+  },
   onVaultActiveContext: (callback: (data: Record<string, never>) => void) => {
     return onIpc('vault:active-context', callback)
   },
 
   // Main -> Renderer: CC Agent events
-  onAgentToolStart: (callback: (data: { agentRole: string; toolName: string }) => void) => {
+  onAgentToolStart: (callback: (data: { agentRole: string; toolName: string; detail?: string }) => void) => {
     return onIpc('agent:tool-start', callback)
   },
   onAgentToolDone: (callback: (data: { agentRole: string }) => void) => {

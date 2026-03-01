@@ -1,0 +1,52 @@
+/* ─── panels/agents.css ───────────────────────────────────────────── */
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+.agent-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; text-align: center;
+  transition: all .2s; position: relative;
+}
+.agent-card.active   { border-color: #00b894; box-shadow: 0 0 12px rgba(0,184,148,.2); }
+.agent-card.conflict { border-color: #e74c3c; box-shadow: 0 0 12px rgba(231,76,60,.2); }
+.agent-icon  { font-size: 1.6rem; margin-bottom: 6px; }
+.agent-name  { font-size: .88rem; font-weight: 700; }
+.agent-model { font-size: var(--font-size-xs); color: var(--accent); margin-top: 3px; }
+.agent-status-dot {
+  display: inline-block; width: 8px; height: 8px;
+  border-radius: 50%; margin-right: 4px; vertical-align: middle;
+}
+.agent-task {
+  font-size: .72rem; color: var(--text); margin-top: 8px;
+  padding-top: 8px; border-top: 1px solid rgba(255,255,255,.06);
+}
+
+.agent-history-item {
+  display: grid;
+  grid-template-columns: 56px 72px 1fr 48px;
+  gap: 8px; align-items: center; padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  font-size: var(--font-size-sm);
+}
+.agent-history-item .ah-time     { color: var(--muted); }
+.agent-history-item .ah-agent    { font-weight: 600; }
+.agent-history-item .ah-task     { color: var(--text); }
+.agent-history-item .ah-duration { color: var(--dim); text-align: right; }
+
+/* Engine cards */
+.engine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.engine-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+  border-top: 2px solid var(--accent);
+}
+.engine-name  { font-size: .9rem; font-weight: 700; }
+.engine-model { font-size: .72rem; color: var(--accent); margin-top: 3px; }
+.engine-role  { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+.engine-status { display: inline-block; margin-top: 8px; font-size: var(--font-size-xs); font-weight: 600; }

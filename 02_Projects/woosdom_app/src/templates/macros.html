@@ -1,0 +1,29 @@
+{# ─── macros.html — Woosdom Dashboard UI macros ────────────────────────────── #}
+
+{# Badge: renders a colored label pill #}
+{% macro badge(label, color) -%}
+<span class="badge-sm" style="background:{{ color }}22;color:{{ color }};border:1px solid {{ color }}44;">{{ label }}</span>
+{%- endmacro %}
+
+{# Status dot: colored circle indicator #}
+{% macro status_dot(status, color, animated=false) -%}
+<span class="agent-status-dot {{ status }}" style="background:{{ color }};{% if animated %}animation:pulse 1.5s infinite;{% endif %}"></span>
+{%- endmacro %}
+
+{# Domain badge: looks up DOMAIN_LABELS dict #}
+{% macro domain_badge(domain) -%}
+{% set info = DOMAIN_LABELS.get(domain, ("📌 Other", "#b2bec3")) -%}
+{{ badge(info[0], info[1]) }}
+{%- endmacro %}
+
+{# Status badge: looks up STATUS_LABELS dict #}
+{% macro status_badge(status) -%}
+{% set info = STATUS_LABELS.get(status, ("?", "#b2bec3")) -%}
+{{ badge(info[0], info[1]) }}
+{%- endmacro %}
+
+{# Section label badge: looks up SECTION_LABELS dict #}
+{% macro section_badge(section) -%}
+{% set info = SECTION_LABELS.get(section, ("", "#b2bec3")) -%}
+{{ badge(info[0], info[1]) }}
+{%- endmacro %}

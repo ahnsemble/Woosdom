@@ -1,0 +1,37 @@
+{# ─── partials/sprint.html — Sprint Progress Bar ─────────────────────────────── #}
+{% if sprint_progress %}
+{% set done_count = sprint_progress | selectattr('status', 'equalto', 'done') | list | length %}
+{% set total = sprint_progress | length %}
+{% set pct = ((done_count / total * 100) | int) if total else 0 %}
+<section class="sprint-bar-section">
+  <div class="sprint-bar-header">
+    <span class="board-section-title" style="margin:0;font-size:.9rem;">📐 Phase 4 Sprint 진행</span>
+    <span class="sprint-pct">{{ pct }}% ({{ done_count }}/{{ total }})</span>
+  </div>
+  <div class="sprint-track">
+    {% for s in sprint_progress %}
+    {% set status = s.get('status', 'waiting') %}
+    {% if status == 'done' %}{% set seg_color = '#00b894' %}{% set anim = '' %}
+    {% elif status in ['next', 'in_progress'] %}{% set seg_color = '#0984e3' %}{% set anim = 'animation:pulse 1.5s infinite;' %}
+    {% else %}{% set seg_color = 'var(--border)' %}{% set anim = '' %}{% endif %}
+    <div class="sprint-seg" style="background:{{ seg_color }};{{ anim }}" title="{{ s.get('name', '') | e }}: {{ s.get('label', '') | e }}"></div>
+    {% endfor %}
+  </div>
+  <div class="sprint-chips">
+    {% for s in sprint_progress %}
+    {% set status = s.get('status', 'waiting') %}
+    {% if status == 'done' %}
+      {% set bg = '#00b89433' %}{% set border = '#00b894' %}{% set emoji = '✅' %}
+    {% elif status in ['next', 'in_progress'] %}
+      {% set bg = '#0984e322' %}{% set border = '#0984e3' %}{% set emoji = '🔄' %}
+    {% else %}
+      {% set bg = 'transparent' %}{% set border = 'var(--border)' %}{% set emoji = '⏳' %}
+    {% endif %}
+    <div class="sprint-chip sprint-{{ status }}" style="border:1px solid {{ border }};background:{{ bg }};">
+      <div class="sprint-chip-name">{{ emoji }} {{ s.get('name', '') | e }}</div>
+      <div class="sprint-chip-label">{{ s.get('label', '') | e }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

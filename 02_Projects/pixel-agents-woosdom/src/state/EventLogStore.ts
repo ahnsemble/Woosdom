@@ -1,3 +1,4 @@
+import { EVENT_DEDUP_WINDOW_MS } from '../constants.ts'
 import type { LogEntry } from '../types/EventLog.ts'
 
 const MAX_ENTRIES = 200
@@ -10,12 +11,13 @@ class EventLogStoreClass {
   private listeners: Set<Listener> = new Set()
 
   addEntry(entry: Omit<LogEntry, 'id' | 'timestamp'>): void {
-    // Only log if the action is different from the VERY LAST action recorded for this specific agent
-    // OR if it's been more than 10 seconds since the last identical action
+    // Drop only identical action+detail for the same agent within a short dedup window.
     const lastEntryForAgent = [...this.entries].reverse().find(e => e.agentRole === entry.agentRole)
-    if (lastEntryForAgent && lastEntryForAgent.action === entry.action) {
+    const isSameAction = lastEntryForAgent?.action === entry.action
+    const isSameDetail = lastEntryForAgent?.detail === entry.detail
+    if (lastEntryForAgent && isSameAction && isSameDetail) {
       const elapsed = Date.now() - lastEntryForAgent.timestamp.getTime()
-      if (elapsed < 10_000) return // Silently drop identical consecutive logs within 10s
+      if (elapsed < EVENT_DEDUP_WINDOW_MS) return // Silently drop identical consecutive logs within dedup window
     }
 
     this.entries.push({

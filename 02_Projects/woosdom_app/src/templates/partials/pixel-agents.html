@@ -1,0 +1,26 @@
+{# ─── partials/pixel-agents.html — Pixel Agents HQ Canvas ───────────────── #}
+<!-- Pixel Agents HQ — Canvas + ai-town sprites/tiles (MIT) -->
+<section class="pa-section">
+  <div class="pa-header">
+    <h3>🏢 Pixel Agents HQ</h3>
+    <span class="pa-credit">Sprites &amp; tiles:
+      <a href="https://github.com/a16z-infra/ai-town" target="_blank">ai-town</a>
+      (MIT) &mdash; 방 제목 클릭 시 팀 상세 보기</span>
+  </div>
+  <div class="pa-wrap">
+    <canvas id="agentCanvas" width="760" height="420"
+      data-team-status='{{ pixel_state.get("teamStatus", {}) | tojson }}'
+      data-agent-tasks='{{ pixel_state.get("agentTasks", {}) | tojson }}'
+      data-agent-logs='{{ pixel_logs | tojson }}'
+      title="방 제목 클릭 → 팀 상세"></canvas>
+    <div id="pa-popup-overlay" onclick="closePaPopup()">
+      <div id="pa-popup" onclick="event.stopPropagation()">
+        <div id="pa-popup-header">
+          <span id="pa-popup-title">팀 정보</span>
+          <button id="pa-popup-close" onclick="closePaPopup()">✕</button>
+        </div>
+        <div id="pa-popup-content"></div>
+      </div>
+    </div>
+  </div>
+</section>

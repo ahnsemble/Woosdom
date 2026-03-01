@@ -1,0 +1,108 @@
+{# ─── partials/training.html — Today's Training ──────────────────────────── #}
+{% if training %}
+{% set today      = training.get('today', {}) %}
+{% set exercises  = training.get('today_exercises', []) %}
+{% set weekly     = training.get('weekly', []) %}
+{% set progression= training.get('progression', []) %}
+{% set t_stats    = training.get('stats', {}) %}
+{% set day_name   = today.get('day', '?') %}
+{% set morning    = today.get('morning', '—') %}
+{% set evening    = today.get('evening', '—') %}
+{% set load       = today.get('load', '—') %}
+{% set load_colors = {"HIGH": "#e74c3c", "MOD-HIGH": "#e67e22", "LOW-MOD": "#f39c12", "LOW": "#2ecc71", "ZERO": "#636e72"} %}
+{% set load_color = load_colors.get(load, '#b2bec3') %}
+<section class="board-section">
+  <div class="board-section-title">💪 오늘의 운동 — {{ day_name | e }}요일</div>
+  <div class="training-hero">
+    <div class="training-today-card">
+      <div class="training-load" style="color:{{ load_color }};">부하: {{ load | e }}</div>
+      <div class="training-sessions">
+        <div class="session-block">
+          <span class="session-label">🌅 새벽 5:30</span>
+          <span class="session-name">{{ morning | e }}</span>
+        </div>
+        <div class="session-block">
+          <span class="session-label">🌆 저녁 18:00</span>
+          <span class="session-name">{{ evening | e }}</span>
+        </div>
+      </div>
+    </div>
+    {% if t_stats %}
+    <div class="training-stats">
+      <span class="stat-item">⚖️ {{ t_stats.get('weight', '') | e }}</span>
+      <span class="stat-item">🏋️ Big 3: {{ t_stats.get('big3', '') | e }}</span>
+      <span class="stat-item">📋 {{ t_stats.get('protocol', '') | e }}</span>
+    </div>
+    {% endif %}
+    {% set today_actions = briefing.get('today_actions', []) if briefing else [] %}
+    {% if today_actions %}
+    <div class="today-tasks">
+      <div class="today-tasks-title">📋 오늘 할 일</div>
+      <ul class="today-task-list">
+        {% for a in today_actions %}<li>{{ a | e }}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+  {% if load == 'ZERO' %}
+  <div class="rest-day">🛌 완전 휴식일</div>
+  {% elif exercises %}
+  <button class="collapsible-toggle" onclick="toggleSection('training-exercises')">
+    🏋️ 운동 세부 <span class="toggle-badge">{{ exercises | length }}개</span> <span id="training-exercises-arrow">▼</span>
+  </button>
+  <div class="collapsible-body hidden" id="training-exercises">
+    <div class="training-exercises">
+      <table class="ex-table">
+        <thead><tr><th></th><th>운동</th><th>규격</th><th>휴식</th><th>목적</th></tr></thead>
+        <tbody>
+          {% for e in exercises %}
+          <tr>
+            <td class="ex-order">{{ e.get('order', '') | e }}</td>
+            <td class="ex-name">{{ e.get('name', '') | e }}</td>
+            <td class="ex-spec">{{ e.get('spec', '') | e }}</td>
+            <td class="ex-rest">{{ e.get('rest', '') | e }}</td>
+            <td class="ex-purpose">{{ e.get('purpose', '') | e }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+  <div class="week-schedule-title">📅 주간 스케줄</div>
+  <div class="week-schedule">
+    {% for w in weekly %}
+    {% set wlc = load_colors.get(w.get('load', ''), '#636e72') %}
+    <div class="{{ 'week-day today' if w.get('is_today') else 'week-day' }}">
+      <div class="week-day-name">{{ w.get('day', '') | e }}</div>
+      <div class="week-day-load" style="color:{{ wlc }};">{{ w.get('load', '') | e }}</div>
+      <div class="week-day-am">{{ w.get('morning', '')[:20] | e }}</div>
+      <div class="week-day-pm">{{ w.get('evening', '')[:15] | e }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% if progression %}
+  <button class="collapsible-toggle" onclick="toggleSection('training-progression')">
+    📈 프로그레션 <span class="toggle-badge">{{ progression | length }}개</span> <span id="training-progression-arrow">▼</span>
+  </button>
+  <div class="collapsible-body hidden" id="training-progression">
+    <div class="prog-section">
+      <div class="proj-section-label">📈 프로그레션</div>
+      <table class="prog-table">
+        <thead><tr><th>운동</th><th>현재</th><th>12주 목표</th><th>장기 목표</th></tr></thead>
+        <tbody>
+          {% for p in progression %}
+          <tr>
+            <td>{{ p.get('exercise', '') | e }}</td>
+            <td>{{ p.get('current', '') | e }}</td>
+            <td class="prog-target">{{ p.get('target_12w', '') | e }}</td>
+            <td class="prog-long">{{ p.get('long_term', '') | e }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endif %}

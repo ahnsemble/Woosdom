@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woosdom Mission Control</title>
+<style>
+
+:root {
+  --bg:      #0d0d1a;
+  --bg2:     #13132b;
+  --card:    #181830;
+  --hover:   #1e1e40;
+  --text:    #e2e2f0;
+  --muted:   #7a7a9a;
+  --dim:     #50506a;
+  --accent:  #4ecdc4;
+  --border:  #252545;
+  --radius:  14px;
+  --shadow:  0 6px 30px rgba(0,0,0,.4);
+}
+
+/* Light mode */
+body.light {
+  --bg:      #f5f5f8;
+  --bg2:     #eeeef2;
+  --card:    #ffffff;
+  --hover:   #f0f0f5;
+  --text:    #1a1a2e;
+  --muted:   #6b6b8a;
+  --dim:     #9090a8;
+  --accent:  #2da89e;
+  --border:  #d8d8e8;
+  --shadow:  0 4px 20px rgba(0,0,0,.08);
+}
+body.light .header {
+  background: linear-gradient(135deg, #e8e8f0, #dddde8, #d0d0e0);
+}
+body.light .header h1 {
+  background: linear-gradient(135deg, #2da89e, #7a6bfe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.light .briefing-card {
+  background: linear-gradient(135deg, rgba(45,168,158,.06), rgba(122,107,254,.06));
+  border-color: rgba(45,168,158,.3);
+}
+body.light .training-hero {
+  background: linear-gradient(135deg, rgba(255,107,107,.04), rgba(122,107,254,.04));
+  border-color: rgba(255,107,107,.15);
+}
+body.light .project-card::before {
+  background: linear-gradient(90deg, #2da89e, #7a6bfe);
+}
+body.light .portfolio-bar-fill {
+  background: linear-gradient(90deg, #2da89e, #7a6bfe);
+}
+body.light .ql-toast {
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0,0,0,.12);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  background: rgba(255,255,255,.1);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.theme-toggle:hover {
+  background: rgba(78,205,196,.2);
+  border-color: var(--accent);
+  transform: rotate(30deg);
+}
+body.light .theme-toggle {
+  background: rgba(0,0,0,.05);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.6; min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg,#13132b,#181842,#0e2060);
+  border-bottom: 1px solid var(--border);
+  padding: 22px 36px;
+}
+.header-content {
+  max-width: 1440px; margin: 0 auto;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 14px;
+}
+.header h1 {
+  font-size: 1.75rem; font-weight: 800;
+  background: linear-gradient(135deg,#4ecdc4,#a29bfe);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.subtitle { color: var(--muted); font-size: .85rem; margin-top:3px; }
+.header-right { display:flex; gap:8px; flex-wrap:wrap; }
+.badge { display:inline-block; padding:5px 13px; border-radius:20px; font-size:.78rem; font-weight:600; }
+.badge-phase   { background:rgba(78,205,196,.12); color:#4ecdc4; border:1px solid rgba(78,205,196,.3); }
+.badge-ruleset { background:rgba(162,155,254,.12); color:#a29bfe; border:1px solid rgba(162,155,254,.3); }
+.badge-date    { background:rgba(255,255,255,.07); color:var(--muted); border:1px solid var(--border); }
+
+/* Summary cards */
+.summary-cards {
+  max-width:1440px; margin:22px auto; padding:0 36px;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:14px;
+}
+.card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:18px; text-align:center;
+  transition:transform .2s,box-shadow .2s;
+}
+.card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+.card-number { font-size:2.2rem; font-weight:800; }
+.card-label  { font-size:.78rem; color:var(--muted); margin-top:4px; }
+.card-project .card-number { color: #a29bfe; }
+.card-action  .card-number { color: #fdcb6e; }
+.card-week    .card-number { color: #74b9ff; }
+.card-done    .card-number { color: #00b894; }
+
+/* Briefing hero */
+.briefing-section {
+  max-width:1440px; margin:0 auto 24px; padding:0 36px;
+}
+.briefing-card {
+  background: linear-gradient(135deg, rgba(78,205,196,.06), rgba(162,155,254,.06));
+  border: 1px solid rgba(78,205,196,.3);
+  border-left: 4px solid var(--accent);
+  border-radius:var(--radius); padding:22px 26px;
+}
+.briefing-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:18px;
+}
+.briefing-title { font-size:1.05rem; font-weight:700; color:var(--accent); }
+.briefing-toggle {
+  background:rgba(78,205,196,.12); border:1px solid rgba(78,205,196,.3);
+  color:var(--accent); padding:5px 14px; border-radius:12px;
+  cursor:pointer; font-size:.78rem; transition:all .2s;
+}
+.briefing-toggle:hover { background:rgba(78,205,196,.22); }
+.briefing-top-priority {
+  display:flex; align-items:flex-start; gap:10px;
+  background:rgba(255,255,255,.04); border-radius:10px; padding:12px 16px;
+  margin-bottom:14px;
+}
+.priority-label { font-size:.85rem; font-weight:700; color:var(--accent); white-space:nowrap; }
+.priority-text  { font-size:.95rem; font-weight:600; }
+.briefing-row { margin-bottom:12px; }
+.briefing-key { font-size:.82rem; font-weight:700; color:var(--muted); display:block; margin-bottom:6px; }
+.briefing-list { list-style:none; padding:0; }
+.briefing-list li {
+  padding:4px 0 4px 16px; font-size:.85rem; color:var(--text);
+  position:relative;
+}
+.briefing-list li::before { content:"›"; position:absolute; left:4px; color:var(--accent); }
+.briefing-list.warning-list li::before { content:"•"; }
+.warning-item { color:#fdcb6e !important; }
+
+/* Filter bar */
+.filter-bar {
+  max-width:1440px; margin:0 auto 22px; padding:0 36px;
+  display:flex; flex-wrap:wrap; gap:14px;
+}
+.filter-group { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+.filter-label { font-size:.78rem; font-weight:600; color:var(--muted); }
+.filter-btn {
+  background:var(--card); border:1px solid var(--border); color:var(--muted);
+  padding:5px 13px; border-radius:20px; cursor:pointer; font-size:.78rem;
+  transition:all .2s;
+}
+.filter-btn:hover { border-color:var(--accent); color:var(--text); }
+.filter-btn.active { background:rgba(78,205,196,.14); border-color:var(--accent); color:var(--accent); }
+
+/* Board sections */
+.board-section {
+  max-width:1440px; margin:0 auto 28px; padding:0 36px;
+}
+.board-section-title {
+  font-size:1.1rem; font-weight:700; margin-bottom:14px;
+  padding-bottom:8px; border-bottom:1px solid var(--border);
+}
+
+/* Standalone task cards */
+.standalone-grid { display:flex; flex-direction:column; gap:10px; }
+.task-card {
+  background:var(--card); border:1px solid var(--border);
+  border-left:4px solid var(--accent); border-radius:var(--radius);
+  padding:16px 18px; transition:all .2s;
+}
+.task-card:hover { background:var(--hover); box-shadow:var(--shadow); }
+.task-header { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
+.task-title  { font-size:.95rem; font-weight:600; flex:1; }
+.task-badges { display:flex; gap:6px; flex-wrap:wrap; }
+.task-detail { margin-top:8px; font-size:.82rem; color:var(--muted); }
+.task-sub    { margin-top:8px; padding-left:16px; list-style:none; }
+.task-sub li { font-size:.78rem; color:var(--dim); margin-bottom:3px; }
+.task-sub li::before { content:"›  "; color:var(--muted); }
+
+/* Project cards */
+.project-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:16px; }
+.project-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:20px; transition:all .2s;
+  position:relative; overflow:hidden; display:flex; flex-direction:column; gap:12px;
+}
+.project-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,#4ecdc4,#a29bfe);
+}
+.project-card:hover { background:var(--hover); box-shadow:var(--shadow); }
+.proj-header { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+.proj-title-row { display:flex; align-items:flex-start; gap:10px; flex:1; }
+.proj-domain-icon { font-size:1.3rem; margin-top:2px; }
+.proj-name  { font-size:1rem; font-weight:700; }
+.proj-subtitle { font-size:.75rem; color:var(--muted); margin-top:2px; }
+.proj-badges { display:flex; gap:5px; flex-wrap:wrap; }
+.proj-stage {
+  font-size:.82rem; color:var(--muted);
+  background:rgba(255,255,255,.04); border-radius:8px; padding:8px 12px;
+}
+.proj-section { margin-top:0; }
+.proj-section-label { font-size:.75rem; font-weight:700; color:var(--muted); margin-bottom:6px; }
+.action-list { list-style:none; padding:0; }
+.action-item {
+  display:flex; align-items:flex-start; gap:8px; font-size:.82rem;
+  padding:5px 0; border-bottom:1px solid rgba(255,255,255,.04);
+}
+.action-item:last-child { border-bottom:none; }
+.check-box { color:var(--muted); font-size:.9rem; margin-top:1px; }
+.notes-list { list-style:none; padding:0; }
+.notes-list li { font-size:.78rem; color:var(--muted); padding:3px 0; }
+.notes-list li::before { content:"•  "; color:var(--dim); }
+.compl-toggle {
+  background:rgba(0,184,148,.1); border:1px solid rgba(0,184,148,.25);
+  color:#00b894; padding:5px 12px; border-radius:10px;
+  cursor:pointer; font-size:.75rem; transition:all .2s;
+}
+.compl-toggle:hover { background:rgba(0,184,148,.2); }
+.compl-list { list-style:none; padding:0; margin-top:8px; }
+.compl-list li { font-size:.75rem; color:var(--dim); padding:3px 0; }
+.compl-list li::before { content:"✓  "; color:#00b894; }
+.proj-meta-footer {
+  display:flex; flex-direction:column; gap:4px;
+  border-top:1px solid var(--border); padding-top:10px;
+}
+.meta-tag { font-size:.72rem; color:var(--dim); }
+
+/* Rules grid */
+.rules-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+.rule-item {
+  background:var(--card); border:1px solid var(--border);
+  border-left:3px solid #e17055; border-radius:var(--radius);
+  padding:12px 16px; font-size:.85rem; color:var(--muted);
+}
+
+/* Portfolio */
+.portfolio-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; }
+.portfolio-item {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:14px 16px;
+}
+.portfolio-ticker { font-size:1rem; font-weight:700; color:var(--accent); }
+.portfolio-weight { font-size:.8rem; color:var(--muted); margin-top:3px; }
+.portfolio-bar { height:5px; background:var(--border); border-radius:3px; margin-top:8px; }
+.portfolio-bar-fill {
+  height:100%; border-radius:3px;
+  background:linear-gradient(90deg,#4ecdc4,#a29bfe);
+}
+
+/* Sprint Progress Bar */
+.sprint-bar-section {
+  background:var(--section-bg);
+  border-radius:var(--radius); padding:14px 18px;
+  margin:0 0 16px;
+}
+.sprint-bar-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.sprint-pct { font-size:.78rem; color:var(--accent); font-weight:600; }
+.sprint-track {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:4px; height:10px; border-radius:6px; overflow:hidden; margin-bottom:12px;
+}
+.sprint-seg { border-radius:inherit; transition:width .4s; }
+.sprint-chips { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; }
+.sprint-chip { border-radius:8px; padding:8px 10px; }
+.sprint-chip-name { font-size:.78rem; font-weight:700; }
+.sprint-chip-label { font-size:.7rem; color:var(--muted); margin-top:3px; }
+
+/* LiteLLM Panel */
+.ll-section { margin-bottom:16px; }
+.ll-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
+.ll-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px; }
+.ll-card-label { font-size:.72rem; color:var(--muted); margin-bottom:6px; }
+.ll-card-status { font-size:.85rem; font-weight:700; }
+.ll-models { display:flex; flex-wrap:wrap; gap:6px; }
+.ll-model-badge {
+  font-size:.7rem; padding:3px 8px; border-radius:999px;
+  background:rgba(0,184,148,.15); color:#00b894; border:1px solid rgba(0,184,148,.3);
+}
+.ll-unhealthy { background:rgba(231,76,60,.15); color:#e74c3c; border-color:rgba(231,76,60,.3); }
+.ll-error { font-size:.75rem; color:#e74c3c; margin-top:8px; padding:6px 10px; background:rgba(231,76,60,.1); border-radius:6px; }
+
+/* Week Timeline */
+.week-timeline { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0; }
+.week-chip {
+  font-size:.68rem; font-weight:700; padding:4px 8px;
+  border-radius:6px; cursor:default;
+  transition:transform .15s;
+}
+.week-chip:hover { transform:scale(1.1); }
+
+/* Agent Panel */
+.agent-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
+.agent-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px; text-align:center;
+  transition:all .2s; position:relative;
+}
+.agent-card.active { border-color:#00b894; box-shadow:0 0 12px rgba(0,184,148,.2); }
+.agent-card.conflict { border-color:#e74c3c; box-shadow:0 0 12px rgba(231,76,60,.2); }
+.agent-icon { font-size:1.6rem; margin-bottom:6px; }
+.agent-name { font-size:.88rem; font-weight:700; }
+.agent-model { font-size:.7rem; color:var(--accent); margin-top:3px; }
+.agent-status-dot {
+  display:inline-block; width:8px; height:8px;
+  border-radius:50%; margin-right:4px; vertical-align:middle;
+}
+.agent-task {
+  font-size:.72rem; color:var(--text); margin-top:8px;
+  padding-top:8px; border-top:1px solid rgba(255,255,255,.06);
+}
+.agent-history-item {
+  display:grid; grid-template-columns:56px 72px 1fr 48px;
+  gap:8px; align-items:center; padding:6px 0;
+  border-bottom:1px solid rgba(255,255,255,.04); font-size:.78rem;
+}
+.agent-history-item .ah-time { color:var(--muted); }
+.agent-history-item .ah-agent { font-weight:600; }
+.agent-history-item .ah-task { color:var(--text); }
+.agent-history-item .ah-duration { color:var(--dim); text-align:right; }
+
+/* Engines */
+.engine-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; }
+.engine-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:14px 16px;
+  border-top:2px solid var(--accent);
+}
+.engine-name  { font-size:.9rem; font-weight:700; }
+.engine-model { font-size:.72rem; color:var(--accent); margin-top:3px; }
+.engine-role  { font-size:.72rem; color:var(--muted); margin-top:2px; }
+.engine-status { display:inline-block; margin-top:8px; font-size:.7rem; font-weight:600; }
+
+/* Rules summary */
+.rules-list { list-style:none; }
+.rules-list li {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:8px; padding:9px 14px;
+  margin-bottom:6px; font-size:.83rem; color:var(--muted);
+}
+.rule-active     { border-left:3px solid #00b894; }
+.rule-deprecated { border-left:3px solid #636e72; opacity:.6; }
+
+/* Completed */
+.completed-item {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:12px 16px; margin-bottom:8px;
+}
+.compl-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.compl-title { font-size:.88rem; font-weight:600; flex:1; }
+.compl-date  { font-size:.75rem; color:var(--dim); }
+.compl-summary { font-size:.78rem; color:var(--muted); margin-top:6px; }
+.hidden-item { display:none; }
+.more-btn {
+  background:rgba(255,255,255,.06); border:1px solid var(--border);
+  color:var(--muted); padding:8px 18px; border-radius:20px;
+  cursor:pointer; font-size:.8rem; display:block;
+  margin: 8px auto 0; transition:all .2s;
+}
+.more-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* Misc */
+.badge-sm {
+  font-size:.7rem; padding:3px 9px; border-radius:10px; font-weight:600;
+  white-space:nowrap;
+}
+.hidden { display:none !important; }
+.empty-msg { color:var(--muted); text-align:center; }
+.footer {
+  text-align:center; padding:22px; color:var(--dim);
+  font-size:.75rem; border-top:1px solid var(--border); margin-top:40px;
+}
+
+/* Quick Launcher */
+.ql-bar {
+  max-width:1440px; margin:12px auto 0;
+  display:flex; gap:8px; flex-wrap:wrap;
+}
+.ql-btn {
+  background:rgba(255,255,255,.07); border:1px solid var(--border);
+  color:var(--text); padding:6px 14px; border-radius:20px;
+  cursor:pointer; font-size:.78rem; font-weight:600;
+  transition:all .18s; letter-spacing:.01em;
+}
+.ql-btn:hover {
+  background:rgba(78,205,196,.16); border-color:var(--accent);
+  color:var(--accent); transform:translateY(-1px);
+}
+.ql-btn:active { transform:translateY(0); }
+.ql-icon {
+  width:20px; height:20px; vertical-align:middle;
+  border-radius:4px; margin-right:3px;
+  object-fit:contain;
+}
+.ql-emoji { vertical-align:middle; }
+.ql-engine {
+  background:rgba(162,155,254,.1); border-color:rgba(162,155,254,.35);
+  color:#a29bfe;
+}
+.ql-engine:hover {
+  background:rgba(162,155,254,.22); border-color:#a29bfe;
+  color:#a29bfe; transform:translateY(-1px);
+}
+.ql-backup {
+  background:rgba(253,203,110,.1); border-color:rgba(253,203,110,.35);
+  color:#fdcb6e;
+}
+.ql-backup:hover {
+  background:rgba(253,203,110,.22); border-color:#fdcb6e;
+  color:#fdcb6e; transform:translateY(-1px);
+}
+
+/* Toast */
+.ql-toast {
+  position:fixed; top:20px; right:20px;
+  background:var(--card); border:1px solid #00b894;
+  border-left:4px solid #00b894;
+  color:var(--text); padding:14px 20px; border-radius:10px;
+  font-size:.85rem; font-weight:600; z-index:9999;
+  box-shadow:0 6px 30px rgba(0,0,0,.4);
+  animation:fadeInOut 4s ease forwards;
+}
+.ql-toast.error {
+  border-color:#e17055; border-left-color:#e17055;
+}
+@keyframes fadeInOut {
+  0%   { opacity:0; transform:translateY(-10px); }
+  10%  { opacity:1; transform:translateY(0); }
+  80%  { opacity:1; }
+  100% { opacity:0; }
+}
+
+/* Responsive */
+@media (max-width:768px) {
+  .header { padding:14px 16px; }
+  .header h1 { font-size:1.3rem; }
+  .summary-cards,.briefing-section,.filter-bar,.board-section { padding:0 14px; }
+  .project-grid { grid-template-columns:1fr; }
+  .ql-bar { gap:6px; }
+  .ql-btn { font-size:.72rem; padding:5px 10px; }
+}
+
+/* ─── Life Roadmap ───────────────────────────────────────────────────── */
+.axes-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
+  margin-bottom:20px;
+}
+.axis-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px; text-align:center;
+  transition:transform .2s;
+}
+.axis-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+.axis-icon { font-size:1.8rem; margin-bottom:6px; }
+.axis-name { font-size:.9rem; font-weight:700; margin-bottom:4px; }
+.axis-status { font-size:.78rem; color:var(--muted); margin-bottom:2px; }
+.axis-metric { font-size:.72rem; color:var(--dim); }
+.milestone-title { font-size:.9rem; font-weight:700; color:var(--muted); margin-bottom:12px; }
+.milestone-timeline { display:flex; flex-direction:column; gap:0; padding-left:8px; }
+.ms-item { display:flex; align-items:flex-start; gap:14px; min-height:44px; }
+.ms-left { display:flex; flex-direction:column; align-items:center; width:16px; flex-shrink:0; }
+.ms-dot {
+  width:12px; height:12px; border-radius:50%;
+  background:var(--border); border:2px solid var(--dim);
+  flex-shrink:0; margin-top:4px;
+}
+.ms-dot.active { background:var(--accent); border-color:var(--accent); box-shadow:0 0 8px rgba(78,205,196,.5); }
+.ms-dot.done   { background:#00b894; border-color:#00b894; }
+.ms-line { width:2px; flex:1; background:var(--border); min-height:20px; }
+.ms-line.active { background:var(--accent); }
+.ms-line.done   { background:#00b894; }
+.ms-content { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:4px 0 10px; }
+.ms-time  { font-size:.78rem; font-weight:700; color:var(--accent); min-width:70px; }
+.ms-text  { font-size:.82rem; color:var(--text); }
+.ms-axis  { font-size:.68rem; color:var(--muted); }
+
+/* ─── Training ─────────────────────────────────────────────────────────── */
+.training-hero {
+  background:linear-gradient(135deg,rgba(255,107,107,.06),rgba(162,155,254,.06));
+  border:1px solid rgba(255,107,107,.2);
+  border-radius:var(--radius); padding:18px; margin-bottom:16px;
+}
+.rest-day { font-size:1.2rem; padding:20px; text-align:center; color:var(--muted); }
+.training-today-card { margin-bottom:12px; }
+.training-load { font-size:1rem; font-weight:800; margin-bottom:10px; }
+.training-sessions { display:flex; gap:20px; flex-wrap:wrap; }
+.session-block { display:flex; align-items:center; gap:8px; }
+.session-label { font-size:.75rem; color:var(--muted); font-weight:600; }
+.session-name  { font-size:.88rem; font-weight:600; }
+.training-stats {
+  display:flex; gap:16px; flex-wrap:wrap;
+  padding-top:10px; border-top:1px solid rgba(255,255,255,.06);
+}
+.stat-item { font-size:.78rem; color:var(--muted); }
+.training-exercises { margin-bottom:16px; overflow-x:auto; }
+.ex-table { width:100%; border-collapse:collapse; font-size:.78rem; }
+.ex-table th { text-align:left; padding:8px 10px; color:var(--muted); border-bottom:1px solid var(--border); font-weight:600; }
+.ex-table td { padding:7px 10px; border-bottom:1px solid rgba(255,255,255,.04); }
+.ex-order   { color:var(--accent); font-weight:700; width:40px; }
+.ex-name    { font-weight:600; }
+.ex-spec    { color:var(--muted); }
+.ex-rest    { color:var(--dim); }
+.ex-purpose { color:var(--muted); font-style:italic; }
+.week-schedule-title { font-size:.85rem; font-weight:700; color:var(--muted); margin-bottom:10px; }
+.week-schedule {
+  display:grid; grid-template-columns:repeat(7,1fr); gap:6px;
+  margin-bottom:16px;
+}
+.week-day {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:10px; padding:10px 8px; text-align:center;
+  font-size:.72rem; transition:all .2s;
+}
+.week-day.today {
+  border-color:var(--accent); background:rgba(78,205,196,.08);
+  box-shadow:0 0 12px rgba(78,205,196,.15);
+}
+.week-day-name { font-weight:800; font-size:.85rem; margin-bottom:4px; }
+.week-day-load { font-weight:700; font-size:.7rem; margin-bottom:4px; }
+.week-day-am   { color:var(--muted); font-size:.65rem; margin-bottom:2px; }
+.week-day-pm   { color:var(--dim); font-size:.65rem; }
+.prog-section { margin-top:4px; }
+.prog-table { width:100%; border-collapse:collapse; font-size:.78rem; }
+.prog-table th { text-align:left; padding:8px 10px; color:var(--muted); border-bottom:1px solid var(--border); font-weight:600; }
+.prog-table td { padding:7px 10px; border-bottom:1px solid rgba(255,255,255,.04); }
+.prog-target { color:#fdcb6e; font-weight:600; }
+.prog-long   { color:#ff6b6b; font-weight:600; }
+
+/* Collapsible toggle */
+.collapsible-toggle {
+  display:flex; align-items:center; gap:8px;
+  width:100%; background:rgba(255,255,255,.04); border:1px solid var(--border);
+  color:var(--muted); padding:10px 16px; border-radius:10px;
+  cursor:pointer; font-size:.85rem; font-weight:700;
+  transition:all .2s; margin-bottom:4px; text-align:left;
+}
+.collapsible-toggle:hover { background:rgba(78,205,196,.08); border-color:var(--accent); color:var(--text); }
+.toggle-badge {
+  font-size:.72rem; font-weight:600; color:var(--accent);
+  background:rgba(78,205,196,.1); padding:2px 8px; border-radius:8px;
+  margin-left:4px;
+}
+.collapsible-body { margin-top:8px; }
+
+/* Today tasks in training */
+.today-tasks { margin-top:14px; }
+.today-tasks-title { font-size:.85rem; font-weight:700; color:var(--accent); margin-bottom:8px; }
+.today-task-list { list-style:none; padding:0; }
+.today-task-list li {
+  padding:6px 0 6px 18px; font-size:.82rem; color:var(--text);
+  position:relative; border-bottom:1px solid rgba(255,255,255,.04);
+}
+.today-task-list li:last-child { border-bottom:none; }
+.today-task-list li::before { content:"›"; position:absolute; left:2px; color:var(--accent); font-size:.85rem; top:4px; }
+
+@media (max-width:768px) {
+  .axes-grid    { grid-template-columns:repeat(2,1fr); }
+  .week-schedule{ grid-template-columns:repeat(4,1fr); }
+}
+
+/* Clickable axis cards */
+.axis-card.clickable { cursor:pointer; }
+.axis-card.clickable:hover {
+  transform:translateY(-3px);
+  box-shadow:0 0 16px rgba(78,205,196,.25);
+}
+.axis-card.active {
+  border-color:var(--accent) !important;
+  box-shadow:0 0 16px rgba(78,205,196,.3);
+}
+
+/* Milestone filter hint */
+.ms-filter-hint {
+  font-size:.78rem; color:var(--muted); margin-bottom:12px;
+  display:flex; align-items:center; gap:10px;
+}
+.ms-reset-btn {
+  background:rgba(78,205,196,.12); border:1px solid rgba(78,205,196,.3);
+  color:var(--accent); padding:3px 10px; border-radius:10px;
+  cursor:pointer; font-size:.72rem; transition:all .2s;
+}
+.ms-reset-btn:hover { background:rgba(78,205,196,.22); }
+
+/* Milestone item filtered out */
+.ms-item.filtered-out { display:none; }
+
+</style>
+</head>
+<body>
+
+<!-- ── Header ────────────────────────────────────── -->
+<header class="header">
+  <div class="header-content">
+    <div class="header-left">
+      <h1>🧠 Woosdom Mission Control</h1>
+      <p class="subtitle">Active Context Dashboard</p>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" onclick="toggleTheme()" id="theme-toggle" title="다크/라이트 모드 전환">🌙</button>
+      <span class="badge badge-phase"></span>
+      <span class="badge badge-ruleset"></span>
+      <span class="badge badge-date">📅 2026-02-24</span>
+    </div>
+  </div>
+  <!-- ── Quick Launcher ─────────────────────────── -->
+  <div class="ql-bar">
+    <button class="ql-btn" onclick="launchApp('open_claude')" title="Claude"><span class="ql-emoji">🧠</span> Claude</button>
+    <button class="ql-btn" onclick="launchApp('open_gpt')" title="GPT"><span class="ql-emoji">💬</span> GPT</button>
+    <button class="ql-btn" onclick="launchApp('open_gemini')" title="Gemini"><span class="ql-emoji">✨</span> Gemini</button>
+    <button class="ql-btn" onclick="launchApp('open_antigravity')" title="Antigravity"><span class="ql-emoji">🚀</span> Antigravity</button>
+    <button class="ql-btn" onclick="launchApp('open_codex')" title="Codex"><span class="ql-emoji">💻</span> Codex</button>
+    <button class="ql-btn" onclick="launchApp('open_obsidian')" title="Obsidian"><span class="ql-emoji">📓</span> Obsidian</button>
+    <button class="ql-btn ql-engine" id="ql-engine-btn" onclick="launchEngineWatch()" title="Engine Watch 스캔">🔍 Engine Watch</button>
+    <button class="ql-btn ql-backup" id="ql-backup-btn" onclick="launchBackup()" title="Vault 백업">💾 Backup</button>
+  </div>
+</header>
+
+<!-- ── Sprint Progress ───────────────────────── -->
+
+<section class="sprint-bar-section">
+  <div class="sprint-bar-header">
+    <span class="board-section-title" style="margin:0;font-size:.9rem;">📐 Phase 4 Sprint 진행</span>
+    <span class="sprint-pct">25% (1/4)</span>
+  </div>
+  <div class="sprint-track"><div class="sprint-seg" style="background:#00b894;" title="Sprint 1: LiteLLM + Redis"></div><div class="sprint-seg" style="background:#0984e3;animation:pulse 1.5s infinite;" title="Sprint 2: Redis Pub/Sub"></div><div class="sprint-seg" style="background:var(--border);" title="Sprint 3: Claude Code CLI"></div><div class="sprint-seg" style="background:var(--border);" title="Sprint 4: Persona Council"></div></div>
+  <div class="sprint-chips"><div class="sprint-chip sprint-done" style="border:1px solid #00b894;background:#00b89433;">
+  <div class="sprint-chip-name">✅ Sprint 1</div>
+  <div class="sprint-chip-label">LiteLLM + Redis</div>
+</div><div class="sprint-chip sprint-next" style="border:1px solid #0984e3;background:#0984e322;">
+  <div class="sprint-chip-name">🔵 Sprint 2</div>
+  <div class="sprint-chip-label">Redis Pub/Sub</div>
+</div><div class="sprint-chip sprint-waiting" style="border:1px solid var(--border);background:transparent;">
+  <div class="sprint-chip-name">⏳ Sprint 3</div>
+  <div class="sprint-chip-label">Claude Code CLI</div>
+</div><div class="sprint-chip sprint-waiting" style="border:1px solid var(--border);background:transparent;">
+  <div class="sprint-chip-name">⏳ Sprint 4</div>
+  <div class="sprint-chip-label">Persona Council</div>
+</div></div>
+</section>
+
+<!-- ── Summary Cards ──────────────────────────────── -->
+<section class="summary-cards">
+  <div class="card card-project">
+    <div class="card-number">0</div>
+    <div class="card-label">🚀 진행 프로젝트</div>
+  </div>
+  <div class="card card-action">
+    <div class="card-number">4</div>
+    <div class="card-label">📋 액션 아이템</div>
+  </div>
+  <div class="card card-week">
+    <div class="card-number">0</div>
+    <div class="card-label">📅 이번 주 할 일</div>
+  </div>
+  <div class="card card-done">
+    <div class="card-number">0</div>
+    <div class="card-label">✅ 최근 7일 완료</div>
+  </div>
+</section>
+
+<!-- ── Briefing Hero ───────────────────────────────── -->
+<section class="briefing-section">
+  <div class="briefing-card" id="briefing-card">
+    <div class="briefing-header">
+      <div class="briefing-title">☀️ 오늘의 브리핑 — 2026-02-25 (수)</div>
+      <button class="briefing-toggle" onclick="toggleBriefing()" id="briefing-toggle">▲ 접기</button>
+    </div>
+    <div class="briefing-body" id="briefing-body">
+      <div class="briefing-top-priority">
+        <span class="priority-label">🎯 최우선</span>
+        <span class="priority-text"></span>
+      </div>
+      <div class="briefing-row">
+        <span class="briefing-key">📋 오늘 할 일</span>
+        <ol class="briefing-list"><li>Crossy Week 1 프로토 (우선순위 1)</li><li>Sprint 5-5 (틈새)</li><li>영앤리치 GitHub 정리 + FastAPI 배포</li><li>3월 말 첫 드리프트 점검</li></ol>
+      </div>
+      
+      
+    </div>
+  </div>
+</section>
+
+<!-- ✨ Life Roadmap -->
+<section class="board-section">
+  <div class="board-section-title">🏗️ 인생 로드맵 — Hexagonal Life</div>
+  <div class="axes-grid"><div class="axis-card clickable" style="border-top:3px solid #4ecdc4;" onclick="filterMilestones('재산')" title="클릭하여 마일스톤 보기">
+  <div class="axis-icon">💰</div>
+  <div class="axis-name" style="color:#4ecdc4;">재산</div>
+  <div class="axis-status">Trinity v5 DCA 시작</div>
+  <div class="axis-metric">P50 FIRE 49세 (사업소득 시 43세)</div>
+</div><div class="axis-card clickable" style="border-top:3px solid #a29bfe;" onclick="filterMilestones('기술')" title="클릭하여 마일스톤 보기">
+  <div class="axis-icon">🔧</div>
+  <div class="axis-name" style="color:#a29bfe;">기술</div>
+  <div class="axis-status">AEC FDE 전환 준비 중</div>
+  <div class="axis-metric">포트폴리오 프로젝트 3개 확정</div>
+</div><div class="axis-card clickable" style="border-top:3px solid #ff6b6b;" onclick="filterMilestones('체력')" title="클릭하여 마일스톤 보기">
+  <div class="axis-icon">💪</div>
+  <div class="axis-name" style="color:#ff6b6b;">체력</div>
+  <div class="axis-status">Hex v2.3 실행 중</div>
+  <div class="axis-metric">Big 3 430kg / 73→69kg 커팅</div>
+</div><div class="axis-card clickable" style="border-top:3px solid #ffeaa7;" onclick="filterMilestones('가정')" title="클릭하여 마일스톤 보기">
+  <div class="axis-icon">🏠</div>
+  <div class="axis-name" style="color:#ffeaa7;">가정</div>
+  <div class="axis-status">불변 기반축</div>
+  <div class="axis-metric">—</div>
+</div></div>
+  <div class="ms-filter-hint">💡 축 카드를 클릭하면 해당 마일스톤만 표시됩니다 <button class="ms-reset-btn" onclick="filterMilestones('all')">전체 보기</button> <span class="toggle-badge">1/7 진행</span></div>
+  <div class="milestone-timeline" id="ms-timeline"><div class="ms-item" data-axis="재산">
+  <div class="ms-left">
+    <div class="ms-dot active"></div>
+    <div class="ms-line active"></div>
+  </div>
+  <div class="ms-content">
+    <span class="ms-time">2026 Q1</span>
+    <span class="ms-text">첫 매수 완료 + DCA 루틴 정착</span>
+    <span class="ms-axis badge-sm" style="background:rgba(255,255,255,.06);">재산</span>
+  </div>
+</div><div class="ms-item" data-axis="기술">
+  <div class="ms-left">
+    <div class="ms-dot"></div>
+    <div class="ms-line"></div>
+  </div>
+  <div class="ms-content">
+    <span class="ms-time">2026 Q2</span>
+    <span class="ms-text">Project Crossy 정식 출시</span>
+    <span class="ms-axis badge-sm" style="background:rgba(255,255,255,.06);">기술</span>
+  </div>
+</div><div class="ms-item" data-axis="체력">
+  <div class="ms-left">
+    <div class="ms-dot"></div>
+    <div class="ms-line"></div>
+  </div>
+  <div class="ms-content">
+    <span class="ms-time">2026 Q2</span>
+    <span class="ms-text">69kg 커팅 달성</span>
+    <span class="ms-axis badge-sm" style="background:rgba(255,255,255,.06);">체력</span>
+  </div>
+</div><div class="ms-item" data-axis="기술">
+  <div class="ms-left">
+    <div class="ms-dot"></div>
+    <div class="ms-line"></div>
+  </div>
+  <div class="ms-content">
+    <span class="ms-time">2026 Q3</span>
+    <span class="ms-text">포트폴리오 프로젝트 #1 데모 공개</span>
+    <span class="ms-axis badge-sm" style="background:rgba(255,255,255,.06);">기술</span>
+  </div>
+</div><div class="ms-item" data-axis="기술">
+  <div class="ms-left">
+    <div class="ms-dot"></div>
+    <div class="ms-line"></div>
+  </div>
+  <div class="ms-content">
+    <span class="ms-time">2026 Q4</span>
+    <span class="ms-text">포트폴리오 프로젝트 #2 완성</span>
+    <span class="ms-axis badge-sm" style="background:rgba(255,255,255,.06);">기술</span>
+  </div>
+</div><div class="ms-item" data-axis="기술">
+  <div class="ms-left">
+    <div class="ms-dot"></div>
+    <div class="ms-line"></div>
+  </div>
+  <div class="ms-content">
+    <span class="ms-time">2027 H1</span>
+    <span class="ms-text">3개 프로젝트 데모세트 완성 + FDE 지원</span>
+    <span class="ms-axis badge-sm" style="background:rgba(255,255,255,.06);">기술</span>
+  </div>
+</div><div class="ms-item" data-axis="기술">
+  <div class="ms-left">
+    <div class="ms-dot"></div>
+    <div class="ms-line"></div>
+  </div>
+  <div class="ms-content">
+    <span class="ms-time">2027 H2</span>
+    <span class="ms-text">FDE/SA 이직 실행</span>
+    <span class="ms-axis badge-sm" style="background:rgba(255,255,255,.06);">기술</span>
+  </div>
+</div></div>
+</section>
+
+<!-- ✨ Today's Training -->
+<section class="board-section">
+  <div class="board-section-title">💪 오늘의 운동 — 화요일</div>
+  <div class="training-hero">
+    <div class="training-today-card">
+      <div class="training-load" style="color:#e67e22;">부하: MOD-HIGH</div>
+      <div class="training-sessions">
+        <div class="session-block">
+          <span class="session-label">🌅 새벽 5:30</span>
+          <span class="session-name">—</span>
+        </div>
+        <div class="session-block">
+          <span class="session-label">🌆 저녁 18:00</span>
+          <span class="session-name">복싱 (테크니컬)</span>
+        </div>
+      </div>
+    </div>
+    <div class="training-stats">
+  <span class="stat-item">⚖️ 73kg → 69kg</span>
+  <span class="stat-item">🏋️ Big 3: 430kg (Elite)</span>
+  <span class="stat-item">📋 Tactical Hexagon v2.3</span>
+</div>
+    <div class="today-tasks">
+  <div class="today-tasks-title">📋 오늘 할 일</div>
+  <ul class="today-task-list"><li>Crossy Week 1 프로토 (우선순위 1)</li><li>Sprint 5-5 (틈새)</li><li>영앤리치 GitHub 정리 + FastAPI 배포</li><li>3월 말 첫 드리프트 점검</li></ul>
+</div>
+  </div>
+  
+  <div class="week-schedule-title">📅 주간 스케줄</div>
+  <div class="week-schedule"><div class="week-day">
+  <div class="week-day-name">월</div>
+  <div class="week-day-load" style="color:#e74c3c;">HIGH</div>
+  <div class="week-day-am">하체 근력+파워+택티컬</div>
+  <div class="week-day-pm">복싱</div>
+</div><div class="week-day today">
+  <div class="week-day-name">화</div>
+  <div class="week-day-load" style="color:#e67e22;">MOD-HIGH</div>
+  <div class="week-day-am">—</div>
+  <div class="week-day-pm">복싱 (테크니컬)</div>
+</div><div class="week-day">
+  <div class="week-day-name">수</div>
+  <div class="week-day-load" style="color:#2ecc71;">LOW</div>
+  <div class="week-day-am">Zone 2 러닝 5km + 모빌리티</div>
+  <div class="week-day-pm">—</div>
+</div><div class="week-day">
+  <div class="week-day-name">목</div>
+  <div class="week-day-load" style="color:#e74c3c;">HIGH</div>
+  <div class="week-day-am">상체 근력+파워 (웨이티드 캘리스테닉</div>
+  <div class="week-day-pm">복싱</div>
+</div><div class="week-day">
+  <div class="week-day-name">금</div>
+  <div class="week-day-load" style="color:#f39c12;">LOW-MOD</div>
+  <div class="week-day-am">속도 전용 + 능동적 회복</div>
+  <div class="week-day-pm">—</div>
+</div><div class="week-day">
+  <div class="week-day-name">토</div>
+  <div class="week-day-load" style="color:#e74c3c;">HIGH</div>
+  <div class="week-day-am">Contrast Training + </div>
+  <div class="week-day-pm">—</div>
+</div><div class="week-day">
+  <div class="week-day-name">일</div>
+  <div class="week-day-load" style="color:#636e72;">ZERO</div>
+  <div class="week-day-am">완전 휴식</div>
+  <div class="week-day-pm">—</div>
+</div></div>
+  <button class="collapsible-toggle" onclick="toggleSection('training-progression')">
+    📈 프로그레션 <span class="toggle-badge">3개</span> <span id="training-progression-arrow">▼</span>
+  </button>
+  <div class="collapsible-body hidden" id="training-progression"><div class="prog-section">
+  <div class="proj-section-label">📈 프로그레션</div>
+  <table class="prog-table">
+    <thead><tr><th>운동</th><th>현재</th><th>12주 목표</th><th>장기 목표</th></tr></thead>
+    <tbody><tr><td>웨이티드 턱걸이</td><td>+15kg×5</td><td class="prog-target">+25kg×5</td><td class="prog-long">+40kg×3</td></tr><tr><td>웨이티드 딥스</td><td>+20kg×8</td><td class="prog-target">+30kg×5</td><td class="prog-long">+50kg×3</td></tr><tr><td>피스톨 스쿼트</td><td>미확인</td><td class="prog-target">자체중량 5회</td><td class="prog-long">+10kg 고블릿 5회</td></tr></tbody>
+  </table>
+</div></div>
+</section>
+
+<!-- ── Filter Bar ─────────────────────────────────── -->
+<section class="filter-bar">
+  <div class="filter-group">
+    <span class="filter-label">도메인:</span>
+    <button class="filter-btn active" data-domain="all">전체</button>
+    <button class="filter-btn" data-domain="finance">💰 Finance</button>
+    <button class="filter-btn" data-domain="game">🎮 Game</button>
+    <button class="filter-btn" data-domain="other">📌 Other</button>
+    <button class="filter-btn" data-domain="system">⚙️ System</button>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">우선순위:</span>
+    <button class="filter-btn active" data-section="all">전체</button>
+    <button class="filter-btn" data-section="critical">🔴 최우선</button>
+    <button class="filter-btn" data-section="next">🟡 다음</button>
+    <button class="filter-btn" data-section="later">🔵 이후</button>
+    <button class="filter-btn" data-section="done">✅ 완료</button>
+  </div>
+</section>
+
+<!-- ── Critical Standalone Tasks ─────────────────── -->
+
+
+<!-- ── Projects Board ─────────────────────────────── -->
+<section class="board-section">
+  <div class="board-section-title">🗂 프로젝트 보드</div>
+  <div class="project-grid" id="project-grid">
+    <p class="empty-msg">프로젝트가 없습니다.</p>
+  </div>
+</section>
+
+<!-- ── Later Standalone Tasks ────────────────────── -->
+<section class="board-section">
+  <div class="board-section-title" style="color:#3498db;">🔵 이후</div>
+  <div class="standalone-grid"><div class="task-card" data-domain="game" data-section="next"
+     style="border-left-color:#f39c12;">
+  <div class="task-header">
+    <div class="task-title">Crossy Week 1 프로토 (우선순위 1)</div>
+    <div class="task-badges">
+      <span class="badge-sm" style="background:#ff6b6b22;color:#ff6b6b;border:1px solid #ff6b6b44;">🎮 Game</span>
+      <span class="badge-sm" style="background:#74b9ff22;color:#74b9ff;border:1px solid #74b9ff44;">⏳ 대기</span>
+    </div>
+  </div>
+  
+  
+</div><div class="task-card" data-domain="other" data-section="next"
+     style="border-left-color:#f39c12;">
+  <div class="task-header">
+    <div class="task-title">Sprint 5-5 (틈새)</div>
+    <div class="task-badges">
+      <span class="badge-sm" style="background:#b2bec322;color:#b2bec3;border:1px solid #b2bec344;">📌 Other</span>
+      <span class="badge-sm" style="background:#74b9ff22;color:#74b9ff;border:1px solid #74b9ff44;">⏳ 대기</span>
+    </div>
+  </div>
+  
+  
+</div><div class="task-card" data-domain="system" data-section="next"
+     style="border-left-color:#f39c12;">
+  <div class="task-header">
+    <div class="task-title">영앤리치 GitHub 정리 + FastAPI 배포</div>
+    <div class="task-badges">
+      <span class="badge-sm" style="background:#a29bfe22;color:#a29bfe;border:1px solid #a29bfe44;">⚙️ System</span>
+      <span class="badge-sm" style="background:#74b9ff22;color:#74b9ff;border:1px solid #74b9ff44;">⏳ 대기</span>
+    </div>
+  </div>
+  
+  
+</div><div class="task-card" data-domain="finance" data-section="next"
+     style="border-left-color:#f39c12;">
+  <div class="task-header">
+    <div class="task-title">3월 말 첫 드리프트 점검</div>
+    <div class="task-badges">
+      <span class="badge-sm" style="background:#4ecdc422;color:#4ecdc4;border:1px solid #4ecdc444;">💰 Finance</span>
+      <span class="badge-sm" style="background:#74b9ff22;color:#74b9ff;border:1px solid #74b9ff44;">⏳ 대기</span>
+    </div>
+  </div>
+  
+  
+</div></div>
+</section>
+
+<!-- ── Standing Rules ──────────────────────────────── -->
+<section class="board-section">
+  <div class="board-section-title">❗ 상시 규칙</div>
+  <div class="rules-grid"><div class="rule-item">⚠️ LLM에 수학 연산/매매 판단 위임 절대 금지</div><div class="rule-item">⚠️ DCA v5 비율 유지, 동적 규칙 폐기, ±10% 드리프트 시 리밸런싱</div><div class="rule-item">⚠️ 적립식: 초기 400만 + 월 150만, 정수주</div><div class="rule-item">⚠️ SPMO 6개월 모니터링 (2026-08까지)</div><div class="rule-item">⚠️ 승인 질문 금지: 다음 단계 명확하면 묻지 말고 착수</div></div>
+</section>
+
+<!-- ── Portfolio ───────────────────────────────────── -->
+
+
+<!-- ── Agent Panel ──────────────────────── -->
+<!-- ── LiteLLM Panel ─────────────────────── -->
+
+<section class="board-section ll-section">
+  <div class="board-section-title">⚡ LiteLLM Proxy 상태</div>
+  <div class="ll-grid">
+    <div class="ll-card"><div class="ll-card-label">Proxy</div><div class="ll-card-status" style="color:#e74c3c;">🔴 Offline</div></div>
+    <div class="ll-card"><div class="ll-card-label">Redis</div><div class="ll-card-status" style="color:#00b894;">🟢 Online</div></div>
+    <div class="ll-card">
+      <div class="ll-card-label">모델</div>
+      <div class="ll-models"><span style="color:var(--muted);font-size:.78rem;">모델 없음</span></div>
+    </div>
+  </div>
+  <div class="ll-error">⚠️ HTTP Error 401: Unauthorized</div>
+</section>
+
+<!-- ── Agent Panel ──────────────────────── -->
+
+<section class="board-section">
+  <div class="board-section-title">🤖 에이전트 현황</div>
+  <div class="agent-grid">
+<div class="agent-card">
+  <div class="agent-icon">⌨️</div>
+  <div class="agent-name">Hands-4</div>
+  <div class="agent-model">Claude Code (CLI)</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot idle" style="background:#636e72;"></span>
+    <span style="font-size:.72rem;color:#636e72;">🔵 Idle</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">🌐</div>
+  <div class="agent-name">Hands-2</div>
+  <div class="agent-model">Antigravity (Gemini 3.1 Pro gemini-3.1-pro-preview)</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot idle" style="background:#636e72;"></span>
+    <span style="font-size:.72rem;color:#636e72;">🔵 Idle</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">📓</div>
+  <div class="agent-name">Memory</div>
+  <div class="agent-model">Obsidian Vault (MCP)</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot idle" style="background:#636e72;"></span>
+    <span style="font-size:.72rem;color:#636e72;">🔵 Idle</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">🤖</div>
+  <div class="agent-name">Hands-4 (CC팀 Foreman)</div>
+  <div class="agent-model">commit a5f0ba0</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot done" style="background:#00b894;"></span>
+    <span style="font-size:.72rem;color:#00b894;">✅ Done</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">🤖</div>
+  <div class="agent-name">CC팀</div>
+  <div class="agent-model">Engineer→Critic→GitOps→VaultKeeper 4단계 완료, pytest 3/3 PASS</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot done" style="background:#00b894;"></span>
+    <span style="font-size:.72rem;color:#00b894;">✅ Done</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">🧠</div>
+  <div class="agent-name">Brain</div>
+  <div class="agent-model">알림+Redis만 유지, run_claude_code 제거</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot done" style="background:#00b894;"></span>
+    <span style="font-size:.72rem;color:#00b894;">✅ Done</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">🧠</div>
+  <div class="agent-name">Brain</div>
+  <div class="agent-model">CC 추가, 위임 프로토콜 분리 (A: to_hands / B: CC직접)</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot done" style="background:#00b894;"></span>
+    <span style="font-size:.72rem;color:#00b894;">✅ Done</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">🔧</div>
+  <div class="agent-name">Hands-1</div>
+  <div class="agent-model">AG 실행 완료, Hands-4 등록 + 경로수정 + regex확장</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot done" style="background:#00b894;"></span>
+    <span style="font-size:.72rem;color:#00b894;">✅ Done</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">🔧</div>
+  <div class="agent-name">Hands-1</div>
+  <div class="agent-model">3개 섹션 추가, py_compile PASS</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot done" style="background:#00b894;"></span>
+    <span style="font-size:.72rem;color:#00b894;">✅ Done</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">💻</div>
+  <div class="agent-name">Hands-3</div>
+  <div class="agent-model">2.03s→0.014s, ratio 0.67%</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot done" style="background:#00b894;"></span>
+    <span style="font-size:.72rem;color:#00b894;">✅ Done</span>
+  </div>
+  
+</div>
+
+<div class="agent-card">
+  <div class="agent-icon">💻</div>
+  <div class="agent-name">Hands-3</div>
+  <div class="agent-model">결과: 260222_phase4_sprint1_config_fix.md</div>
+  <div style="margin-top:8px;">
+    <span class="agent-status-dot done" style="background:#00b894;"></span>
+    <span style="font-size:.72rem;color:#00b894;">✅ Done</span>
+  </div>
+  
+</div></div>
+  
+<div class="card" style="margin-top:12px;">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('collapsed')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;">
+    <span style="font-size:.82rem;font-weight:600;">📋 최근 에이전트 작업 (9건)</span>
+    <span class="toggle-icon">▼</span>
+  </div>
+  <div class="card-body">
+    
+<div class="agent-history-item">
+  <span class="ah-time">21:45</span>
+  <span class="ah-agent">Hands-3</span>
+  <span class="ah-task">Phase 4 DD Track B — 기술 검증 <span style="color:var(--muted);font-size:.7rem;">LiteLLM Docker스켈레톤 + Redis Pub/Sub 프로토 + 동기화비교표 → 260222_pha</span></span>
+  <span class="ah-duration">~20min</span>
+</div>
+<div class="agent-history-item">
+  <span class="ah-time">21:35</span>
+  <span class="ah-agent">Hands-1</span>
+  <span class="ah-task">Phase 4 DD Track A — 웹 리서치 <span style="color:var(--muted);font-size:.7rem;">LiteLLM ✅ / MCP원격 🟡 / A2A 🔄우회 / IDE트리거 ❌ → 260222_phase4_dd_</span></span>
+  <span class="ah-duration">~10min</span>
+</div>
+<div class="agent-history-item">
+  <span class="ah-time">21:20</span>
+  <span class="ah-agent">Brain</span>
+  <span class="ah-task">Templates 정리 — 4개 아카이브 이동 <span style="color:var(--muted);font-size:.7rem;">swarm_dispatch/to_codex_gemini/to_gemini_deep/deep_research_</span></span>
+  <span class="ah-duration">3min</span>
+</div>
+<div class="agent-history-item">
+  <span class="ah-time">17:30</span>
+  <span class="ah-agent">Hands-1</span>
+  <span class="ah-task">MC v0.5 에이전트 패널 구현 <span style="color:var(--muted);font-size:.7rem;">parser+build 교체, HTML 검증 완료</span></span>
+  <span class="ah-duration">~30min</span>
+</div>
+<div class="agent-history-item">
+  <span class="ah-time">17:07</span>
+  <span class="ah-agent">Hands-1</span>
+  <span class="ah-task">MC v0.4 검증 + py2app <span style="color:var(--muted);font-size:.7rem;">parser+build 정상, Woosdom.app 104MB</span></span>
+  <span class="ah-duration">11min</span>
+</div>
+<div class="agent-history-item">
+  <span class="ah-time">16:56</span>
+  <span class="ah-agent">Hands-1</span>
+  <span class="ah-task">RAG 데몬 등록 <span style="color:var(--muted);font-size:.7rem;">launchd rag-server+watcher 등록, 4641 docs</span></span>
+  <span class="ah-duration">15min</span>
+</div>
+<div class="agent-history-item">
+  <span class="ah-time">16:22</span>
+  <span class="ah-agent">Hands-1</span>
+  <span class="ah-task">Gemini 임베딩 교체 <span style="color:var(--muted);font-size:.7rem;">openai→google-genai, 문법검증 5개 OK</span></span>
+  <span class="ah-duration">8min</span>
+</div>
+<div class="agent-history-item">
+  <span class="ah-time">16:15</span>
+  <span class="ah-agent">Hands-1</span>
+  <span class="ah-task">Obsidian RAG 파이프라인 구축 <span style="color:var(--muted);font-size:.7rem;">indexer/server/watcher/test_search 생성</span></span>
+  <span class="ah-duration">35min</span>
+</div>
+<div class="agent-history-item">
+  <span class="ah-time">15:09</span>
+  <span class="ah-agent">Hands-1</span>
+  <span class="ah-task">desktop.py 동기화 패치 <span style="color:var(--muted);font-size:.7rem;">training/roadmap 파싱 추가, 문법OK</span></span>
+  <span class="ah-duration">4min</span>
+</div>
+  </div>
+</div>
+</section>
+
+<!-- ── Pixel Agents HQ ──────────────────────── -->
+<!-- Pixel Agents HQ — Canvas + ai-town sprites/tiles (MIT) -->
+<style>.pa-section{margin:16px 0;padding:0 16px 16px;}.pa-header{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;}.pa-header h3{font-size:.95rem;font-weight:700;color:var(--text);margin:0;}.pa-credit{font-size:.7rem;color:var(--muted);}.pa-credit a{color:#74b9ff;text-decoration:none;}.pa-wrap{position:relative;background:#06060e;border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px;}#agentCanvas{display:block;width:100%;max-width:760px;height:auto;margin:0 auto;image-rendering:pixelated;image-rendering:crisp-edges;cursor:default;}#pa-popup-overlay{display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.72);z-index:50;border-radius:12px;}#pa-popup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:340px;max-height:85%;overflow-y:auto;background:#0d0d20;border:1px solid #334;border-radius:10px;padding:14px 16px;font-family:monospace;font-size:12px;color:#e2e2f0;box-shadow:0 0 32px rgba(0,0,0,.9);}#pa-popup-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border-bottom:1px solid #334;padding-bottom:8px;}#pa-popup-title{font-size:14px;font-weight:bold;}#pa-popup-close{background:none;border:none;color:#888;cursor:pointer;font-size:18px;line-height:1;padding:0 4px;}#pa-popup-close:hover{color:#fff;}.pa-popup-agent{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid #1a1a2e;}.pa-popup-emoji{font-size:14px;width:18px;text-align:center;padding-top:1px;}.pa-popup-name{font-weight:bold;}.pa-popup-status{padding:1px 6px;border-radius:3px;font-size:10px;white-space:nowrap;margin-left:auto;}.pa-popup-task{font-size:10px;color:#8888aa;margin-top:2px;word-break:break-all;}.pa-popup-log-header{margin-top:10px;border-top:1px solid #334;padding-top:8px;font-size:10px;color:#7888aa;font-weight:bold;margin-bottom:4px;}.pa-popup-log{font-size:10px;color:#555;font-style:italic;padding:4px 0;}.pa-popup-log-wrap{max-height:120px;overflow-y:auto;}.pa-log-entry{padding:3px 0;border-bottom:1px solid #1a1a2e;}.pa-log-arrow{font-size:9px;color:#7888aa;display:block;}.pa-log-msg{font-size:10px;color:#c8c8e0;display:block;word-break:break-all;}</style>
+<section class="pa-section">
+  <div class="pa-header">
+    <h3>🏢 Pixel Agents HQ</h3>
+    <span class="pa-credit">Sprites &amp; tiles: <a href="https://github.com/a16z-infra/ai-town" target="_blank">ai-town</a> (MIT) &mdash; 방 제목 클릭 시 팀 상세 보기</span>
+  </div>
+  <div class="pa-wrap">
+    <canvas id="agentCanvas" width="760" height="420"
+      data-team-status='{"brain": "done", "cc": "done", "codex": "done", "ag": "done"}'
+      data-agent-tasks='{"Hands-4": "A-3 \uc804\uccb4 \uccb4\uc774\ub2dd E2E", "Brain": "Hands-4 \uc2dc\uc2a4\ud15c \ub4f1\ub85d \u2014 brain_directive + engine_router +", "Hands-1": "MC v0.5 \uc5c5\ub370\uc774\ud2b8 \u2014 LiteLLM \ud328\ub110 + Crossy \ud0c0\uc784\ub77c\uc778 + Sprint \uc9c4", "Hands-3": "Sprint 1 Config Fix \u2014 Provider 3\uc885 PASS, \uce90\uc2dc FAIL"}'
+      data-agent-logs='[{"time": "23:25", "from": "Brain", "to": "codex", "msg": "Woosdom App \u2014 desktop.py + Pixel Agents HQ 6\uac74 \uc218\uc815", "status": "pending"}, {"time": "02-24", "from": "codex", "to": "Brain", "msg": "Woosdom App \u2014 6\uac74 \uc218\uc815 \uc644\ub8cc", "status": "done"}]'
+      title="방 제목 클릭 → 팀 상세"></canvas>
+    <div id="pa-popup-overlay" onclick="closePaPopup()">
+      <div id="pa-popup" onclick="event.stopPropagation()">
+        <div id="pa-popup-header">
+          <span id="pa-popup-title">팀 정보</span>
+          <button id="pa-popup-close" onclick="closePaPopup()">✕</button>
+        </div>
+        <div id="pa-popup-content"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+
+(function initPixelAgentsHQ() {
+  'use strict';
+  var canvas = document.getElementById('agentCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = 760, H = 420;
+
+  // ── Data from canvas attributes ──────────────────────────────────────────────
+  var TEAM_STATUS = {brain:'idle', cc:'idle', codex:'idle', ag:'idle'};
+  var AGENT_TASKS = {};
+  var AGENT_LOGS  = [];
+  try {
+    TEAM_STATUS = JSON.parse(canvas.dataset.teamStatus || '{}');
+    AGENT_TASKS = JSON.parse(canvas.dataset.agentTasks  || '{}');
+    AGENT_LOGS  = JSON.parse(canvas.dataset.agentLogs   || '[]');
+  } catch(e) {}
+
+  // ── Sprite sheet: assets/32x32folk.png (384x256, 12 cols x 8 rows, 32px/tile)
+  // charIdx 0-3 → rows 0-3; charIdx 4-7 → rows 4-7
+  // Per char: cols = (charIdx%4)*3 .. +2; rows: down=+0, left=+1, right=+2, up=+3
+  var SS = {img:null, ok:false};
+  var ssImg = new Image();
+  ssImg.onload  = function() { SS.img = ssImg; SS.ok = true; };
+  ssImg.onerror = function() { SS.ok = false; };
+  ssImg.src = 'assets/32x32folk.png';
+
+  // ── Tileset: assets/gentle-obj.png (1440x1024, 45 cols x 32 rows, 32px/tile)
+  // Tile ID = row * 45 + col;  srcX = (id%45)*32;  srcY = floor(id/45)*32
+  // Tile 271 (row6,col1 → x=32,y=192) is the primary background tile in ai-town.
+  var TS = {img:null, ok:false};
+  var tsImg = new Image();
+  tsImg.onload  = function() { TS.img = tsImg; TS.ok = true; };
+  tsImg.onerror = function() { TS.ok = false; };
+  tsImg.src = 'assets/gentle-obj.png';
+  var TS_COLS = 45, TS_SZ = 32;
+
+  // ── Room definitions ──────────────────────────────────────────────────────────
+  // tiles: 4 IDs for 2x2 checkerboard floor pattern [col0row0, col1row0, col0row1, col1row1]
+  // wallTile: single tile ID for the 20px header strip
+  // tint: colour overlay that gives each room its identity at low opacity
+  var ROOMS = {
+    cc:    {name:'CC Room',    x:10,  y:10,  w:235, h:235,
+            bg:'#0d1b2e', border:'#4a9eff',
+            tiles:[271,272,316,317], wallTile:90,
+            tint:'rgba(26,60,110,0.30)'},
+    codex: {name:'Codex Room', x:255, y:10,  w:240, h:235,
+            bg:'#0a2a1a', border:'#00b894',
+            tiles:[315,316,360,361], wallTile:135,
+            tint:'rgba(10,80,50,0.30)'},
+    ag:    {name:'AG Room',    x:505, y:10,  w:245, h:235,
+            bg:'#2a1006', border:'#e17055',
+            tiles:[360,361,405,406], wallTile:180,
+            tint:'rgba(90,40,10,0.30)'},
+    brain: {name:'Brain HQ',   x:10,  y:255, w:740, h:155,
+            bg:'#16082e', border:'#a29bfe',
+            tiles:[405,406,450,451], wallTile:225,
+            tint:'rgba(55,20,100,0.30)'},
+  };
+
+  // ── Pre-rendered room backgrounds (offscreen canvas per room) ─────────────────
+  // Computed once when tileset loads; then blit every frame via drawImage (fast).
+  var ROOM_BG = {};
+  var bgRendered = false;
+
+  function prerenderRooms() {
+    if (bgRendered || !TS.ok || !TS.img) return;
+    Object.keys(ROOMS).forEach(function(key) {
+      var room = ROOMS[key];
+      var oc = document.createElement('canvas');
+      oc.width = room.w; oc.height = room.h;
+      var oc2 = oc.getContext('2d');
+      oc2.imageSmoothingEnabled = false;
+
+      // Solid colour base (shows through transparent tile regions)
+      oc2.fillStyle = room.bg;
+      oc2.fillRect(0, 0, room.w, room.h);
+
+      // Floor tiles — 2x2 checkerboard starting below header strip (y=20)
+      var WALL_H = 20;
+      for (var ty = WALL_H; ty < room.h + TS_SZ; ty += TS_SZ) {
+        for (var tx = 0; tx < room.w + TS_SZ; tx += TS_SZ) {
+          var col = Math.floor(tx / TS_SZ) % 2;
+          var row = Math.floor((ty - WALL_H) / TS_SZ) % 2;
+          var tid = room.tiles[col + row * 2];
+          var sx  = (tid % TS_COLS) * TS_SZ;
+          var sy  = Math.floor(tid / TS_COLS) * TS_SZ;
+          oc2.drawImage(TS.img, sx, sy, TS_SZ, TS_SZ, tx, ty, TS_SZ, TS_SZ);
+        }
+      }
+
+      // Wall strip tiles along top 20px
+      var wtid = room.wallTile;
+      var wsx = (wtid % TS_COLS) * TS_SZ, wsy = Math.floor(wtid / TS_COLS) * TS_SZ;
+      for (var wx = 0; wx < room.w + TS_SZ; wx += TS_SZ) {
+        oc2.drawImage(TS.img, wsx, wsy, TS_SZ, TS_SZ, wx, 0, TS_SZ, WALL_H);
+      }
+      // Darken wall strip for depth
+      oc2.fillStyle = 'rgba(0,0,0,0.40)';
+      oc2.fillRect(0, 0, room.w, WALL_H);
+
+      // Colour identity tint over the whole room
+      oc2.fillStyle = room.tint;
+      oc2.fillRect(0, 0, room.w, room.h);
+
+      ROOM_BG[key] = oc;
+    });
+    bgRendered = true;
+  }
+
+  // ── Desk positions (absolute canvas coords) ───────────────────────────────────
+  var DESKS = {
+    cc:    [[60,90],[127,90],[192,90],[60,175],[127,175]],
+    codex: [[300,90],[380,90],[300,175],[380,175]],
+    ag:    [[545,90],[620,90],[545,175],[620,175]],
+    brain: [[385,330]],
+  };
+
+  // ── Agent definitions ─────────────────────────────────────────────────────────
+  var AGENT_DEFS = [
+    {id:'Foreman',      emoji:'👔', team:'cc',    charIdx:0, roomId:'cc',    di:0, leader:true, color:'#4a9eff'},
+    {id:'Engineer',     emoji:'⌨',       team:'cc',    charIdx:1, roomId:'cc',    di:1,              color:'#74b9ff'},
+    {id:'Critic',       emoji:'🔍', team:'cc',    charIdx:2, roomId:'cc',    di:2,              color:'#74b9ff'},
+    {id:'GitOps',       emoji:'📤', team:'cc',    charIdx:3, roomId:'cc',    di:3,              color:'#74b9ff'},
+    {id:'VaultKeeper',  emoji:'🗄', team:'cc',    charIdx:4, roomId:'cc',    di:4,              color:'#74b9ff'},
+    {id:'Compute Lead', emoji:'👔', team:'codex', charIdx:5, roomId:'codex', di:0, leader:true, color:'#00b894'},
+    {id:'Quant',        emoji:'🧮', team:'codex', charIdx:6, roomId:'codex', di:1,              color:'#55efc4'},
+    {id:'Backtester',   emoji:'📊', team:'codex', charIdx:7, roomId:'codex', di:2,              color:'#55efc4'},
+    {id:'Builder',      emoji:'🔨', team:'codex', charIdx:0, roomId:'codex', di:3,              color:'#55efc4'},
+    {id:'Scout Lead',   emoji:'👔', team:'ag',    charIdx:1, roomId:'ag',    di:0, leader:true, color:'#e17055'},
+    {id:'Web Scout',    emoji:'🔍', team:'ag',    charIdx:2, roomId:'ag',    di:1,              color:'#fab1a0'},
+    {id:'Architect',    emoji:'🏗', team:'ag',    charIdx:3, roomId:'ag',    di:2,              color:'#fab1a0'},
+    {id:'Experimenter', emoji:'🧪', team:'ag',    charIdx:4, roomId:'ag',    di:3,              color:'#fab1a0'},
+    {id:'Brain',        emoji:'🧠', team:'brain', charIdx:5, roomId:'brain', di:0, leader:true, color:'#a29bfe'},
+  ];
+
+  // Map fictional team → real dashboard agent key for task text
+  var TEAM_REAL = {cc:'Hands-4', codex:'Hands-3', ag:'Hands-1', brain:'Brain'};
+
+  // Room key → engine aliases used in parsed logs
+  var ROOM_ENGINES = {
+    cc: ['claude_code', 'Hands-4', 'CC팀'],
+    codex: ['codex', 'Codex', 'Hands-3'],
+    ag: ['antigravity', 'Antigravity', 'Hands-1', 'Hands-2'],
+    brain: ['Brain']
+  };
+
+  // ── Sprite / animation constants ──────────────────────────────────────────────
+  var DIR_ROW   = {down:0, left:1, right:2, up:3};
+  var SPRITE_SZ = 28;
+  var SPEED     = 0.33;  // idle wander speed (50% of original 0.65)
+  var ANIM_RATE = 8;
+  var tick      = 0;
+
+  // ── Per-agent runtime state ───────────────────────────────────────────────────
+  var STATE = {};
+  AGENT_DEFS.forEach(function(def) {
+    var desks = DESKS[def.roomId] || [];
+    var desk  = desks[def.di]     || [385, 330];
+    var room  = ROOMS[def.roomId];
+    var ix = room.x + 24 + Math.random() * (room.w - 48);
+    var iy = room.y + 32 + Math.random() * (room.h - 56);
+    STATE[def.id] = {
+      x:ix, y:iy, tx:ix, ty:iy,
+      deskX:desk[0], deskY:desk[1],
+      dir:'down', frame:0, fTimer:0,
+      status:TEAM_STATUS[def.team] || 'idle',
+      wanderCd:Math.floor(Math.random() * 160),
+      effectT:0, moving:false,
+    };
+  });
+  AGENT_DEFS.forEach(function(def) {
+    if (STATE[def.id].status === 'done') STATE[def.id].effectT = 110;
+  });
+
+  // ── Update ────────────────────────────────────────────────────────────────────
+  function update() {
+    AGENT_DEFS.forEach(function(def) {
+      var s    = STATE[def.id];
+      var room = ROOMS[def.roomId];
+      if (s.status === 'active' || s.status === 'done') {
+        // Snap to desk immediately for active/done agents
+        s.x = s.deskX; s.y = s.deskY;
+        s.tx = s.deskX; s.ty = s.deskY;
+        s.moving = false; s.dir = 'down'; s.frame = 1;
+        if (s.effectT > 0) s.effectT--;
+        return; // skip movement code
+      } else {
+        s.wanderCd--;
+        if (s.wanderCd <= 0) {
+          if (Math.random() < 0.35) {
+            // Random pause in place
+            s.tx = s.x; s.ty = s.y;
+            s.wanderCd = 60 + Math.floor(Math.random() * 100);
+          } else {
+            var m = 28;
+            s.tx = room.x + m + Math.random() * (room.w - m * 2);
+            s.ty = room.y + m + 22 + Math.random() * (room.h - m * 2 - 20);
+            s.wanderCd = 80 + Math.floor(Math.random() * 150);
+          }
+        }
+      }
+      var dx = s.tx - s.x, dy = s.ty - s.y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > 1.5) {
+        s.x += (dx / dist) * SPEED;
+        s.y += (dy / dist) * SPEED;
+        s.moving = true;
+        s.dir = (Math.abs(dx) > Math.abs(dy)) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+        s.fTimer++;
+        if (s.fTimer >= ANIM_RATE) { s.fTimer = 0; s.frame = (s.frame + 1) % 3; }
+      } else {
+        s.moving = false; s.frame = 1;
+      }
+      var mg = 16;
+      s.x = Math.max(room.x + mg, Math.min(room.x + room.w - mg, s.x));
+      s.y = Math.max(room.y + mg + 22, Math.min(room.y + room.h - mg, s.y));
+      if (s.effectT > 0) s.effectT--;
+    });
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────────────
+  function render() {
+    prerenderRooms(); // no-op after first successful render
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#06060e';
+    ctx.fillRect(0, 0, W, H);
+
+    // Draw room backgrounds (tileset-based once loaded, solid-colour fallback)
+    Object.keys(ROOMS).forEach(function(k) { drawRoom(ROOMS[k], k); });
+
+    // Draw desks
+    Object.keys(DESKS).forEach(function(rid) {
+      var border = ROOMS[rid] ? ROOMS[rid].border : '#ffffff';
+      DESKS[rid].forEach(function(d) { drawDesk(d[0], d[1], border); });
+    });
+
+    // Active-leader room glow
+    AGENT_DEFS.filter(function(d) { return d.leader; }).forEach(function(def) {
+      var s = STATE[def.id];
+      if (s.status === 'active') {
+        var r = ROOMS[def.roomId];
+        ctx.save();
+        ctx.globalAlpha = 0.12 + 0.06 * Math.sin(tick * 0.06);
+        ctx.fillStyle = def.color;
+        ctx.fillRect(r.x + 2, r.y + 2, r.w - 4, r.h - 4);
+        ctx.restore();
+      }
+    });
+
+    // Draw agents sorted by Y (painter's algorithm)
+    var sorted = AGENT_DEFS.slice().sort(function(a, b) {
+      return STATE[a.id].y - STATE[b.id].y;
+    });
+    sorted.forEach(drawAgent);
+    tick++;
+  }
+
+  // ── drawRoom ─────────────────────────────────────────────────────────────────
+  function drawRoom(room, key) {
+    if (ROOM_BG[key]) {
+      // Fast blit of pre-rendered tileset background
+      ctx.drawImage(ROOM_BG[key], room.x, room.y);
+    } else {
+      // Fallback: solid colour + subtle grid (used before tileset loads)
+      ctx.fillStyle = room.bg;
+      ctx.fillRect(room.x, room.y, room.w, room.h);
+      ctx.strokeStyle = 'rgba(255,255,255,0.025)';
+      ctx.lineWidth = 1;
+      for (var gx = room.x; gx <= room.x + room.w; gx += 16) {
+        ctx.beginPath(); ctx.moveTo(gx+.5, room.y); ctx.lineTo(gx+.5, room.y+room.h); ctx.stroke();
+      }
+      for (var gy = room.y; gy <= room.y + room.h; gy += 16) {
+        ctx.beginPath(); ctx.moveTo(room.x, gy+.5); ctx.lineTo(room.x+room.w, gy+.5); ctx.stroke();
+      }
+    }
+    // Coloured border
+    ctx.strokeStyle = room.border;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(room.x + 1, room.y + 1, room.w - 2, room.h - 2);
+    // Clickable room label (pill background + text)
+    ctx.font = 'bold 10px monospace';
+    var lw = ctx.measureText(room.name).width;
+    ctx.fillStyle = 'rgba(0,0,0,0.80)';
+    ctx.fillRect(room.x + 4, room.y + 3, lw + 10, 14);
+    ctx.fillStyle = room.border;
+    ctx.textAlign = 'left';
+    ctx.fillText(room.name, room.x + 9, room.y + 13);
+  }
+
+  // ── drawDesk ─────────────────────────────────────────────────────────────────
+  function drawDesk(dx, dy, color) {
+    ctx.fillStyle = 'rgba(255,255,255,0.07)';
+    ctx.fillRect(dx - 13, dy - 7, 26, 14);
+    ctx.strokeStyle = color; ctx.lineWidth = 1;
+    ctx.strokeRect(dx - 13, dy - 7, 26, 14);
+    // Monitor
+    ctx.fillStyle = '#020208';
+    ctx.fillRect(dx - 7, dy - 20, 14, 12);
+    ctx.strokeStyle = color; ctx.lineWidth = 1;
+    ctx.strokeRect(dx - 7, dy - 20, 14, 12);
+    // Screen glow
+    ctx.save();
+    ctx.globalAlpha = 0.22 + 0.12 * Math.sin(tick * 0.04 + dx * 0.08);
+    ctx.fillStyle = color;
+    ctx.fillRect(dx - 6, dy - 19, 12, 10);
+    ctx.restore();
+  }
+
+  // ── drawAgent ─────────────────────────────────────────────────────────────────
+  function drawAgent(def) {
+    var s = STATE[def.id];
+    var x = s.x, y = s.y;
+
+    // Sprite or fallback circle
+    ctx.save();
+    if (SS.ok && SS.img) {
+      var cIdx      = def.charIdx;
+      var baseCol   = (cIdx % 4) * 3;
+      var baseRow   = Math.floor(cIdx / 4) * 4;
+      var spriteCol = baseCol + s.frame;
+      var spriteRow = baseRow + (DIR_ROW[s.dir] || 0);
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(SS.img,
+        spriteCol * 32, spriteRow * 32, 32, 32,
+        Math.round(x - SPRITE_SZ / 2), Math.round(y - SPRITE_SZ), SPRITE_SZ, SPRITE_SZ);
+    } else {
+      ctx.beginPath();
+      ctx.arc(x, y - 10, 11, 0, Math.PI * 2);
+      ctx.fillStyle = def.color + '22'; ctx.fill();
+      ctx.strokeStyle = def.color; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.font = '13px serif'; ctx.textAlign = 'center';
+      ctx.fillText(def.emoji, x, y - 4);
+    }
+    ctx.restore();
+
+    // Name tag
+    var label = def.id.length > 10 ? def.id.slice(0, 10) : def.id;
+    ctx.save();
+    ctx.font = 'bold 7px monospace'; ctx.textAlign = 'center';
+    var tw = ctx.measureText(label).width;
+    ctx.fillStyle = 'rgba(0,0,0,0.82)';
+    ctx.fillRect(Math.round(x - tw / 2 - 2), Math.round(y + 2), tw + 4, 9);
+    ctx.fillStyle = def.color;
+    ctx.fillText(label, x, Math.round(y) + 10);
+    ctx.restore();
+
+    // Status / speech-bubble overlay
+    ctx.save(); ctx.textAlign = 'center';
+    if (s.effectT > 0 && s.status === 'done') {
+      ctx.globalAlpha = s.effectT / 110;
+      ctx.font = '11px serif';
+      ctx.fillText('✅', x, y - SPRITE_SZ - 5);
+    } else if (s.status === 'error') {
+      ctx.globalAlpha = 0.5 + 0.5 * Math.sin(tick * 0.25);
+      ctx.font = '11px serif';
+      ctx.fillText('❌', x, y - SPRITE_SZ - 5);
+    } else if (s.status === 'active') {
+      if (!s.moving && def.leader) {
+        // Speech bubble showing current real task for the team leader
+        var rk = TEAM_REAL[def.team];
+        var taskTxt = AGENT_TASKS[rk] ? AGENT_TASKS[rk].substring(0, 28) : '작업 중...';
+        drawTaskBubble(x, y - SPRITE_SZ - 4, taskTxt, def.color);
+      } else if (!s.moving) {
+        // Typing dots for non-leader active agents
+        var dots = '.'.repeat(((tick >> 4) % 3) + 1);
+        ctx.globalAlpha = 0.9; ctx.fillStyle = def.color;
+        ctx.font = '8px monospace';
+        ctx.fillText(dots, x, y - SPRITE_SZ - 5);
+      }
+    }
+    ctx.restore();
+  }
+
+  // ── drawTaskBubble ────────────────────────────────────────────────────────────
+  function drawTaskBubble(x, y, text, color) {
+    ctx.save();
+    ctx.font = '7px monospace';
+    var tw = ctx.measureText(text).width;
+    var bw = tw + 8, bh = 12;
+    var bx = x - bw / 2, by = y - bh;
+
+    ctx.fillStyle = 'rgba(0,0,0,0.88)';
+    ctx.fillRect(bx, by, bw, bh);
+    ctx.strokeStyle = color; ctx.lineWidth = 1;
+    ctx.strokeRect(bx, by, bw, bh);
+
+    // Downward arrow
+    ctx.beginPath();
+    ctx.moveTo(x - 4, by + bh);
+    ctx.lineTo(x + 4, by + bh);
+    ctx.lineTo(x, by + bh + 5);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(0,0,0,0.88)'; ctx.fill();
+    ctx.strokeStyle = color; ctx.stroke();
+
+    ctx.fillStyle = color;
+    ctx.textAlign = 'center';
+    ctx.fillText(text, x, by + bh - 3);
+    ctx.restore();
+  }
+
+  // ── Popup ─────────────────────────────────────────────────────────────────────
+  function showPaPopup(roomKey) {
+    var room   = ROOMS[roomKey];
+    var agents = AGENT_DEFS.filter(function(d) { return d.roomId === roomKey; });
+    var rk     = TEAM_REAL[roomKey];
+
+    var titleEl = document.getElementById('pa-popup-title');
+    if (titleEl) { titleEl.textContent = room.name; titleEl.style.color = room.border; }
+
+    var stLabels = {active:'🔄 Active', idle:'💤 Idle', done:'✅ Done', error:'❌ Error'};
+    var stColors = {active:'#fdcb6e', idle:'#636e72', done:'#00b894', error:'#e17055'};
+
+    var html = '';
+    agents.forEach(function(def) {
+      var st      = (STATE[def.id] && STATE[def.id].status) || 'idle';
+      var stLabel = stLabels[st] || st;
+      var stColor = stColors[st] || '#aaa';
+      var taskTxt = '';
+      if (def.leader && AGENT_TASKS[rk]) {
+        taskTxt = AGENT_TASKS[rk].substring(0, 60) + (AGENT_TASKS[rk].length > 60 ? '...' : '');
+      }
+      html += '<div class="pa-popup-agent">';
+      html += '<span class="pa-popup-emoji">' + def.emoji + '</span>';
+      html += '<div style="flex:1;min-width:0">';
+      html += '<div class="pa-popup-name" style="color:' + def.color + '">' +
+              def.id + (def.leader ? ' 👑' : '') + '</div>';
+      if (taskTxt) {
+        html += '<div class="pa-popup-task">' + taskTxt + '</div>';
+      }
+      html += '</div>';
+      html += '<span class="pa-popup-status" style="color:' + stColor + '">' + stLabel + '</span>';
+      html += '</div>';
+    });
+    var roomEngines = ROOM_ENGINES[roomKey] || [];
+    var filteredLogs = AGENT_LOGS.filter(function(entry) {
+      return roomEngines.some(function(eng) {
+        var fromVal = entry.from || '';
+        var toVal = entry.to || '';
+        return fromVal.indexOf(eng) >= 0 || toVal.indexOf(eng) >= 0;
+      });
+    });
+    var displayLogs = filteredLogs.length > 0 ? filteredLogs : AGENT_LOGS;
+
+    html += '<div class="pa-popup-log-header">💬 대화 로그</div>';
+    if (displayLogs.length === 0) {
+      html += '<div class="pa-popup-log">로그 없음</div>';
+    } else {
+      html += '<div class="pa-popup-log-wrap">';
+      displayLogs.forEach(function(entry) {
+        var fromVal = entry.from || '';
+        var toVal = entry.to || '';
+        var fromLabel = fromVal === 'Brain' ? '🧠 Brain' : ('⌨️ ' + fromVal);
+        var toLabel   = toVal   === 'Brain' ? '🧠 Brain' : toVal;
+        var timeStr   = entry.time ? '[' + entry.time + '] ' : '';
+        html += '<div class="pa-log-entry">';
+        html += '<span class="pa-log-arrow">' + timeStr + fromLabel + ' → ' + toLabel + '</span>';
+        html += '<span class="pa-log-msg">' + (entry.msg || '') + '</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    var contentEl = document.getElementById('pa-popup-content');
+    if (contentEl) contentEl.innerHTML = html;
+
+    var overlayEl = document.getElementById('pa-popup-overlay');
+    if (overlayEl) overlayEl.style.display = 'block';
+  }
+
+  function closePaPopup() {
+    var el = document.getElementById('pa-popup-overlay');
+    if (el) el.style.display = 'none';
+  }
+  window.closePaPopup = closePaPopup;
+
+  // ── Click / hover handlers ────────────────────────────────────────────────────
+  canvas.addEventListener('click', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    var scX = W / rect.width, scY = H / rect.height;
+    var cx = (e.clientX - rect.left) * scX;
+    var cy = (e.clientY - rect.top)  * scY;
+    var clicked = null;
+    Object.keys(ROOMS).forEach(function(k) {
+      var r = ROOMS[k];
+      if (cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + 18) clicked = k;
+    });
+    if (clicked) showPaPopup(clicked);
+  });
+
+  canvas.addEventListener('mousemove', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    var scX = W / rect.width, scY = H / rect.height;
+    var cx = (e.clientX - rect.left) * scX;
+    var cy = (e.clientY - rect.top)  * scY;
+    var over = false;
+    Object.keys(ROOMS).forEach(function(k) {
+      var r = ROOMS[k];
+      if (cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + 18) over = true;
+    });
+    canvas.style.cursor = over ? 'pointer' : 'default';
+  });
+
+  // ── Main loop ─────────────────────────────────────────────────────────────────
+  function loop() { update(); render(); requestAnimationFrame(loop); }
+  loop();
+
+})();
+
+</script>
+
+<!-- ── Rules Summary ───────────────────────────────── -->
+
+
+<!-- ── Completed ───────────────────────────────────── -->
+
+
+<!-- ── Footer ──────────────────────────────────────── -->
+<footer class="footer">
+  <p>Generated: 2026-02-25 11:52 | Woosdom Mission Control v0.2</p>
+</footer>
+
+<script>
+
+// ─── Collapsible section toggle ───────────────────────
+function toggleSection(id) {
+  const el = document.getElementById(id);
+  const arrow = document.getElementById(id + '-arrow');
+  if (!el) return;
+  const isHidden = el.classList.contains('hidden');
+  el.classList.toggle('hidden');
+  if (arrow) arrow.textContent = isHidden ? '▲' : '▼';
+}
+
+// ─── Briefing toggle ───────────────────────────────────
+function toggleBriefing() {
+  const body = document.getElementById('briefing-body');
+  const btn  = document.getElementById('briefing-toggle');
+  if (body.style.display === 'none') {
+    body.style.display = '';
+    btn.textContent = '▲ 접기';
+  } else {
+    body.style.display = 'none';
+    btn.textContent = '▼ 브리핑 보기';
+  }
+}
+
+// ─── Completed items toggle ───────────────────────────
+function toggleCompl(id) {
+  const el  = document.getElementById(id);
+  const btn = el.previousElementSibling;
+  const isHidden = el.classList.contains('hidden');
+  el.classList.toggle('hidden');
+  btn.textContent = isHidden
+    ? '▲ 접기'
+    : `✅ 완료 항목 보기 (${el.querySelectorAll('li').length})`;
+}
+
+// ─── More completed toggle ───────────────────────────
+function toggleMore() {
+  const container = document.getElementById('hidden-completed');
+  const btn = document.getElementById('more-btn');
+  const items = container.querySelectorAll('.hidden-item');
+  const showing = btn.dataset.showing === 'true';
+  items.forEach(el => { el.style.display = showing ? 'none' : ''; });
+  btn.dataset.showing = showing ? 'false' : 'true';
+  const count = items.length;
+  btn.textContent = showing ? `▼ ${count}개 더 보기` : '▲ 접기';
+}
+
+// ─── Quick Launcher ───────────────────────────────────
+async function launchApp(method) {
+  if (typeof window.pywebview === 'undefined' || !window.pywebview.api) {
+    showToast('⚠️ PyWebView API 없음 (브라우저 미지원)', false);
+    return;
+  }
+  try {
+    const result = await window.pywebview.api[method]();
+    showToast(result, false);
+  } catch(e) {
+    showToast('❌ 오류: ' + e, true);
+  }
+}
+
+async function launchEngineWatch() {
+  const btn = document.getElementById('ql-engine-btn');
+  if (btn) { btn.textContent = '⏳ 스캔 중...'; btn.disabled = true; }
+  if (typeof window.pywebview === 'undefined' || !window.pywebview.api) {
+    showToast('⚠️ PyWebView API 없음', false);
+    if (btn) { btn.textContent = '🔍 Engine Watch'; btn.disabled = false; }
+    return;
+  }
+  try {
+    const result = await window.pywebview.api.run_engine_watch();
+    showToast(result, result.startsWith('❌'));
+  } catch(e) {
+    showToast('❌ Engine Watch 오류: ' + e, true);
+  } finally {
+    if (btn) { btn.textContent = '🔍 Engine Watch'; btn.disabled = false; }
+  }
+}
+
+async function launchBackup() {
+  const btn = document.getElementById('ql-backup-btn');
+  if (btn) { btn.textContent = '⏳ 백업 중...'; btn.disabled = true; }
+  if (typeof window.pywebview === 'undefined' || !window.pywebview.api) {
+    showToast('⚠️ PyWebView API 없음', false);
+    if (btn) { btn.textContent = '💾 Backup'; btn.disabled = false; }
+    return;
+  }
+  try {
+    const result = await window.pywebview.api.run_backup();
+    showToast(result, false);
+  } catch(e) {
+    showToast('❌ 백업 실패: ' + e, true);
+  } finally {
+    if (btn) { btn.textContent = '💾 Backup'; btn.disabled = false; }
+  }
+}
+
+function showToast(msg, isError) {
+  const existing = document.querySelector('.ql-toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.className = 'ql-toast' + (isError ? ' error' : '');
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 4200);
+}
+
+// ─── Domain / Section filter ──────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  let activeDomain  = 'all';
+  let activeSection = 'all';
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const domain  = this.dataset.domain;
+      const section = this.dataset.section;
+      if (domain !== undefined) {
+        activeDomain = domain;
+        document.querySelectorAll('[data-domain].filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      }
+      if (section !== undefined) {
+        activeSection = section;
+        document.querySelectorAll('[data-section].filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      }
+      applyFilters();
+    });
+  });
+
+  function applyFilters() {
+    // Filter project cards
+    document.querySelectorAll('.project-card').forEach(card => {
+      const dm = activeDomain  === 'all' || card.dataset.domain  === activeDomain;
+      const sm = activeSection === 'all' || card.dataset.section === activeSection;
+      card.style.display = (dm && sm) ? '' : 'none';
+    });
+    // Filter standalone task cards
+    document.querySelectorAll('.task-card').forEach(card => {
+      const dm = activeDomain  === 'all' || card.dataset.domain  === activeDomain;
+      const sm = activeSection === 'all' || card.dataset.section === activeSection;
+      card.style.display = (dm && sm) ? '' : 'none';
+    });
+  }
+});
+
+// ─── Milestone axis filter ────────────────────────
+function filterMilestones(axis) {
+  document.querySelectorAll('.axis-card').forEach(c => c.classList.remove('active'));
+  const items = document.querySelectorAll('.ms-item');
+  if (axis === 'all') {
+    items.forEach(el => el.classList.remove('filtered-out'));
+    return;
+  }
+  document.querySelectorAll('.axis-card').forEach(c => {
+    const nameEl = c.querySelector('.axis-name');
+    if (nameEl && nameEl.textContent.trim() === axis) c.classList.add('active');
+  });
+  items.forEach(el => {
+    if (el.dataset.axis === axis) {
+      el.classList.remove('filtered-out');
+    } else {
+      el.classList.add('filtered-out');
+    }
+  });
+}
+
+// ─── Theme toggle ─────────────────────────────────
+function toggleTheme() {
+  const body = document.body;
+  const btn = document.getElementById('theme-toggle');
+  const isLight = body.classList.toggle('light');
+  btn.textContent = isLight ? '☀️' : '🌙';
+}
+
+</script>
+</body>
+</html>
