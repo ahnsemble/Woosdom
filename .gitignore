@@ -30,3 +30,8 @@
 00_System/Templates/from_codex.md
 00_System/Templates/to_antigravity*.md
 00_System/Templates/from_antigravity*.md
+00_System/Templates/to_*.md
+00_System/Templates/from_*.md
+
+# Secrets / Tokens (launchd plists contain env vars)
+*.plist
