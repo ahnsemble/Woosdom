@@ -16,6 +16,10 @@
 # General Environment
 .env
 .env.local
+*.env
+
+# Python
+__pycache__/
 
 # Pixel Agents build artifacts
 02_Projects/pixel-agents-woosdom/node_modules/
