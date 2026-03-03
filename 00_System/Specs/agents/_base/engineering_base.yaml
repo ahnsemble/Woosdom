@@ -1,0 +1,29 @@
+# Engineering Division — Base Template
+extends: null
+
+common_engine:
+  primary_engine: "claude_code"
+  primary_model: "sonnet-4.5"
+  fallback_engine: "codex"
+  fallback_model: "gpt-5.3"
+
+common_vault:
+  reads:
+    - path: "02_Projects/"
+    - path: "CLAUDE.md"
+  writes:
+    - path: "00_System/Logs/agent_activity.md"
+  forbidden:
+    - path: "01_Domains/Finance/Rules.md"
+    - path: "01_Domains/Finance/portfolio.json"
+
+common_rules:
+  hard:
+    - "portfolio.json, Rules.md 수정 감지 시 즉시 STOP → Brain 에스컬레이션"
+    - "main/master 직접 push 금지 → feature branch만"
+    - "rm -rf, DROP TABLE 등 파괴적 명령 금지"
+    - "API 키/토큰 외부 전송 절대 금지"
+  avoidance:
+    - "금융 매매 판단 — Finance Division 영역"
+    - "전략적 의사결정 — Brain 영역"
+    - "웹 리서치 — Research Division 영역"

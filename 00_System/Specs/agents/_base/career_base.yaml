@@ -1,0 +1,31 @@
+# Career Division — Base Template
+extends: null
+
+common_engine:
+  primary_engine: "brain_direct"
+  primary_model: "opus-4.6"
+  fallback_engine: "claude_code"
+  fallback_model: "sonnet-4.5"
+
+common_vault:
+  reads:
+    - path: "01_Domains/Career/"
+    - path: "00_System/Prompts/Ontology/brain_directive.md"
+  writes:
+    - path: "01_Domains/Career/"
+    - path: "00_System/Logs/agent_activity.md"
+  forbidden:
+    - path: "01_Domains/Finance/"
+
+common_rules:
+  hard:
+    - "금융 파일 접근 금지"
+    - "사용자 동의 없는 외부 지원/프로필 수정 금지"
+  avoidance:
+    - "금융 분석 — Finance Division 영역"
+    - "코드 직접 작성 — Engineering Division 영역"
+
+common_context:
+  - "무영건축 대리 5년차, FDE/SA 전환 목표"
+  - "Woosdom 시스템 = 포트폴리오 프로젝트 #1"
+  - "영앤리치 프로토콜 진행 중"

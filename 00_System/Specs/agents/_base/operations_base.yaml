@@ -1,0 +1,31 @@
+# Operations Division — Base Template
+extends: null
+
+common_engine:
+  primary_engine: "claude_code"
+  primary_model: "sonnet-4.5"
+  fallback_engine: "brain_direct"
+  fallback_model: "opus-4.6"
+
+common_vault:
+  reads:
+    - path: "02_Projects/task_bridge/"
+    - path: "02_Projects/woosdom_app/"
+    - path: "00_System/"
+  writes:
+    - path: "00_System/Logs/"
+    - path: "02_Projects/task_bridge/"
+  forbidden:
+    - path: "01_Domains/Finance/Rules.md"
+    - path: "01_Domains/Finance/portfolio.json"
+
+common_rules:
+  hard:
+    - "금융 파일 수정 금지"
+    - "rm -rf, 파괴적 명령 금지"
+    - "API 키/토큰 외부 전송 절대 금지"
+    - "일일 turns 300 초과 금지"
+  avoidance:
+    - "전략적 판단 — Brain 영역"
+    - "금융 분석 — Finance Division 영역"
+    - "게임/콘텐츠 개발 — Creative Division 영역"

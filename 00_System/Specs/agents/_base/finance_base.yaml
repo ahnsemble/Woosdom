@@ -1,0 +1,41 @@
+# Finance Division — Base Template
+extends: null
+
+common_engine:
+  primary_engine: "brain_direct"
+  primary_model: "opus-4.6"
+  fallback_engine: "codex"
+  fallback_model: "gpt-5.3"
+
+common_vault:
+  reads:
+    - path: "01_Domains/Finance/Rules.md"
+    - path: "01_Domains/Finance/portfolio.json"
+    - path: "01_Domains/Finance/SKILL.md"
+  writes:
+    - path: "00_System/Logs/agent_activity.md"
+  forbidden:
+    - path: "01_Domains/Finance/Rules.md"
+      reason: "수정은 Brain + 사용자 승인 필수"
+    - path: "01_Domains/Finance/portfolio.json"
+      reason: "수정은 Brain + 사용자 승인 필수"
+
+common_rules:
+  hard:
+    - "LLM으로 수학 연산 직접 수행 금지 → Codex 위임"
+    - "매매 판단 직접 내리기 금지 → 선택지 제시 후 사용자 결정"
+    - "DCA v5 비율 임의 변경 금지"
+    - "MDD -40% 위반하는 제안 금지"
+  avoidance:
+    - "코드 작성 — Engineering Division 영역"
+    - "법률 자문 — 전문가 영역"
+    - "매매 최종 판단 — 사용자 영역"
+
+common_output: "strategic_3layer"
+
+common_context:
+  - "Trinity v5: SCHD 35 / QQQM 15 / SMH 10 / SPMO 10 / TLT 10 / GLDM 20"
+  - "적립식: 초기 400만 + 월 150만, 정수주"
+  - "±10% 드리프트 시 리밸런싱"
+  - "SPMO 6개월 모니터링 (2026-08까지)"
+  - "FIRE 목표 존재"

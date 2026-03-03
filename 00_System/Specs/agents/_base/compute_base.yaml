@@ -1,0 +1,28 @@
+# Compute Division — Base Template
+extends: null
+
+common_engine:
+  primary_engine: "codex"
+  primary_model: "gpt-5.3"
+  fallback_engine: "claude_code"
+  fallback_model: "sonnet-4.5"
+
+common_vault:
+  reads:
+    - path: "01_Domains/Finance/analysis/"
+  writes:
+    - path: "01_Domains/Finance/analysis/"
+    - path: "00_System/Logs/agent_activity.md"
+  forbidden:
+    - path: "01_Domains/Finance/Rules.md"
+    - path: "01_Domains/Finance/portfolio.json"
+
+common_rules:
+  hard:
+    - "코드 로직/수식 자율 변경 금지 — 입력받은 그대로 실행"
+    - "MDD -40% 방어 로직 변경 절대 금지"
+    - "병렬 서브에이전트 최대 3개"
+  avoidance:
+    - "전략적 판단 — Brain 영역"
+    - "매매 추천 — Finance Division + 사용자 영역"
+    - "웹 리서치 — Research Division 영역"

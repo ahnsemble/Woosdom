@@ -13,8 +13,12 @@ from datetime import datetime, timezone
 CALLBACK_TIMEOUT   = 120        # Brain 콜백 최대 대기 시간 (초)
 MAX_FROM_PREVIEW   = 3000       # from_ 내용 Brain에 전달할 최대 문자 수
 MAX_CHAIN_DEPTH    = 3          # 최대 체이닝 깊이
+FAILOVER_THRESHOLD = 3          # 연속 실패 시 Sub-Brain 인수 트리거
 
 VALID_ENGINES = {"claude_code", "codex", "antigravity"}
+
+# ── 연속 실패 카운터 (Sub-Brain failover) ─────────────────────────────────────
+_consecutive_failures = 0
 
 # ── 일일 한도 ─────────────────────────────────────────────────────────────────
 MAX_DAILY_BRAIN_CALLS = 30
@@ -168,8 +172,9 @@ def run_brain_callback(engine: str, from_content: str, chain_depth: int = 0) -> 
         _increment_brain_count()
 
         if proc.returncode != 0:
+            _increment_failure()
             stderr = proc.stderr[:500] if proc.stderr else ""
-            return {
+            result = {
                 "decision": "ESCALATE",
                 "target_engine": None,
                 "summary": f"Brain CLI 오류 (exit={proc.returncode}): {stderr}",
@@ -177,7 +182,11 @@ def run_brain_callback(engine: str, from_content: str, chain_depth: int = 0) -> 
                 "success": False,
                 "error": f"exit code {proc.returncode}",
             }
+            _check_failover_threshold()
+            return result
 
+        # 성공 — 카운터 리셋
+        _reset_failure_counter()
         response = proc.stdout.strip()
         decision, target_engine, summary, chain_content = _parse_brain_response(response)
 
@@ -191,8 +200,9 @@ def run_brain_callback(engine: str, from_content: str, chain_depth: int = 0) -> 
         }
 
     except subprocess.TimeoutExpired:
+        _increment_failure()
         elapsed = time.time() - start
-        return {
+        result = {
             "decision": "ESCALATE",
             "target_engine": None,
             "summary": f"Brain 콜백 타임아웃 ({CALLBACK_TIMEOUT}초)",
@@ -200,8 +210,11 @@ def run_brain_callback(engine: str, from_content: str, chain_depth: int = 0) -> 
             "success": False,
             "error": f"timeout after {elapsed:.0f}s",
         }
+        _check_failover_threshold()
+        return result
     except FileNotFoundError:
-        return {
+        _increment_failure()
+        result = {
             "decision": "ESCALATE",
             "target_engine": None,
             "summary": "claude CLI를 찾을 수 없음 — PATH 확인 필요",
@@ -209,8 +222,11 @@ def run_brain_callback(engine: str, from_content: str, chain_depth: int = 0) -> 
             "success": False,
             "error": "claude CLI not found",
         }
+        _check_failover_threshold()
+        return result
     except Exception as e:
-        return {
+        _increment_failure()
+        result = {
             "decision": "ESCALATE",
             "target_engine": None,
             "summary": f"Brain 콜백 예외: {e}",
@@ -218,6 +234,8 @@ def run_brain_callback(engine: str, from_content: str, chain_depth: int = 0) -> 
             "success": False,
             "error": str(e),
         }
+        _check_failover_threshold()
+        return result
 
 
 def get_daily_brain_stats() -> dict:
@@ -227,4 +245,98 @@ def get_daily_brain_stats() -> dict:
         "date":           _brain_call_date,
         "calls_made":     _brain_call_count,
         "calls_remaining": MAX_DAILY_BRAIN_CALLS - _brain_call_count,
+    }
+
+
+# ── Sub-Brain Failover ────────────────────────────────────────────────────────
+
+def _increment_failure():
+    """연속 실패 카운터 증가."""
+    global _consecutive_failures
+    _consecutive_failures += 1
+
+
+def _reset_failure_counter():
+    """성공 시 연속 실패 카운터 리셋."""
+    global _consecutive_failures
+    _consecutive_failures = 0
+
+
+def _check_failover_threshold():
+    """threshold 도달 시 handoff 생성 + TG 알림."""
+    if _consecutive_failures >= FAILOVER_THRESHOLD:
+        try:
+            path = generate_brain_handoff()
+            # lazy import — 순환 의존성 방지
+            from task_bridge import _send_telegram
+            _send_telegram(
+                f"🚨 <b>Brain 장애 감지</b>\n"
+                f"연속 실패: {_consecutive_failures}회\n"
+                f"Sub-Brain 인수 패키지 생성: {path}"
+            )
+        except Exception as e:
+            print(f"[failover] handoff 생성 실패: {e}")
+
+
+def generate_brain_handoff() -> str:
+    """brain_handoff_template.md를 읽고 플레이스홀더 치환 후 brain_handoff.md 저장.
+
+    Returns:
+        생성된 brain_handoff.md 절대 경로
+    """
+    from task_bridge import VAULT_ROOT, _send_telegram
+
+    templates_dir = os.path.join(VAULT_ROOT, "00_System", "Templates")
+    template_path = os.path.join(templates_dir, "brain_handoff_template.md")
+    output_path = os.path.join(templates_dir, "brain_handoff.md")
+
+    # 템플릿 읽기
+    with open(template_path, "r", encoding="utf-8") as f:
+        template = f.read()
+
+    # 컨텍스트 파일 읽기
+    active_ctx_path = os.path.join(
+        VAULT_ROOT, "00_System", "Prompts", "Ontology", "active_context.md"
+    )
+    conv_mem_path = os.path.join(
+        VAULT_ROOT, "00_System", "Memory", "conversation_memory.md"
+    )
+
+    def _safe_read(path: str) -> str:
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read()
+        except Exception:
+            return "(파일 읽기 실패)"
+
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    active_context = _safe_read(active_ctx_path)
+    conversation_memory = _safe_read(conv_mem_path)
+
+    # 치환
+    content = template.replace("{{timestamp}}", timestamp)
+    content = content.replace("{{active_context}}", active_context)
+    content = content.replace("{{conversation_memory}}", conversation_memory)
+
+    # 저장
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+    return output_path
+
+
+def get_failover_status() -> dict:
+    """현재 failover 상태 반환.
+
+    Returns:
+        {
+            "consecutive_failures": int,
+            "threshold": int,
+            "failover_triggered": bool,
+        }
+    """
+    return {
+        "consecutive_failures": _consecutive_failures,
+        "threshold": FAILOVER_THRESHOLD,
+        "failover_triggered": _consecutive_failures >= FAILOVER_THRESHOLD,
     }

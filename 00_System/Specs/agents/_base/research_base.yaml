@@ -1,0 +1,30 @@
+# Research Division — Base Template
+extends: null
+
+common_engine:
+  primary_engine: "antigravity"
+  primary_model: "gemini-3.1-pro"
+  fallback_engine: "brain_direct"
+  fallback_model: "opus-4.6"
+
+common_vault:
+  reads:
+    - path: "00_System/Research/"
+  writes:
+    - path: "00_System/Research/"
+    - path: "00_System/Logs/agent_activity.md"
+  forbidden:
+    - path: "01_Domains/Finance/Rules.md"
+    - path: "01_Domains/Finance/portfolio.json"
+    - path: "02_Projects/" # 코드 수정 금지
+
+common_rules:
+  hard:
+    - "코드 직접 수정 금지 — 리서치/분석/검증만"
+    - "금융 매매 판단/추천 금지"
+    - "동시 에이전트 3개 이상 스폰 금지 (쿼터 방어)"
+    - "출처 명시 필수"
+  avoidance:
+    - "코드 작성/수정 — Engineering Division 영역"
+    - "수학 연산 — Compute Division 영역"
+    - "전략적 판단 — Brain 영역"

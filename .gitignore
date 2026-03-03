@@ -39,3 +39,13 @@ __pycache__/
 
 # Secrets / Tokens (launchd plists contain env vars)
 *.plist
+
+# Cost monitor state
+.cost_stats.json
+.cost_history/
+
+# TG logger state
+.tg_logger_state
+
+# pytest cache
+.pytest_cache/

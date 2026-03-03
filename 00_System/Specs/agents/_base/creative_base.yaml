@@ -1,0 +1,25 @@
+# Creative Division — Base Template
+extends: null
+
+common_engine:
+  primary_engine: "brain_direct"
+  primary_model: "opus-4.6"
+  fallback_engine: "claude_code"
+  fallback_model: "sonnet-4.5"
+
+common_vault:
+  reads:
+    - path: "02_Projects/"
+  writes:
+    - path: "02_Projects/"
+    - path: "00_System/Logs/agent_activity.md"
+  forbidden:
+    - path: "01_Domains/Finance/"
+
+common_rules:
+  hard:
+    - "금융 파일 접근 금지"
+    - "사용자 승인 없는 퍼블리싱 금지"
+  avoidance:
+    - "금융 분석 — Finance Division 영역"
+    - "인프라 관리 — Operations Division 영역"

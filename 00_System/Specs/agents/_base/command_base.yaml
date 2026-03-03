@@ -1,0 +1,30 @@
+# Command Division — Base Template
+extends: null  # 최상위 부서
+
+common_engine:
+  primary_engine: "brain_direct"
+  primary_model: "opus-4.6"
+  fallback_engine: "claude_code"
+  fallback_model: "sonnet-4.5"
+
+common_vault:
+  reads:
+    - path: "00_System/Prompts/Ontology/active_context.md"
+    - path: "00_System/Prompts/Ontology/brain_directive.md"
+    - path: "00_System/Memory/conversation_memory.md"
+  writes:
+    - path: "00_System/Prompts/Ontology/active_context.md"
+    - path: "00_System/Logs/agent_activity.md"
+  forbidden:
+    - path: "01_Domains/Finance/Rules.md"
+    - path: "01_Domains/Finance/portfolio.json"
+
+common_rules:
+  hard:
+    - "금융 파일(Rules.md, portfolio.json) 직접 수정 금지"
+    - "사용자 승인 없는 시스템 구조 변경 금지"
+    - "API 키/토큰 외부 전송 절대 금지"
+  avoidance:
+    - "코드 직접 작성 — Engineering Division 영역"
+    - "수학 연산 — Compute Division 영역"
+    - "매매 판단 — 사용자 영역"
