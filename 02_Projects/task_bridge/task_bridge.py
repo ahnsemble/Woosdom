@@ -52,14 +52,14 @@ from hands3_runner import run_claude_code
 from codex_runner import run_codex
 from gemini_runner import run_gemini
 from brain_callback import run_brain_callback, _check_brain_daily_limit, get_daily_brain_stats
-from cost_monitor import record_engine_run, record_brain_callback, record_dangerous_block, get_daily_summary
+from cost_monitor import record_engine_run, record_brain_callback, record_dangerous_block, get_daily_summary, get_morning_brief
 
 START_TIME = time.time()
 
 
 def get_version() -> str:
     """현재 Task Bridge 버전 문자열 반환."""
-    return "v4.7"
+    return "v4.8"
 
 
 def health_check() -> dict:
@@ -563,6 +563,7 @@ def _send_telegram(text: str):
             )
             urllib.request.urlopen(req, timeout=5)
             print("[bridge] Telegram 발송 완료")
+            log_bridge("Telegram 발송 완료")
             return
         except Exception as e:
             wait = 2 ** (attempt + 1)  # 2s, 4s, 8s
@@ -571,6 +572,7 @@ def _send_telegram(text: str):
                 time.sleep(wait)
             else:
                 print(f"[bridge] Telegram 최종 실패 (시도 {max_retries}/{max_retries}): {e}")
+                log_bridge(f"Telegram 최종 실패: {e}", "ERROR")
 
 
 # ── Auto-Brain Callback 핸들러 ────────────────────────────────────────────────
@@ -594,6 +596,7 @@ def _handle_brain_decision(cb_result: dict, chain_depth: int, state: dict):
 
     if decision == "DONE":
         print(f"[brain_cb] ✅ DONE — {summary[:100]}")
+        log_bridge(f"Brain 콜백 DONE: {summary[:100]}")
         _send_telegram(
             f"✅ <b>Auto-Brain: DONE</b>\n{_escape_html(summary[:500])}"
         )
@@ -640,6 +643,7 @@ def _handle_brain_decision(cb_result: dict, chain_depth: int, state: dict):
     else:  # ESCALATE or UNKNOWN
         label = "ESCALATE" if decision == "ESCALATE" else "UNKNOWN"
         print(f"[brain_cb] 🚨 {label} — {summary[:100]}")
+        log_bridge(f"Brain 콜백 {label}: {summary[:100]}", "WARN")
         _send_telegram(
             f"🚨 <b>Auto-Brain: {label}</b>\n{_escape_html(summary[:500])}"
         )
@@ -710,6 +714,7 @@ def _run_auto_brain_callback(engine: str, from_path: str, state: dict,
 
     depth = _current_chain_depth
     print(f"[brain_cb] 🧠 Brain 콜백 시작 (engine={engine}, depth={depth})")
+    log_bridge(f"Brain 콜백 시작: engine={engine}, depth={depth}")
     cb_result = run_brain_callback(engine, from_content, chain_depth=depth)
     record_brain_callback()  # T4b: 비용 기록
     _handle_brain_decision(cb_result, chain_depth=depth, state=state)
@@ -720,8 +725,8 @@ def main():
 
     print(f"[bridge] Task Bridge {get_version()} 시작 (Agent Chaining + Spec Pipeline + 안전장치)")
 
-    # T4b: 전날 비용 리포트 발송 (첫 감지)
-    _send_telegram(get_daily_summary())
+    # 모닝 브리프 발송 (startup)
+    _send_telegram(get_morning_brief())
 
     client = None
     try:
@@ -782,6 +787,7 @@ def main():
                     if direction == "to":
                         title, _ = _parse_to_hands(content)
                         print(f"[bridge] 새 작업: {title} → {display}")
+                        log_bridge(f"새 작업: {title} → {display}")
                         if client:
                             try:
                                 tid = add_task(client, title, engine, content)
@@ -798,6 +804,7 @@ def main():
                         dangers = _check_dangerous(content)
                         if dangers:
                             print(f"[bridge] ⛔ 위험 명령 차단: {dangers}")
+                            log_bridge(f"위험 명령 차단: {dangers}", "WARN")
                             _send_telegram(
                                 f"⚠️ 위험 명령 감지: {dangers}. 실행을 건너뜁니다."
                             )
@@ -810,6 +817,7 @@ def main():
                         # CC 자동 실행 (claude_code 엔진만)
                         if engine == "claude_code":
                             print(f"[bridge] ⚡ CC 자동 실행 시작: {title}")
+                            log_bridge(f"CC 자동 실행 시작: {title}")
                             _send_telegram(f"⚡ <b>CC 자동 실행 시작</b>\n{_escape_html(title)}")
 
                             cc_result = run_claude_code(
@@ -827,6 +835,7 @@ def main():
 
                             status_emoji = "✅" if cc_result["success"] else "❌"
                             elapsed = cc_result["elapsed_seconds"]
+                            log_bridge(f"CC 완료: {title}, {elapsed:.0f}초, exit={'성공' if cc_result['success'] else '실패'}")
                             _send_telegram(
                                 f"{status_emoji} <b>CC 실행 완료</b>\n{_escape_html(title)}\n"
                                 f"소요: {elapsed:.0f}초\nfrom_claude_code.md 업데이트됨"
@@ -842,6 +851,7 @@ def main():
                         # Codex 자동 실행
                         if engine == "codex":
                             print(f"[bridge] ⚡ Codex 자동 실행 시작: {title}")
+                            log_bridge(f"Codex 자동 실행 시작: {title}")
                             _send_telegram(f"⚡ <b>Codex 자동 실행 시작</b>\n{_escape_html(title)}")
 
                             codex_result = run_codex(
@@ -859,6 +869,7 @@ def main():
 
                             status_emoji = "✅" if codex_result["success"] else "❌"
                             elapsed = codex_result["elapsed_seconds"]
+                            log_bridge(f"Codex 완료: {title}, {elapsed:.0f}초, exit={'성공' if codex_result['success'] else '실패'}")
                             _send_telegram(
                                 f"{status_emoji} <b>Codex 실행 완료</b>\n{_escape_html(title)}\n"
                                 f"소요: {elapsed:.0f}초\nfrom_codex.md 업데이트됨"
@@ -871,37 +882,12 @@ def main():
                             _run_auto_brain_callback("codex", from_path, state,
                                                      to_content=injected_content)
 
-                        # Gemini CLI 자동 실행 (antigravity 엔진)
+                        # Antigravity — GUI 앱, CLI 자동 실행 불가. 완전 스킵.
+                        # (v4.8: Gemini CLI 대체 실행 제거 — Brain 지시)
                         if engine == "antigravity":
-                            print(f"[bridge] ⚡ Gemini CLI 자동 실행 시작: {title}")
-                            _send_telegram(f"⚡ <b>Gemini CLI 자동 실행 시작</b>\n{_escape_html(title)}")
-
-                            gemini_result = run_gemini(
-                                prompt=f"다음 작업지시서를 읽고 실행하세요. 결과를 간결하게 보고하세요.\n\n{injected_content}",
-                                working_dir="/Users/woosung/Desktop/Dev/Woosdom_Brain"
-                            )
-
-                            from_path = WATCH_FILES["from"]["antigravity"]
-                            result_md = _format_engine_result(title, gemini_result, "antigravity")
-                            with open(from_path, "w", encoding="utf-8") as f:
-                                f.write(result_md)
-                            fkey = "from_antigravity"
-                            state[fkey]["hash"]  = hashlib.md5(result_md.encode()).hexdigest()
-                            state[fkey]["mtime"] = _file_mtime(from_path)
-
-                            status_emoji = "✅" if gemini_result["success"] else "❌"
-                            elapsed = gemini_result["elapsed_seconds"]
-                            _send_telegram(
-                                f"{status_emoji} <b>Gemini CLI 실행 완료</b>\n{_escape_html(title)}\n"
-                                f"소요: {elapsed:.0f}초\nfrom_antigravity.md 업데이트됨"
-                            )
-
-                            # T4b: 비용 기록
-                            record_engine_run("antigravity", elapsed, gemini_result.get("max_turns_used", 10))
-
-                            # Auto-Brain Callback (S-1) + Agent Chaining (S-8)
-                            _run_auto_brain_callback("antigravity", from_path, state,
-                                                     to_content=injected_content)
+                            print(f"[bridge] SKIP antigravity — GUI app, manual execution only: {title}")
+                            log_bridge(f"SKIP antigravity — GUI app, manual only: {title}", "INFO")
+                            # TG 알림은 위에서 이미 '새 작업 / 수동 전달' 메시지로 발송됨. 추가 실행 없음.
 
                     else:  # from — Brain이 직접 기록한 경우 (외부 에이전트 완료)
                         print(f"[bridge] 작업 완료: {display}")

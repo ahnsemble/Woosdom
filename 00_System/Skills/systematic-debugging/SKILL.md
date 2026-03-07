@@ -52,7 +52,7 @@ description: >
 
 ## Brain → Hands 디버깅 위임 템플릿
 
-Brain이 to_hands.md에 디버깅 태스크 작성 시:
+Brain이 `to_[engine].md` (엔진별 전용 파일)에 디버깅 태스크 작성 시:
 
 ```markdown
 ### T1: 증상 수집
@@ -62,7 +62,7 @@ Brain이 to_hands.md에 디버깅 태스크 작성 시:
 
 ### T2: 가설 수립 + 격리 검증
 - **작업:** 가설 최대 3개 → 검증 비용 낮은 순으로 테스트
-- **검증:** `from_hands.md에 가설별 ✅/❌ 기록`
+- **검증:** `from_[engine].md에 가설별 ✅/❌ 기록`
 - **예상:** ~5min
 
 ### T3: 수정 + 회귀 확인
@@ -84,6 +84,6 @@ Brain이 to_hands.md에 디버깅 태스크 작성 시:
 ## Hands가 막혔을 때 (Escalation)
 
 3회 이상 가설 기각 시:
-1. 현재까지 수집된 증거 + 시도한 가설 목록을 from_hands.md에 기록
+1. 현재까지 수집된 증거 + 시도한 가설 목록을 `from_[engine].md`에 기록
 2. Brain에 에스컬레이션 → Brain이 새 가설 방향 제시 또는 다른 엔진 라우팅
 3. **절대 같은 접근을 반복하지 않음**

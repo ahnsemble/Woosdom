@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Woosdom Command Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  {% if inline_css %}
+  <style>{{ inline_css | safe }}</style>
+  {% else %}
+  <link rel="stylesheet" href="src/css/base_v2.css">
+  <link rel="stylesheet" href="src/css/layout_v2.css">
+  {% for css_path in panel_css %}
+  <link rel="stylesheet" href="{{ css_path }}">
+  {% endfor %}
+  {% endif %}
+</head>
+<body class="dark">
+
+  {# ── Header ── #}
+  <header class="header-v2">
+    <h1 class="header-v2__title">Woosdom Command Center</h1>
+    <div class="header-v2__right">
+      <span class="header-v2__badge">
+        <span class="dot"></span>
+        v2 MVP
+      </span>
+      <span class="header-v2__time" id="header-clock">{{ build_time }}</span>
+      <button class="theme-toggle" id="theme-toggle" title="Toggle theme">&#9681;</button>
+    </div>
+  </header>
+
+  {# ── Dashboard Grid ── #}
+  <main class="dashboard-grid">
+    {% include 'partials/fleet-panel.html' %}
+    {% include 'partials/system-status.html' %}
+    {% include 'partials/agent-grid.html' %}
+    {% include 'partials/activity-feed.html' %}
+    {% include 'partials/sprint.html' %}
+    {% include 'partials/portfolio.html' %}
+    {% include 'partials/cost.html' %}
+  </main>
+
+  {% if inline_js %}
+  <script>{{ inline_js | safe }}</script>
+  {% else %}
+  <script src="src/js/core_v2.js"></script>
+  {% endif %}
+</body>
+</html>

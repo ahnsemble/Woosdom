@@ -1,0 +1,109 @@
+/* ============================================
+   cost.css — P6: Cost Monitor
+   ============================================ */
+
+/* ── Table ── */
+.cost-table-wrap {
+  overflow-x: auto;
+  margin-bottom: var(--space-md);
+}
+
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+.cost-table th {
+  text-align: left;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: var(--border-card);
+}
+
+.cost-table td {
+  padding: var(--space-xs) var(--space-sm);
+  vertical-align: middle;
+}
+
+/* ── Row ── */
+.cost-row {
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+
+.cost-row:hover {
+  background: var(--color-accent-dim);
+}
+
+.cost-row__name {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.cost-row__num {
+  color: var(--color-text-secondary);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Cap Bar ── */
+.cost-row__cap {
+  min-width: 100px;
+}
+
+.cost-cap-bar {
+  height: 6px;
+  background: var(--color-bg);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  margin-bottom: 2px;
+}
+
+.cost-cap-bar__fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.cost-cap-bar__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}
+
+/* ── Summary Row ── */
+.cost-summary {
+  display: flex;
+  gap: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: var(--border-card);
+  flex-wrap: wrap;
+}
+
+.cost-summary__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+.cost-summary__label {
+  color: var(--color-muted);
+}
+
+.cost-summary__value {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.cost-summary__item--warn .cost-summary__value {
+  color: var(--color-warning);
+}

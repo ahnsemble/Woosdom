@@ -1,0 +1,2942 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Woosdom Command Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>/* ============================================
+   base_v2.css — Woosdom Command Center v2
+   Design Tokens + Reset + Typography
+   ============================================ */
+
+:root {
+  /* Background */
+  --color-bg: #0d0d1a;
+  --color-surface: #181830;
+  --color-border: #252545;
+
+  /* Text */
+  --color-text: #e2e2f0;
+  --color-text-secondary: #a0a0c0;
+  --color-muted: #7a7a9a;
+
+  /* Accent */
+  --color-accent: #4ecdc4;
+  --color-accent-dim: rgba(78, 205, 196, 0.15);
+
+  /* Status */
+  --color-online: #00b894;
+  --color-idle: #636e72;
+  --color-warning: #fdcb6e;
+  --color-error: #e74c3c;
+
+  /* Freshness (alias) */
+  --color-fresh: #00b894;
+  --color-aging: #fdcb6e;
+  --color-stale: #e74c3c;
+  --color-never: #636e72;
+
+  /* Engine tags */
+  --color-engine-cc: #74b9ff;
+  --color-engine-codex: #a29bfe;
+  --color-engine-ag: #55efc4;
+  --color-engine-brain: #4ecdc4;
+  --color-engine-bridge: #636e72;
+
+  /* Tier badges */
+  --color-tier-t1: #ff6b6b;
+  --color-tier-t2: #fdcb6e;
+  --color-tier-t3: #636e72;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 36px;
+
+  /* Typography */
+  --font-heading: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-data: 'JetBrains Mono', 'SF Mono', monospace;
+  --font-size-xs: 0.7rem;
+  --font-size-sm: 0.78rem;
+  --font-size-base: 0.88rem;
+  --font-size-lg: 1.1rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 1.75rem;
+
+  /* Borders & Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --border-card: 1px solid var(--color-border);
+
+  /* Shadows */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  /* Layout */
+  --layout-max-width: 1440px;
+}
+
+/* Light theme override */
+body.light {
+  --color-bg: #f0f0f8;
+  --color-surface: #ffffff;
+  --color-border: #d0d0e0;
+  --color-text: #1a1a2e;
+  --color-text-secondary: #4a4a6a;
+  --color-muted: #8a8aaa;
+  --color-accent-dim: rgba(78, 205, 196, 0.1);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+h1 { font-size: var(--font-size-2xl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+
+code, .mono {
+  font-family: var(--font-data);
+  font-weight: 400;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+/* ── Common utility classes ── */
+.text-muted { color: var(--color-muted); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-xs { font-size: var(--font-size-xs); }
+.text-mono { font-family: var(--font-data); }
+.text-accent { color: var(--color-accent); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+/* ============================================
+   layout_v2.css — Header, Grid, Panels
+   ============================================ */
+
+/* ── Header ── */
+.header-v2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-xl);
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  border-bottom: var(--border-card);
+}
+
+.header-v2__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-xl);
+  color: var(--color-accent);
+  letter-spacing: -0.02em;
+}
+
+.header-v2__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.header-v2__time {
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+.header-v2__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+}
+
+.header-v2__badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-online);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.theme-toggle {
+  background: none;
+  border: var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--color-muted);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.theme-toggle:hover {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+/* ── Dashboard Grid ── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-xl);
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ── Panel sizing ── */
+.panel--half {
+  grid-column: span 1;
+}
+
+.panel--full {
+  grid-column: 1 / -1;
+}
+
+/* ── Panel base card ── */
+.panel-card {
+  background: var(--color-surface);
+  border: var(--border-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.panel-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: var(--border-card);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.panel-card__body {
+  padding: var(--space-md);
+}
+
+/* ── Animations ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* ============================================
+   activity-feed.css — P3: Activity Feed
+   ============================================ */
+
+.panel-activity-feed .feed-container {
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.panel-activity-feed .feed-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel-activity-feed .feed-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.panel-activity-feed .feed-container::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+/* ── Event Table ── */
+.feed-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+.feed-table th {
+  text-align: left;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: var(--border-card);
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  z-index: 1;
+}
+
+.feed-table td {
+  padding: var(--space-xs) var(--space-sm);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* ── Event Row ── */
+.event-row {
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+
+.event-row:hover {
+  background: var(--color-accent-dim);
+}
+
+.event-row--success { border-left-color: var(--color-online); }
+.event-row--warning { border-left-color: var(--color-warning); }
+.event-row--error { border-left-color: var(--color-error); }
+.event-row--info { border-left-color: var(--color-accent); }
+
+/* ── Time Column ── */
+.event-row__time {
+  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+}
+
+/* ── Engine Tag ── */
+.engine-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  text-align: center;
+  min-width: 42px;
+}
+
+.engine-tag--CC {
+  background: rgba(116, 185, 255, 0.15);
+  color: var(--color-engine-cc);
+}
+
+.engine-tag--Codex {
+  background: rgba(162, 155, 254, 0.15);
+  color: var(--color-engine-codex);
+}
+
+.engine-tag--AG {
+  background: rgba(85, 239, 196, 0.15);
+  color: var(--color-engine-ag);
+}
+
+.engine-tag--Brain {
+  background: rgba(78, 205, 196, 0.15);
+  color: var(--color-engine-brain);
+}
+
+.engine-tag--Bridge {
+  background: rgba(99, 110, 114, 0.15);
+  color: var(--color-engine-bridge);
+}
+
+/* ── Status Icon ── */
+.event-row__status {
+  text-align: center;
+  font-size: var(--font-size-base);
+}
+
+/* ── Message ── */
+.event-row__message {
+  color: var(--color-text);
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Duration ── */
+.event-row__duration {
+  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  text-align: right;
+}
+
+/* ── Empty State ── */
+.feed-empty {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+  color: var(--color-muted);
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+/* ============================================
+   agent-grid.css — P2: Agent Grid
+   ============================================ */
+
+/* ── Summary Bar ── */
+.panel-agent-grid .summary-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+  padding-bottom: var(--space-md);
+  border-bottom: var(--border-card);
+  margin-bottom: var(--space-md);
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.summary-bar__count {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.summary-bar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* ── Department Group ── */
+.dept-group {
+  margin-bottom: var(--space-sm);
+}
+
+.dept-group__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dept-group__header:hover {
+  color: var(--color-text);
+}
+
+.dept-group__chevron {
+  font-size: var(--font-size-xs);
+  transition: transform 0.2s;
+  color: var(--color-muted);
+}
+
+.dept-group--collapsed .dept-group__chevron {
+  transform: rotate(-90deg);
+}
+
+.dept-group--collapsed .dept-group__list {
+  display: none;
+}
+
+.dept-group__count {
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+/* ── Agent Row ── */
+.agent-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  align-items: center;
+  gap: var(--space-sm);
+  height: 28px;
+  padding: 0 var(--space-sm);
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+}
+
+.agent-row:hover {
+  background: var(--color-accent-dim);
+}
+
+.agent-row__name {
+  color: var(--color-text);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Tier Badge ── */
+.tier-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  text-align: center;
+  min-width: 28px;
+}
+
+.tier-badge--T1 {
+  background: rgba(255, 107, 107, 0.15);
+  color: var(--color-tier-t1);
+}
+
+.tier-badge--T2 {
+  background: rgba(253, 203, 110, 0.15);
+  color: var(--color-tier-t2);
+}
+
+.tier-badge--T3 {
+  background: rgba(99, 110, 114, 0.15);
+  color: var(--color-tier-t3);
+}
+
+/* ── Engine/Model ── */
+.agent-engine {
+  font-family: var(--font-data);
+  font-size: 0.75rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+/* ── Last Seen ── */
+.agent-row__time {
+  color: var(--color-muted);
+  font-size: var(--font-size-xs);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── Freshness Dot ── */
+.freshness-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.freshness-dot--fresh { background: var(--color-fresh); }
+.freshness-dot--aging { background: var(--color-aging); }
+.freshness-dot--stale { background: var(--color-stale); }
+.freshness-dot--never { background: var(--color-never); }
+
+/* ============================================
+   cost.css — P6: Cost Monitor
+   ============================================ */
+
+/* ── Table ── */
+.cost-table-wrap {
+  overflow-x: auto;
+  margin-bottom: var(--space-md);
+}
+
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+.cost-table th {
+  text-align: left;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: var(--border-card);
+}
+
+.cost-table td {
+  padding: var(--space-xs) var(--space-sm);
+  vertical-align: middle;
+}
+
+/* ── Row ── */
+.cost-row {
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+
+.cost-row:hover {
+  background: var(--color-accent-dim);
+}
+
+.cost-row__name {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.cost-row__num {
+  color: var(--color-text-secondary);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Cap Bar ── */
+.cost-row__cap {
+  min-width: 100px;
+}
+
+.cost-cap-bar {
+  height: 6px;
+  background: var(--color-bg);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  margin-bottom: 2px;
+}
+
+.cost-cap-bar__fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.cost-cap-bar__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}
+
+/* ── Summary Row ── */
+.cost-summary {
+  display: flex;
+  gap: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: var(--border-card);
+  flex-wrap: wrap;
+}
+
+.cost-summary__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+.cost-summary__label {
+  color: var(--color-muted);
+}
+
+.cost-summary__value {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.cost-summary__item--warn .cost-summary__value {
+  color: var(--color-warning);
+}
+
+/* ============================================
+   fleet-panel.css — Fleet Health + Badges + Feed
+   ============================================ */
+
+/* ── Top Row: Health Bar + Badges side by side ── */
+.fleet-top-row {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: stretch;
+  margin-bottom: var(--space-md);
+}
+
+@media (max-width: 768px) {
+  .fleet-top-row {
+    flex-direction: column;
+  }
+}
+
+/* ── 1. Fleet Health Bar ── */
+.fleet-health {
+  flex: 1;
+  min-width: 0;
+}
+
+.fleet-health__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.fleet-health__pct {
+  font-family: var(--font-data);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.fleet-health__pct--good { color: var(--color-online); }
+.fleet-health__pct--warn { color: var(--color-warning); }
+.fleet-health__pct--bad  { color: var(--color-error); }
+
+.fleet-health__track {
+  width: 100%;
+  height: 10px;
+  background: var(--color-border);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: var(--space-xs);
+}
+
+.fleet-health__fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.6s ease;
+}
+
+.fleet-health__fill--good {
+  background: linear-gradient(90deg, var(--color-online), #2ecc71);
+}
+
+.fleet-health__fill--warn {
+  background: linear-gradient(90deg, var(--color-warning), #e67e22);
+}
+
+.fleet-health__fill--bad {
+  background: linear-gradient(90deg, var(--color-error), #c0392b);
+}
+
+.fleet-health__detail {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ── 2. Engine Badges ── */
+.fleet-badges {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 180px;
+}
+
+.fleet-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  border: var(--border-card);
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+.fleet-badge--working {
+  border-color: var(--color-online);
+  background: rgba(0, 184, 148, 0.08);
+}
+
+.fleet-badge--error {
+  border-color: var(--color-error);
+  background: rgba(231, 76, 60, 0.08);
+}
+
+.fleet-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.fleet-badge__dot--idle    { background: var(--color-idle); }
+.fleet-badge__dot--working { background: var(--color-online); animation: pulse 2s ease-in-out infinite; }
+.fleet-badge__dot--error   { background: var(--color-error); animation: blink 1s ease-in-out infinite; }
+
+.fleet-badge__name {
+  font-weight: 700;
+  color: var(--color-text);
+  min-width: 50px;
+}
+
+.fleet-badge__status {
+  margin-left: auto;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+}
+
+.fleet-badge--working .fleet-badge__status { color: var(--color-online); }
+.fleet-badge--error .fleet-badge__status   { color: var(--color-error); }
+
+/* ── 3. System Health ── */
+.system-health {
+  border-top: var(--border-card);
+  padding-top: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.system-health__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.system-health__indicator {
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.system-health__indicator--alive {
+  color: var(--color-online);
+  background: rgba(0, 184, 148, 0.12);
+}
+
+.system-health__indicator--stale {
+  color: var(--color-warning);
+  background: rgba(253, 203, 110, 0.12);
+}
+
+.system-health__indicator--dead {
+  color: var(--color-error);
+  background: rgba(231, 76, 60, 0.12);
+}
+
+.system-health__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+@media (max-width: 768px) {
+  .system-health__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.system-health__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+}
+
+.system-health__label {
+  color: var(--color-muted);
+  min-width: 55px;
+  font-weight: 500;
+}
+
+.system-health__value {
+  color: var(--color-text);
+}
+
+.system-health__value--warn {
+  color: var(--color-error);
+  font-weight: 700;
+}
+
+.system-health__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.system-health__dot--alive  { background: var(--color-online); animation: pulse 2s ease-in-out infinite; }
+.system-health__dot--stale  { background: var(--color-warning); animation: blink 1s ease-in-out infinite; }
+.system-health__dot--dead   { background: var(--color-error); }
+
+.system-health__pending {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.system-health__pending-tag {
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  color: var(--color-warning);
+  background: rgba(253, 203, 110, 0.1);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+/* ── 4. Event Feed ── */
+.fleet-feed {
+  border-top: var(--border-card);
+  padding-top: var(--space-md);
+}
+
+.fleet-feed__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.fleet-feed__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-online);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.fleet-feed__list {
+  max-height: 220px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.fleet-feed__list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.fleet-feed__list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.fleet-feed__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 3px var(--space-sm);
+  border-left: 3px solid transparent;
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  transition: background 0.15s;
+}
+
+.fleet-feed__row:hover {
+  background: var(--color-accent-dim);
+}
+
+.fleet-feed__row--start { border-left-color: var(--color-accent); }
+.fleet-feed__row--done  { border-left-color: var(--color-online); }
+.fleet-feed__row--skip  { border-left-color: var(--color-idle); }
+.fleet-feed__row--error { border-left-color: var(--color-error); }
+.fleet-feed__row--info  { border-left-color: var(--color-muted); }
+
+.fleet-feed__time {
+  color: var(--color-muted);
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.fleet-feed__type {
+  font-weight: 700;
+  min-width: 44px;
+  text-align: center;
+  padding: 1px 4px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.fleet-feed__type--start { color: var(--color-accent); background: rgba(78, 205, 196, 0.1); }
+.fleet-feed__type--done  { color: var(--color-online); background: rgba(0, 184, 148, 0.1); }
+.fleet-feed__type--skip  { color: var(--color-idle); background: rgba(99, 110, 114, 0.1); }
+.fleet-feed__type--error { color: var(--color-error); background: rgba(231, 76, 60, 0.1); }
+.fleet-feed__type--info  { color: var(--color-muted); background: rgba(122, 122, 154, 0.1); }
+
+.fleet-feed__msg {
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.fleet-feed__empty {
+  text-align: center;
+  padding: var(--space-md);
+  color: var(--color-muted);
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+/* ─── panels/pixel-agents.css ─────────────────────────────────────── */
+/* Phase 2: 인라인 <style>에서 이전. _pixel_agents_canvas_html()의 CSS 블록과 동일. */
+.pa-section { margin: 16px 0; padding: 0 16px 16px; }
+.pa-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+.pa-header h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin: 0; }
+.pa-credit { font-size: .7rem; color: var(--muted); }
+.pa-credit a { color: #74b9ff; text-decoration: none; }
+.pa-wrap {
+  position: relative; background: #06060e;
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden; padding: 8px;
+}
+#agentCanvas {
+  display: block; width: 100%; max-width: 760px; height: auto;
+  margin: 0 auto; image-rendering: pixelated; image-rendering: crisp-edges; cursor: default;
+}
+#pa-popup-overlay {
+  display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.72); z-index: 50; border-radius: 12px;
+}
+#pa-popup {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 340px; max-height: 85%; overflow-y: auto; background: #0d0d20;
+  border: 1px solid #334; border-radius: 10px; padding: 14px 16px;
+  font-family: monospace; font-size: 12px; color: #e2e2f0;
+  box-shadow: 0 0 32px rgba(0,0,0,.9);
+}
+#pa-popup-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 10px; border-bottom: 1px solid #334; padding-bottom: 8px;
+}
+#pa-popup-title { font-size: 14px; font-weight: bold; }
+#pa-popup-close {
+  background: none; border: none; color: #888; cursor: pointer;
+  font-size: 18px; line-height: 1; padding: 0 4px;
+}
+#pa-popup-close:hover { color: #fff; }
+.pa-popup-agent {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 6px 0; border-bottom: 1px solid #1a1a2e;
+}
+.pa-popup-emoji { font-size: 14px; width: 18px; text-align: center; padding-top: 1px; }
+.pa-popup-name { font-weight: bold; }
+.pa-popup-status {
+  padding: 1px 6px; border-radius: 3px; font-size: 10px;
+  white-space: nowrap; margin-left: auto;
+}
+.pa-popup-task { font-size: 10px; color: #8888aa; margin-top: 2px; word-break: break-all; }
+.pa-popup-log-header {
+  margin-top: 10px; border-top: 1px solid #334; padding-top: 8px;
+  font-size: 10px; color: #7888aa; font-weight: bold; margin-bottom: 4px;
+}
+.pa-popup-log { font-size: 10px; color: #555; font-style: italic; padding: 4px 0; }
+.pa-popup-log-wrap { max-height: 120px; overflow-y: auto; }
+.pa-log-entry { padding: 3px 0; border-bottom: 1px solid #1a1a2e; }
+.pa-log-arrow { font-size: 9px; color: #7888aa; display: block; }
+.pa-log-msg { font-size: 10px; color: #c8c8e0; display: block; word-break: break-all; }
+
+/* ============================================
+   portfolio.css — P5: Portfolio
+   ============================================ */
+
+.panel-portfolio .portfolio-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+}
+
+/* ── Table ── */
+.portfolio-table-wrap {
+  overflow-x: auto;
+}
+
+.portfolio-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+.portfolio-table th {
+  text-align: left;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: var(--border-card);
+}
+
+.portfolio-table td {
+  padding: var(--space-xs) var(--space-sm);
+  vertical-align: middle;
+}
+
+/* ── Row ── */
+.portfolio-row {
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+
+.portfolio-row:hover {
+  background: var(--color-accent-dim);
+}
+
+.portfolio-row--alert {
+  border-left-color: var(--color-error);
+  background: rgba(231, 76, 60, 0.05);
+}
+
+.portfolio-row__etf {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.portfolio-row__pct {
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.portfolio-row__drift {
+  text-align: right;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.portfolio-row--alert .portfolio-row__drift {
+  color: var(--color-error);
+}
+
+/* ── Footer ── */
+.portfolio-footer {
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: var(--border-card);
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}
+
+/* ============================================
+   sprint.css — P4: Sprint Progress
+   ============================================ */
+
+.panel-sprint .sprint-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+}
+
+/* ── Progress Bar ── */
+.sprint-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.sprint-progress__bar {
+  flex: 1;
+  height: 10px;
+  background: var(--color-bg);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.sprint-progress__fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+.sprint-progress__label {
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-accent);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── Counts ── */
+.sprint-counts {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.sprint-count {
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.sprint-count--done { color: var(--color-online); }
+.sprint-count--progress { color: var(--color-accent); }
+.sprint-count--pending { color: var(--color-muted); }
+
+/* ── Recent Done ── */
+.sprint-recent {
+  border-top: var(--border-card);
+  padding-top: var(--space-sm);
+}
+
+.sprint-recent__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-xs);
+}
+
+.sprint-recent__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sprint-recent__list li {
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  padding: 2px 0;
+  padding-left: var(--space-md);
+  position: relative;
+}
+
+.sprint-recent__list li::before {
+  content: "•";
+  position: absolute;
+  left: var(--space-xs);
+  color: var(--color-online);
+}
+
+/* ============================================
+   system-status.css — P1: Engine Status Cards
+   ============================================ */
+
+.panel-system-status .engine-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+@media (max-width: 600px) {
+  .panel-system-status .engine-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Engine Card ── */
+.engine-card {
+  background: var(--color-bg);
+  border: var(--border-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.engine-card--error {
+  border-color: var(--color-error);
+  background: rgba(231, 76, 60, 0.05);
+}
+
+.engine-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.engine-card__name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+.engine-card__subtitle {
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}
+
+/* ── Status Dot ── */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.status-dot--online {
+  background: var(--color-online);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.status-dot--idle {
+  background: var(--color-idle);
+}
+
+.status-dot--error {
+  background: var(--color-error);
+  animation: blink 1s ease-in-out infinite;
+}
+
+.status-dot--offline {
+  background: #2d2d4a;
+}
+
+/* ── Status Label ── */
+.status-label {
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.status-label--online { color: var(--color-online); }
+.status-label--idle { color: var(--color-idle); }
+.status-label--error { color: var(--color-error); }
+
+/* ── Metric Row ── */
+.engine-card__metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.metric-row__value {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+/* ── Failure Counter Bar ── */
+.failure-bar {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.failure-bar__segment {
+  width: 20px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--color-border);
+  transition: background 0.3s;
+}
+
+.failure-bar__segment--active-1 { background: var(--color-warning); }
+.failure-bar__segment--active-2 { background: #e67e22; }
+.failure-bar__segment--active-3 { background: var(--color-error); }
+
+.failure-bar__label {
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  margin-left: var(--space-xs);
+}
+
+/* ── Sub-Brain Badge ── */
+.sub-brain-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
+
+.sub-brain-badge--active {
+  background: rgba(231, 76, 60, 0.15);
+  color: var(--color-error);
+}
+</style>
+  
+</head>
+<body class="dark">
+
+  
+  <header class="header-v2">
+    <h1 class="header-v2__title">Woosdom Command Center</h1>
+    <div class="header-v2__right">
+      <span class="header-v2__badge">
+        <span class="dot"></span>
+        v2 MVP
+      </span>
+      <span class="header-v2__time" id="header-clock">2026-03-07 10:04:38</span>
+      <button class="theme-toggle" id="theme-toggle" title="Toggle theme">&#9681;</button>
+    </div>
+  </header>
+
+  
+  <main class="dashboard-grid">
+    
+
+
+
+
+
+
+<section class="panel--full panel-card panel-fleet">
+  <div class="panel-card__header">
+    <span>Fleet Status</span>
+    <span class="text-xs text-muted text-mono">20 ops tracked</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="fleet-top-row">
+
+      
+      <div class="fleet-health">
+        <div class="fleet-health__label">
+          <span>Fleet Health</span>
+          <span class="fleet-health__pct fleet-health__pct--good">100.0%</span>
+        </div>
+        <div class="fleet-health__track">
+          <div class="fleet-health__fill fleet-health__fill--good"
+               style="width: 100.0%"></div>
+        </div>
+        <div class="fleet-health__detail">
+          <span class="text-xs text-muted">20 success</span>
+          <span class="text-xs text-muted">0 fail</span>
+        </div>
+      </div>
+
+      
+      <div class="fleet-badges">
+        
+        
+        <div class="fleet-badge fleet-badge--working">
+          <span class="fleet-badge__dot fleet-badge__dot--working"></span>
+          <span class="fleet-badge__name">CC</span>
+          <span class="fleet-badge__status">WORKING</span>
+        </div>
+        
+        
+        <div class="fleet-badge fleet-badge--working">
+          <span class="fleet-badge__dot fleet-badge__dot--working"></span>
+          <span class="fleet-badge__name">Codex</span>
+          <span class="fleet-badge__status">WORKING</span>
+        </div>
+        
+        
+        <div class="fleet-badge fleet-badge--idle">
+          <span class="fleet-badge__dot fleet-badge__dot--idle"></span>
+          <span class="fleet-badge__name">AG</span>
+          <span class="fleet-badge__status">IDLE</span>
+        </div>
+        
+      </div>
+
+    </div>
+
+    
+    <div class="system-health">
+      <div class="system-health__header">
+        <span class="text-xs text-muted">SYSTEM HEALTH</span>
+        <span class="system-health__indicator system-health__indicator--dead">
+          DEAD
+        </span>
+      </div>
+      <div class="system-health__grid">
+        <div class="system-health__item">
+          <span class="system-health__label">Watcher</span>
+          <span class="system-health__dot system-health__dot--dead"></span>
+          <span class="system-health__value">Offline</span>
+        </div>
+        <div class="system-health__item">
+          <span class="system-health__label">Uptime</span>
+          <span class="system-health__value text-mono">—</span>
+        </div>
+        <div class="system-health__item">
+          <span class="system-health__label">Last Beat</span>
+          <span class="system-health__value text-mono">—</span>
+        </div>
+        <div class="system-health__item">
+          <span class="system-health__label">Errors/hr</span>
+          <span class="system-health__value text-mono ">0</span>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="fleet-feed">
+      <div class="fleet-feed__header">
+        <span class="text-xs text-muted">LIVE FEED</span>
+        <span class="fleet-feed__dot"></span>
+      </div>
+      <div class="fleet-feed__list">
+        
+        
+        <div class="fleet-feed__row fleet-feed__row--done">
+          <span class="fleet-feed__time">09:59:40</span>
+          <span class="fleet-feed__type fleet-feed__type--done">DONE</span>
+          <span class="fleet-feed__msg">Telegram 발송 완료</span>
+        </div>
+        
+        <div class="fleet-feed__row fleet-feed__row--start">
+          <span class="fleet-feed__time">09:59:39</span>
+          <span class="fleet-feed__type fleet-feed__type--start">START</span>
+          <span class="fleet-feed__msg">CC 자동 실행 시작: P2: 워치독/heartbeat + 대시보드 2차 통합</span>
+        </div>
+        
+        <div class="fleet-feed__row fleet-feed__row--done">
+          <span class="fleet-feed__time">09:59:39</span>
+          <span class="fleet-feed__type fleet-feed__type--done">DONE</span>
+          <span class="fleet-feed__msg">Telegram 발송 완료</span>
+        </div>
+        
+        <div class="fleet-feed__row fleet-feed__row--start">
+          <span class="fleet-feed__time">09:59:38</span>
+          <span class="fleet-feed__type fleet-feed__type--start">START</span>
+          <span class="fleet-feed__msg">새 작업: P2: 워치독/heartbeat + 대시보드 2차 통합 → Claude Code</span>
+        </div>
+        
+        <div class="fleet-feed__row fleet-feed__row--done">
+          <span class="fleet-feed__time">09:38:52</span>
+          <span class="fleet-feed__type fleet-feed__type--done">DONE</span>
+          <span class="fleet-feed__msg">Telegram 발송 완료</span>
+        </div>
+        
+        <div class="fleet-feed__row fleet-feed__row--done">
+          <span class="fleet-feed__time">08:03:13</span>
+          <span class="fleet-feed__type fleet-feed__type--done">DONE</span>
+          <span class="fleet-feed__msg">Telegram 발송 완료</span>
+        </div>
+        
+        <div class="fleet-feed__row fleet-feed__row--done">
+          <span class="fleet-feed__time">08:03:12</span>
+          <span class="fleet-feed__type fleet-feed__type--done">DONE</span>
+          <span class="fleet-feed__msg">Brain 콜백 DONE: `agent_runner.py` Codex/AG 수동 실행 모드 전환 완료 — CC는 자동 실행 유지, Codex/AG는 `to_*.md` handoff 방식으로 분기 처리되며 d</span>
+        </div>
+        
+        <div class="fleet-feed__row fleet-feed__row--start">
+          <span class="fleet-feed__time">08:03:05</span>
+          <span class="fleet-feed__type fleet-feed__type--start">START</span>
+          <span class="fleet-feed__msg">Brain 콜백 시작: engine=claude_code, depth=0</span>
+        </div>
+        
+        <div class="fleet-feed__row fleet-feed__row--done">
+          <span class="fleet-feed__time">08:03:05</span>
+          <span class="fleet-feed__type fleet-feed__type--done">DONE</span>
+          <span class="fleet-feed__msg">Telegram 발송 완료</span>
+        </div>
+        
+        <div class="fleet-feed__row fleet-feed__row--done">
+          <span class="fleet-feed__time">08:03:04</span>
+          <span class="fleet-feed__type fleet-feed__type--done">DONE</span>
+          <span class="fleet-feed__msg">CC 완료: agent_runner.py Codex/AG 수동 실행 모드 전환 (to_ 파일 handoff), 139초, exit=성공</span>
+        </div>
+        
+        
+      </div>
+    </div>
+
+  </div>
+</section>
+    
+
+
+
+
+<section class="panel--half panel-card panel-system-status">
+  <div class="panel-card__header">
+    <span>System Status</span>
+    <span class="text-xs text-muted text-mono">2026-03-07T10:04:38</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="engine-grid">
+
+      
+      
+      <div class="engine-card">
+        <div class="engine-card__header">
+          <div>
+            <span class="engine-card__name">Brain</span>
+            <span class="engine-card__subtitle">Claude Opus 4.6</span>
+          </div>
+          <span class="status-label status-label--online">
+            <span class="status-dot status-dot--online"></span>
+            ONLINE
+          </span>
+        </div>
+        <div class="engine-card__metrics">
+          <div class="metric-row">
+            <span>Consecutive Failures</span>
+            <span class="metric-row__value">
+              <span class="failure-bar">
+                
+                <span class="failure-bar__segment"></span>
+                
+                <span class="failure-bar__segment"></span>
+                
+                <span class="failure-bar__segment"></span>
+                
+                <span class="failure-bar__label">0/3</span>
+              </span>
+            </span>
+          </div>
+          <div class="metric-row">
+            <span>Daily Callbacks</span>
+            <span class="metric-row__value">2/30</span>
+          </div>
+          <div class="metric-row">
+            <span>Sub-Brain</span>
+            <span class="sub-brain-badge">
+              STANDBY
+            </span>
+          </div>
+        </div>
+      </div>
+
+      
+      
+      <div class="engine-card">
+        <div class="engine-card__header">
+          <div>
+            <span class="engine-card__name">Claude Code</span>
+            <span class="engine-card__subtitle">CC</span>
+          </div>
+          <span class="status-label status-label--online">
+            <span class="status-dot status-dot--online"></span>
+            ONLINE
+          </span>
+        </div>
+        <div class="engine-card__metrics">
+          <div class="metric-row">
+            <span>Today Tasks</span>
+            <span class="metric-row__value">2</span>
+          </div>
+          <div class="metric-row">
+            <span>Avg Time</span>
+            <span class="metric-row__value">161s</span>
+          </div>
+          <div class="metric-row">
+            <span>Est. Turns</span>
+            <span class="metric-row__value">~100</span>
+          </div>
+        </div>
+      </div>
+
+      
+      
+      <div class="engine-card">
+        <div class="engine-card__header">
+          <div>
+            <span class="engine-card__name">Codex</span>
+            <span class="engine-card__subtitle">Codex CLI</span>
+          </div>
+          <span class="status-label status-label--idle">
+            <span class="status-dot status-dot--idle"></span>
+            IDLE
+          </span>
+        </div>
+        <div class="engine-card__metrics">
+          <div class="metric-row">
+            <span>Today Tasks</span>
+            <span class="metric-row__value">0</span>
+          </div>
+          <div class="metric-row">
+            <span>Total Time</span>
+            <span class="metric-row__value">0s</span>
+          </div>
+        </div>
+      </div>
+
+      
+      
+      <div class="engine-card">
+        <div class="engine-card__header">
+          <div>
+            <span class="engine-card__name">Antigravity</span>
+            <span class="engine-card__subtitle">Gemini CLI</span>
+          </div>
+          <span class="status-label status-label--idle">
+            <span class="status-dot status-dot--idle"></span>
+            IDLE
+            
+            <span class="text-xs text-muted">(idle)</span>
+            
+          </span>
+        </div>
+        <div class="engine-card__metrics">
+          <div class="metric-row">
+            <span>Today Tasks</span>
+            <span class="metric-row__value">0</span>
+          </div>
+          <div class="metric-row">
+            <span>Total Time</span>
+            <span class="metric-row__value">0s</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+    
+
+
+
+<section class="panel--half panel-card panel-agent-grid">
+  <div class="panel-card__header">
+    <span>Agent Grid</span>
+    <span class="text-xs text-muted text-mono">40 agents</span>
+  </div>
+  <div class="panel-card__body">
+
+    
+    <div class="summary-bar">
+      <span class="summary-bar__count">40 agents</span>
+      <span class="summary-bar__item"><span class="freshness-dot freshness-dot--fresh"></span> 2 Fresh</span>
+      <span class="summary-bar__item"><span class="freshness-dot freshness-dot--aging"></span> 0 Aging</span>
+      <span class="summary-bar__item"><span class="freshness-dot freshness-dot--stale"></span> 1 Stale</span>
+      <span class="summary-bar__item"><span class="freshness-dot freshness-dot--never"></span> 37 Never</span>
+    </div>
+
+    
+    
+    <div class="dept-group" data-dept="Career Division">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>Career Division</span>
+        <span class="dept-group__count">(3)</span>
+      </div>
+      <div class="dept-group__list">
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Network Builder</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">Sonnet 4.5 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Skill Tracker</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">Haiku 4.5 / CC</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Career Strategist</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="dept-group" data-dept="Command Division">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>Command Division</span>
+        <span class="dept-group__count">(4)</span>
+      </div>
+      <div class="dept-group__list">
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Auditor</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Dispatcher</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Haiku 4.5 / CC</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Memory Keeper</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Haiku 4.5 / CC</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Orchestrator</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="dept-group" data-dept="Compute Division">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>Compute Division</span>
+        <span class="dept-group__count">(4)</span>
+      </div>
+      <div class="dept-group__list">
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Compute Lead</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Gpt 5.3 Extra High / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Data Wrangler</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Gpt 5.3 Medium / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Parallel Coordinator</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Gpt 5.3 Medium / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Sandbox Runner</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Gpt 5.3 Medium / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="dept-group" data-dept="Creative Division">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>Creative Division</span>
+        <span class="dept-group__count">(4)</span>
+      </div>
+      <div class="dept-group__list">
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Content Strategist</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Designer</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Prompt Engineer</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Writer</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="dept-group" data-dept="Engineering Division">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>Engineering Division</span>
+        <span class="dept-group__count">(7)</span>
+      </div>
+      <div class="dept-group__list">
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Critic</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Gpt 5.3 Extra High / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Debugger</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Sonnet 4.5 / CC</span>
+          
+          <span class="agent-row__time">2026-03-07T23:20:00</span>
+          <span class="freshness-dot freshness-dot--fresh" title="fresh"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Engineer</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Sonnet 4.5 / CC</span>
+          
+          <span class="agent-row__time">2026-03-07T21:35:00</span>
+          <span class="freshness-dot freshness-dot--fresh" title="fresh"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Foreman</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Sonnet 4.5 / CC</span>
+          
+          <span class="agent-row__time">2026-02-24T00:00:00</span>
+          <span class="freshness-dot freshness-dot--stale" title="stale"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">GitOps</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Haiku 4.5 / CC</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Refactorer</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Gpt 5.3 Extra High / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">VaultKeeper</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Haiku 4.5 / CC</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="dept-group" data-dept="Finance Division">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>Finance Division</span>
+        <span class="dept-group__count">(6)</span>
+      </div>
+      <div class="dept-group__list">
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Backtester</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">GPT 5.3 / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">FIRE Planner</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">GPT 5.3 / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Market Scout</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Gemini 3.1 / AG</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Portfolio Analyst</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Quant</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">GPT 5.3 / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Tax Optimizer</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="dept-group" data-dept="Life Division">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>Life Division</span>
+        <span class="dept-group__count">(3)</span>
+      </div>
+      <div class="dept-group__list">
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Health Coach</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Life Integrator</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Relationship Advisor</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Opus 4.6 / Brain</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="dept-group" data-dept="Operations Division">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>Operations Division</span>
+        <span class="dept-group__count">(4)</span>
+      </div>
+      <div class="dept-group__list">
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Backup Guard</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">Haiku 4.5 / CC</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Health Monitor</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">Haiku 4.5 / CC</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Infra Manager</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Sonnet 4.5 / CC</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Scheduler</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">Haiku 4.5 / CC</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="dept-group" data-dept="Research Division">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>Research Division</span>
+        <span class="dept-group__count">(5)</span>
+      </div>
+      <div class="dept-group__list">
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Architect</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Gemini 3.1 / AG</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Deep Researcher</span>
+          <span class="tier-badge tier-badge--T3">T3</span>
+          
+          <span class="agent-engine">Gemini 3.1 / AG</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Experimenter</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Gpt 5.3 Extra High / Codex</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Scout Lead</span>
+          <span class="tier-badge tier-badge--T1">T1</span>
+          
+          <span class="agent-engine">Gemini 3.1 / AG</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+        <div class="agent-row">
+          <span class="agent-row__name">Web Scout</span>
+          <span class="tier-badge tier-badge--T2">T2</span>
+          
+          <span class="agent-engine">Gemini 3.1 / AG</span>
+          
+          <span class="agent-row__time">never</span>
+          <span class="freshness-dot freshness-dot--never" title="never"></span>
+        </div>
+        
+      </div>
+    </div>
+    
+
+  </div>
+</section>
+    
+
+
+
+
+
+<section class="panel--full panel-card panel-activity-feed">
+  <div class="panel-card__header">
+    <span>Activity Feed</span>
+    <span class="text-xs text-muted text-mono">50 events</span>
+  </div>
+  <div class="panel-card__body">
+    
+    <div class="feed-container">
+      <table class="feed-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Engine</th>
+            <th></th>
+            <th>Message</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 06:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 06:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">Codex 자동 실행 시작: memory_distill.sh cron 등록</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 06:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">새 작업: memory_distill.sh cron 등록 → Codex</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 06:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">Codex 자동 실행 시작: memory_distill.sh cron 등록</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 06:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 07:03</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Codex 완료: memory_distill.sh cron 등록, 404초, exit=성공</td>
+            <td class="event-row__duration">404s</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 07:03</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">Brain 콜백 시작: engine=codex, depth=0</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:11</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 19:12</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">새 작업: woosdom_app 대시보드 개선 — Fleet Health Bar + 상태 배지 + 이벤트 피드 → Claude Code</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:12</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 19:12</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">CC 자동 실행 시작: woosdom_app 대시보드 개선 — Fleet Health Bar + 상태 배지 + 이벤트 피드</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:12</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:15</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">CC 완료: woosdom_app 대시보드 개선 — Fleet Health Bar + 상태 배지 + 이벤트 피드, 181초, exit=성공</td>
+            <td class="event-row__duration">181s</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:15</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 19:15</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">Brain 콜백 시작: engine=claude_code, depth=0</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:15</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Brain 콜백 DONE: woosdom_app 대시보드에 Fleet Health Bar + 엔진 상태 배지 + 실시간 이벤트 피드를 `fleet-panel`로 통합 구현 완료. 빌드 성공(88,667 by</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:15</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 19:23</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">새 작업: P0 BUG-1/BUG-2 수정 + P1 memory_distill.sh 증류 로직 점검 → Claude Code</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:23</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 19:23</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">CC 자동 실행 시작: P0 BUG-1/BUG-2 수정 + P1 memory_distill.sh 증류 로직 점검</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:23</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:28</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">CC 완료: P0 BUG-1/BUG-2 수정 + P1 memory_distill.sh 증류 로직 점검, 334초, exit=성공</td>
+            <td class="event-row__duration">334s</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:28</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-06 19:28</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">Brain 콜백 시작: engine=claude_code, depth=0</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:29</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Brain 콜백 DONE: P0 버그 2건 + P1 증류 로직 1건, 총 3건 수정 완료. `startup_scan()` 추가로 pending 미감지 해결, 서브셸 백그라운드+watchdog로 CC hang</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-06 19:29</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 07:37</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-07 07:53</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">새 작업: agent_runner.py 멀티엔진 디스패치 구현 (CC/Codex/Gemini API 3분기) → Claude Code</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 07:53</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-07 07:53</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">CC 자동 실행 시작: agent_runner.py 멀티엔진 디스패치 구현 (CC/Codex/Gemini API 3분기)</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 07:53</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 07:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">CC 완료: agent_runner.py 멀티엔진 디스패치 구현 (CC/Codex/Gemini API 3분기), 184초, exit=성공</td>
+            <td class="event-row__duration">184s</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 07:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-07 07:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">Brain 콜백 시작: engine=claude_code, depth=0</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 07:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Brain 콜백 DONE: agent_runner.py 멀티엔진 디스패치 구현 완료 — detect_engine 5종 테스트 PASS, CC/Codex/Gemini API 3분기 + fallback 정상 동</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 07:56</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-07 08:00</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">새 작업: agent_runner.py Codex/AG 수동 실행 모드 전환 (to_ 파일 handoff) → Claude Code</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 08:00</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-07 08:00</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">CC 자동 실행 시작: agent_runner.py Codex/AG 수동 실행 모드 전환 (to_ 파일 handoff)</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 08:00</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 08:03</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">CC 완료: agent_runner.py Codex/AG 수동 실행 모드 전환 (to_ 파일 handoff), 139초, exit=성공</td>
+            <td class="event-row__duration">139s</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 08:03</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-07 08:03</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">Brain 콜백 시작: engine=claude_code, depth=0</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 08:03</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Brain 콜백 DONE: `agent_runner.py` Codex/AG 수동 실행 모드 전환 완료 — CC는 자동 실행 유지, Codex/AG는 `to_*.md` handoff 방식으로 분기 처리되며 d</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 08:03</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 09:38</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-07 09:59</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">새 작업: P2: 워치독/heartbeat + 대시보드 2차 통합 → Claude Code</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 09:59</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--info">
+            <td class="event-row__time">03-07 09:59</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">ℹ️</td>
+            <td class="event-row__message">CC 자동 실행 시작: P2: 워치독/heartbeat + 대시보드 2차 통합</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+          <tr class="event-row event-row--success">
+            <td class="event-row__time">03-07 09:59</td>
+            <td><span class="engine-tag engine-tag--Bridge">Bridge</span></td>
+            <td class="event-row__status">✅</td>
+            <td class="event-row__message">Telegram 발송 완료</td>
+            <td class="event-row__duration">—</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+</section>
+    
+
+
+<section class="panel--half panel-card panel-sprint">
+  <div class="panel-card__header">
+    <span>Sprint</span>
+    <span class="text-xs text-muted text-mono">0%</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="sprint-title">AG 에이전트 설정 확인 완료</div>
+
+    <div class="sprint-progress">
+      <div class="sprint-progress__bar">
+        <div class="sprint-progress__fill" style="width: 0%"></div>
+      </div>
+      <span class="sprint-progress__label">0%</span>
+    </div>
+
+    <div class="sprint-counts">
+      <span class="sprint-count sprint-count--done">✅ 완료: 0</span>
+      <span class="sprint-count sprint-count--progress">🔄 진행: 0</span>
+      <span class="sprint-count sprint-count--pending">⬜ 대기: 0</span>
+    </div>
+
+    
+  </div>
+</section>
+    
+
+
+<section class="panel--half panel-card panel-portfolio">
+  <div class="panel-card__header">
+    <span>Portfolio</span>
+    <span class="text-xs text-muted text-mono">D-24</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="portfolio-name">Trinity v5 (P1 Hedged Growth)</div>
+
+    <div class="portfolio-table-wrap">
+      <table class="portfolio-table">
+        <thead>
+          <tr>
+            <th>ETF</th>
+            <th>Target</th>
+            <th>Actual</th>
+            <th>Drift</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr class="portfolio-row">
+            <td class="portfolio-row__etf">SCHD</td>
+            <td class="portfolio-row__pct">35.0%</td>
+            <td class="portfolio-row__pct">35.0%</td>
+            <td class="portfolio-row__drift">+0.0%</td>
+          </tr>
+          
+          <tr class="portfolio-row">
+            <td class="portfolio-row__etf">QQQM</td>
+            <td class="portfolio-row__pct">15.0%</td>
+            <td class="portfolio-row__pct">15.0%</td>
+            <td class="portfolio-row__drift">+0.0%</td>
+          </tr>
+          
+          <tr class="portfolio-row">
+            <td class="portfolio-row__etf">SMH</td>
+            <td class="portfolio-row__pct">10.0%</td>
+            <td class="portfolio-row__pct">10.0%</td>
+            <td class="portfolio-row__drift">+0.0%</td>
+          </tr>
+          
+          <tr class="portfolio-row">
+            <td class="portfolio-row__etf">SPMO</td>
+            <td class="portfolio-row__pct">10.0%</td>
+            <td class="portfolio-row__pct">10.0%</td>
+            <td class="portfolio-row__drift">+0.0%</td>
+          </tr>
+          
+          <tr class="portfolio-row">
+            <td class="portfolio-row__etf">TLT</td>
+            <td class="portfolio-row__pct">10.0%</td>
+            <td class="portfolio-row__pct">10.0%</td>
+            <td class="portfolio-row__drift">+0.0%</td>
+          </tr>
+          
+          <tr class="portfolio-row">
+            <td class="portfolio-row__etf">GLDM</td>
+            <td class="portfolio-row__pct">20.0%</td>
+            <td class="portfolio-row__pct">20.0%</td>
+            <td class="portfolio-row__drift">+0.0%</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+
+    <div class="portfolio-footer">
+      다음 드리프트 점검: 2026-03-31 (D-24)
+    </div>
+  </div>
+</section>
+    
+
+
+<section class="panel--full panel-card panel-cost">
+  <div class="panel-card__header">
+    <span>Cost Monitor</span>
+    <span class="text-xs text-muted text-mono">2026-03-07</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="cost-table-wrap">
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>Engine</th>
+            <th>Tasks</th>
+            <th>Turns (est)</th>
+            <th>Seconds</th>
+            <th>Monthly Cap</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr class="cost-row">
+            <td class="cost-row__name">Claude Code</td>
+            <td class="cost-row__num">2</td>
+            <td class="cost-row__num">~100</td>
+            <td class="cost-row__num">323s</td>
+            <td class="cost-row__cap">
+              
+              <div class="cost-cap-bar">
+                <div class="cost-cap-bar__fill" style="width: 0%"></div>
+              </div>
+              <span class="cost-cap-bar__label">$100</span>
+              
+            </td>
+          </tr>
+          
+          <tr class="cost-row">
+            <td class="cost-row__name">Codex</td>
+            <td class="cost-row__num">0</td>
+            <td class="cost-row__num">~0</td>
+            <td class="cost-row__num">0s</td>
+            <td class="cost-row__cap">
+              
+              <div class="cost-cap-bar">
+                <div class="cost-cap-bar__fill" style="width: 0%"></div>
+              </div>
+              <span class="cost-cap-bar__label">$200</span>
+              
+            </td>
+          </tr>
+          
+          <tr class="cost-row">
+            <td class="cost-row__name">Antigravity</td>
+            <td class="cost-row__num">0</td>
+            <td class="cost-row__num">~0</td>
+            <td class="cost-row__num">0s</td>
+            <td class="cost-row__cap">
+              
+              <span class="text-muted">—</span>
+              
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cost-summary">
+      <div class="cost-summary__item">
+        <span class="cost-summary__label">Brain Callbacks</span>
+        <span class="cost-summary__value">2</span>
+      </div>
+      <div class="cost-summary__item cost-summary__item--warn">
+        <span class="cost-summary__label">위험 차단</span>
+        <span class="cost-summary__value">0</span>
+      </div>
+      <div class="cost-summary__item">
+        <span class="cost-summary__label">월 상한</span>
+        <span class="cost-summary__value">$300</span>
+      </div>
+    </div>
+  </div>
+</section>
+  </main>
+
+  
+  <script>/* ============================================
+   core_v2.js — Woosdom Command Center v2
+   Theme toggle, clock, department collapse
+   ============================================ */
+
+(function () {
+  'use strict';
+
+  // ── Theme Toggle ──
+  var toggle = document.getElementById('theme-toggle');
+  if (toggle) {
+    var saved = localStorage.getItem('woosdom-theme');
+    if (saved === 'light') {
+      document.body.classList.replace('dark', 'light');
+    }
+    toggle.addEventListener('click', function () {
+      var isLight = document.body.classList.contains('light');
+      if (isLight) {
+        document.body.classList.replace('light', 'dark');
+        localStorage.setItem('woosdom-theme', 'dark');
+      } else {
+        document.body.classList.replace('dark', 'light');
+        localStorage.setItem('woosdom-theme', 'light');
+      }
+    });
+  }
+
+  // ── Header Clock ──
+  var clock = document.getElementById('header-clock');
+  if (clock) {
+    function updateClock() {
+      var now = new Date();
+      var h = String(now.getHours()).padStart(2, '0');
+      var m = String(now.getMinutes()).padStart(2, '0');
+      var s = String(now.getSeconds()).padStart(2, '0');
+      clock.textContent = now.toISOString().slice(0, 10) + ' ' + h + ':' + m + ':' + s;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  }
+})();
+
+// ── Department Toggle (global for inline onclick) ──
+function toggleDept(headerEl) {
+  var group = headerEl.parentElement;
+  group.classList.toggle('dept-group--collapsed');
+}
+</script>
+  
+</body>
+</html>

@@ -1,0 +1,143 @@
+/* ============================================
+   base_v2.css — Woosdom Command Center v2
+   Design Tokens + Reset + Typography
+   ============================================ */
+
+:root {
+  /* Background */
+  --color-bg: #0d0d1a;
+  --color-surface: #181830;
+  --color-border: #252545;
+
+  /* Text */
+  --color-text: #e2e2f0;
+  --color-text-secondary: #a0a0c0;
+  --color-muted: #7a7a9a;
+
+  /* Accent */
+  --color-accent: #4ecdc4;
+  --color-accent-dim: rgba(78, 205, 196, 0.15);
+
+  /* Status */
+  --color-online: #00b894;
+  --color-idle: #636e72;
+  --color-warning: #fdcb6e;
+  --color-error: #e74c3c;
+
+  /* Freshness (alias) */
+  --color-fresh: #00b894;
+  --color-aging: #fdcb6e;
+  --color-stale: #e74c3c;
+  --color-never: #636e72;
+
+  /* Engine tags */
+  --color-engine-cc: #74b9ff;
+  --color-engine-codex: #a29bfe;
+  --color-engine-ag: #55efc4;
+  --color-engine-brain: #4ecdc4;
+  --color-engine-bridge: #636e72;
+
+  /* Tier badges */
+  --color-tier-t1: #ff6b6b;
+  --color-tier-t2: #fdcb6e;
+  --color-tier-t3: #636e72;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 36px;
+
+  /* Typography */
+  --font-heading: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-data: 'JetBrains Mono', 'SF Mono', monospace;
+  --font-size-xs: 0.7rem;
+  --font-size-sm: 0.78rem;
+  --font-size-base: 0.88rem;
+  --font-size-lg: 1.1rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 1.75rem;
+
+  /* Borders & Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --border-card: 1px solid var(--color-border);
+
+  /* Shadows */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  /* Layout */
+  --layout-max-width: 1440px;
+}
+
+/* Light theme override */
+body.light {
+  --color-bg: #f0f0f8;
+  --color-surface: #ffffff;
+  --color-border: #d0d0e0;
+  --color-text: #1a1a2e;
+  --color-text-secondary: #4a4a6a;
+  --color-muted: #8a8aaa;
+  --color-accent-dim: rgba(78, 205, 196, 0.1);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+h1 { font-size: var(--font-size-2xl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+
+code, .mono {
+  font-family: var(--font-data);
+  font-weight: 400;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+/* ── Common utility classes ── */
+.text-muted { color: var(--color-muted); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-xs { font-size: var(--font-size-xs); }
+.text-mono { font-family: var(--font-data); }
+.text-accent { color: var(--color-accent); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}

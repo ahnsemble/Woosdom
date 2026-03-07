@@ -1,0 +1,330 @@
+/* ============================================
+   fleet-panel.css — Fleet Health + Badges + Feed
+   ============================================ */
+
+/* ── Top Row: Health Bar + Badges side by side ── */
+.fleet-top-row {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: stretch;
+  margin-bottom: var(--space-md);
+}
+
+@media (max-width: 768px) {
+  .fleet-top-row {
+    flex-direction: column;
+  }
+}
+
+/* ── 1. Fleet Health Bar ── */
+.fleet-health {
+  flex: 1;
+  min-width: 0;
+}
+
+.fleet-health__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.fleet-health__pct {
+  font-family: var(--font-data);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.fleet-health__pct--good { color: var(--color-online); }
+.fleet-health__pct--warn { color: var(--color-warning); }
+.fleet-health__pct--bad  { color: var(--color-error); }
+
+.fleet-health__track {
+  width: 100%;
+  height: 10px;
+  background: var(--color-border);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: var(--space-xs);
+}
+
+.fleet-health__fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.6s ease;
+}
+
+.fleet-health__fill--good {
+  background: linear-gradient(90deg, var(--color-online), #2ecc71);
+}
+
+.fleet-health__fill--warn {
+  background: linear-gradient(90deg, var(--color-warning), #e67e22);
+}
+
+.fleet-health__fill--bad {
+  background: linear-gradient(90deg, var(--color-error), #c0392b);
+}
+
+.fleet-health__detail {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ── 2. Engine Badges ── */
+.fleet-badges {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 180px;
+}
+
+.fleet-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  border: var(--border-card);
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+.fleet-badge--working {
+  border-color: var(--color-online);
+  background: rgba(0, 184, 148, 0.08);
+}
+
+.fleet-badge--error {
+  border-color: var(--color-error);
+  background: rgba(231, 76, 60, 0.08);
+}
+
+.fleet-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.fleet-badge__dot--idle    { background: var(--color-idle); }
+.fleet-badge__dot--working { background: var(--color-online); animation: pulse 2s ease-in-out infinite; }
+.fleet-badge__dot--error   { background: var(--color-error); animation: blink 1s ease-in-out infinite; }
+
+.fleet-badge__name {
+  font-weight: 700;
+  color: var(--color-text);
+  min-width: 50px;
+}
+
+.fleet-badge__status {
+  margin-left: auto;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+}
+
+.fleet-badge--working .fleet-badge__status { color: var(--color-online); }
+.fleet-badge--error .fleet-badge__status   { color: var(--color-error); }
+
+/* ── 3. System Health ── */
+.system-health {
+  border-top: var(--border-card);
+  padding-top: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.system-health__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.system-health__indicator {
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.system-health__indicator--alive {
+  color: var(--color-online);
+  background: rgba(0, 184, 148, 0.12);
+}
+
+.system-health__indicator--stale {
+  color: var(--color-warning);
+  background: rgba(253, 203, 110, 0.12);
+}
+
+.system-health__indicator--dead {
+  color: var(--color-error);
+  background: rgba(231, 76, 60, 0.12);
+}
+
+.system-health__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+@media (max-width: 768px) {
+  .system-health__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.system-health__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+}
+
+.system-health__label {
+  color: var(--color-muted);
+  min-width: 55px;
+  font-weight: 500;
+}
+
+.system-health__value {
+  color: var(--color-text);
+}
+
+.system-health__value--warn {
+  color: var(--color-error);
+  font-weight: 700;
+}
+
+.system-health__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.system-health__dot--alive  { background: var(--color-online); animation: pulse 2s ease-in-out infinite; }
+.system-health__dot--stale  { background: var(--color-warning); animation: blink 1s ease-in-out infinite; }
+.system-health__dot--dead   { background: var(--color-error); }
+
+.system-health__pending {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.system-health__pending-tag {
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  color: var(--color-warning);
+  background: rgba(253, 203, 110, 0.1);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+/* ── 4. Event Feed ── */
+.fleet-feed {
+  border-top: var(--border-card);
+  padding-top: var(--space-md);
+}
+
+.fleet-feed__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.fleet-feed__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-online);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.fleet-feed__list {
+  max-height: 220px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.fleet-feed__list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.fleet-feed__list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.fleet-feed__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 3px var(--space-sm);
+  border-left: 3px solid transparent;
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  transition: background 0.15s;
+}
+
+.fleet-feed__row:hover {
+  background: var(--color-accent-dim);
+}
+
+.fleet-feed__row--start { border-left-color: var(--color-accent); }
+.fleet-feed__row--done  { border-left-color: var(--color-online); }
+.fleet-feed__row--skip  { border-left-color: var(--color-idle); }
+.fleet-feed__row--error { border-left-color: var(--color-error); }
+.fleet-feed__row--info  { border-left-color: var(--color-muted); }
+
+.fleet-feed__time {
+  color: var(--color-muted);
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.fleet-feed__type {
+  font-weight: 700;
+  min-width: 44px;
+  text-align: center;
+  padding: 1px 4px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.fleet-feed__type--start { color: var(--color-accent); background: rgba(78, 205, 196, 0.1); }
+.fleet-feed__type--done  { color: var(--color-online); background: rgba(0, 184, 148, 0.1); }
+.fleet-feed__type--skip  { color: var(--color-idle); background: rgba(99, 110, 114, 0.1); }
+.fleet-feed__type--error { color: var(--color-error); background: rgba(231, 76, 60, 0.1); }
+.fleet-feed__type--info  { color: var(--color-muted); background: rgba(122, 122, 154, 0.1); }
+
+.fleet-feed__msg {
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.fleet-feed__empty {
+  text-align: center;
+  padding: var(--space-md);
+  color: var(--color-muted);
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}

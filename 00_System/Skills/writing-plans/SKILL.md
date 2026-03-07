@@ -72,6 +72,31 @@ description: >
 > ⚠️ 7개 초과 시 → 2개 to_hands로 분리.
 > ⚠️ 15분 초과 서브태스크 → 더 작게 분할.
 
+## CC 턴 효율 원칙 (Hard Rule)
+
+**CC에게는 생각하게 하지 말고, 실행만 시켜라.**
+
+| 패턴 | 턴 소모 | 예시 |
+|------|---------|------|
+| 탐색형: "이 폴더들을 rsync해" | 높음 (30~50턴) | CC가 ls → 판단 → 실행 → 확인 반복 |
+| 실행형: "이 bash 스크립트를 실행해" | 낮음 (3~5턴) | CC가 스크립트 1회 실행 → 결과 확인 |
+
+**규칙:**
+- 복잡한 정형 작업(rsync, git push, 보안 스캔)은 Brain이 bash 스크립트를 직접 작성 → 실행형으로
+- CC의 판단이 필요한 작업(디버그, 코드 작성, 리팩토링)만 탐색형으로 위임
+- `--max-turns 50`이라도 탐색형은 쉽게 소진 — 과신하지 말 것
+- 실제 사례: Day 2 push 탐색형 50턴 소진 → 실행형 재위임 5턴 완료
+
+## CC 위임 금지 작업 (Hard Rule)
+
+| 금지 대상 | 이유 |
+|----------|------|
+| task_bridge / LaunchAgent 자체 조작 | CC가 task_bridge 위에서 돌아감 — 자기 부모를 죽이면 결과 유실 |
+| CC CLI 업데이트/재설치 | 실행 중인 바이너리 교체 불가 |
+| 시스템 데몬 start/stop (launchctl) | 부작용 예측 불가, 수동 실행 필수 |
+
+> 교훈 (2026-03-02): S-2 minor fix를 CC에 위임 → CC가 launchctl bootout으로 task_bridge 내림 → CC 추적 유실 → 결과 미수신. **인프라 자체를 건드리는 작업은 사용자 수동 실행.**
+
 ## 검증 명령어 패턴
 
 | 유형 | 검증 명령어 예시 |
@@ -93,8 +118,8 @@ Brain이 `delegate_to_engine` MCP 도구 사용 시:
 - `reason`: 엔진 선택 이유
 - `brain_followup`: 결과 수신 후 Brain 행동
 
-> ⚠️ `delegate_to_engine` MCP는 현재 to_hands.md에 저장하는 레거시 코드.
-> CC로 엔진별 파일 라우팅 패치 필요 (recommended_engine 값에 따라 to_codex/to_claude_code/to_antigravity 분기).
+> ⚠️ `delegate_to_engine` MCP는 엔진별 전용 파일(`to_claude_code.md` / `to_codex.md` / `to_antigravity.md`)에 저장.
+> recommended_engine 값에 따라 자동 분기.
 
 ## Bad vs Good 예시
 

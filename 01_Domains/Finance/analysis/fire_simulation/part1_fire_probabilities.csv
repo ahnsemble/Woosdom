@@ -1,0 +1,4 @@
+target_key,target_label,within_10y,within_15y,within_20y,within_25y,within_30y
+7.5e8_4pct,4% rule (KRW 750M),0.0,0.3013,0.8623,0.9836,0.9983
+8.57e8_3.5pct,3.5% rule (KRW 857M),0.0,0.1636,0.7715,0.9645,0.9954
+10e8_3pct,"3% rule (KRW 1,000M)",0.0,0.0662,0.6373,0.9303,0.9902

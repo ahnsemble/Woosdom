@@ -1,0 +1,42 @@
+{# ── activity-feed.html — P3: Activity Feed ── #}
+{% set activity = data.activity %}
+{% set events = activity.events %}
+
+{% set status_icons = {'success': '\u2705', 'warning': '\u26a0\ufe0f', 'error': '\u274c', 'info': '\u2139\ufe0f'} %}
+
+<section class="panel--full panel-card panel-activity-feed">
+  <div class="panel-card__header">
+    <span>Activity Feed</span>
+    <span class="text-xs text-muted text-mono">{{ activity.total_events }} events</span>
+  </div>
+  <div class="panel-card__body">
+    {% if events %}
+    <div class="feed-container">
+      <table class="feed-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Engine</th>
+            <th></th>
+            <th>Message</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for evt in events | reverse %}
+          <tr class="event-row event-row--{{ evt.status }}">
+            <td class="event-row__time">{{ evt.time if evt.time else '\u2014' }}</td>
+            <td><span class="engine-tag engine-tag--{{ evt.engine }}">{{ evt.engine }}</span></td>
+            <td class="event-row__status">{{ status_icons.get(evt.status, '') }}</td>
+            <td class="event-row__message">{{ evt.message }}</td>
+            <td class="event-row__duration">{% if evt.duration %}{{ evt.duration }}s{% else %}—{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="feed-empty">No activity events yet.</div>
+    {% endif %}
+  </div>
+</section>

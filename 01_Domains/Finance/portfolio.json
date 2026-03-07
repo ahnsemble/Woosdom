@@ -1,0 +1,71 @@
+{
+  "default_portfolio": {
+    "SCHD": 0.35,
+    "QQQM": 0.15,
+    "SMH": 0.10,
+    "SPMO": 0.10,
+    "TLT": 0.10,
+    "GLDM": 0.20
+  },
+  "portfolio_name": "Trinity v5 (P1 Hedged Growth)",
+  "portfolio_id": "P1-v5",
+  "phase20_verdict": "PASS (2026-02-17)",
+  "previous_version": {
+    "name": "Trinity v4 (P1-6m Hedged Growth)",
+    "id": "P1-6m",
+    "allocation": { "SCHD": 0.35, "QQQM": 0.15, "SMH": 0.10, "SPMO": 0.10, "TLT": 0.15, "GLDM": 0.15 },
+    "retired_date": "2026-02-17",
+    "reason": "Phase 18 전수(9656만 조합) → Phase 20 검산 PASS. TLT 15→10%, GLDM 15→20%."
+  },
+  "description": "배당 안정 + 성장 + 채권/금 헤지. 주식 70% + 방어 30%. 적립식 최적화. Phase 20 5-Track 검산 통과.",
+  "investment_execution": {
+    "method": "DCA (적립식)",
+    "initial_investment_krw": 4000000,
+    "monthly_contribution_krw": 1500000,
+    "fx_rate_assumption": 1350,
+    "fractional_shares": false,
+    "cash_buffer": "다음 달 이월",
+    "dividend_reinvest": "현금 버퍼에 추가 후 다음 매수 시 활용"
+  },
+  "investment_rules": {
+    "mdd_limit": -0.40,
+    "mdd_emergency": -0.35,
+    "benchmark": "SPY",
+    "goal": "FIRE (경제적 자유)",
+    "risk_profile": "보수적 성장형",
+    "rebalancing": "월 1회 모니터링 + ±10% 드리프트 임계치. 임계치 초과 종목만 리밸런싱. (Phase 21 검증)",
+    "defensive_dca": "폐기 (v2.8). DCA 본질에 반하는 규칙.",
+    "council_rule": "선택적 트리거 (v2.9). MDD -35%/-40%, 리밸런싱 드리프트, 구조 변경 시에만 3자 회의.",
+    "ruleset_version": "v2.9"
+  },
+  "phase20_metrics": {
+    "period": "2000-01 ~ 2026-01 (313개월)",
+    "sharpe": 0.781,
+    "p50_terminal_krw": 2029558584,
+    "p5_terminal_krw": 889671015,
+    "delta_p30_vs_spy": -0.3567,
+    "p_mdd_40": 0.0927,
+    "dsr": 1.000,
+    "rolling_sharpe_win_rate_vs_spy": 1.00
+  },
+  "robustness_criteria": {
+    "R1_new": { "metric": "ΔP30(v5-SPY) Block BS L=12", "threshold": "<= -0.10", "v5_value": -0.3567 },
+    "R1b": { "metric": "P(MDD<-40%) Block BS L=12", "threshold": "<= 0.10", "v5_value": 0.0927 },
+    "R2": { "metric": "Adjusted Gap (IS-OOS)", "threshold": "<= 0.30", "v5_value": 0.250 },
+    "R3": { "metric": "Deflated Sharpe Ratio", "threshold": ">= 0.95", "v5_value": 1.000 },
+    "R4": { "metric": "P5 Terminal Block BS L=12", "threshold": ">= 600000000", "v5_value": 889671015 },
+    "R5": { "metric": "10Y Rolling Sharpe Win Rate vs SPY", "threshold": ">= 0.70", "v5_value": 1.00 }
+  },
+  "monitoring": {
+    "spmo": "6개월 모니터링 (2026-02-15~). 벤치마크 대비 -5%p+ 부진 시 QQQM 흡수",
+    "schd_spmo_crisis_corr": "위기 상관 0.793 확인. >0.85 지속 시 SPMO 교체 검토"
+  },
+  "revert_triggers": {
+    "tlt_headwind": "금리 상승 지속 3년+ → TLT→IEF 교체 검토",
+    "gldm_failure": "주식-금 상관 6개월+ 0.5 이상 → GLDM 비중 축소",
+    "underperform": "2년 연속 SPY 대비 -5%p → 전면 재검토",
+    "fed_tightening": "Fed 긴축 사이클 진입 시 TLT 10%→0% 축소, SGOV/현금 이전 검토",
+    "spmo_underperform": "6개월 내 벤치마크 대비 -5%p → SPMO→QQQM 흡수",
+    "spmo_crisis_corr": "SCHD-SPMO 위기 상관 >0.85 지속 → SPMO 교체 검토"
+  }
+}

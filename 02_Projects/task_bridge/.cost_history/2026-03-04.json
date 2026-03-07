@@ -1,0 +1,22 @@
+{
+  "date": "2026-03-04",
+  "engines": {
+    "claude_code": {
+      "tasks": 16,
+      "total_turns_est": 720,
+      "total_seconds": 3334
+    },
+    "codex": {
+      "tasks": 0,
+      "total_turns_est": 0,
+      "total_seconds": 0
+    },
+    "antigravity": {
+      "tasks": 0,
+      "total_turns_est": 0,
+      "total_seconds": 0
+    }
+  },
+  "brain_callbacks": 16,
+  "dangerous_blocked": 0
+}

@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/chunks/ChunkConveyor.gd" id="1_conveyor"]
+[ext_resource type="Script" path="res://scripts/chunks/LaneMover.gd" id="2_mover"]
+[ext_resource type="PackedScene" path="res://scenes/obstacles/car.tscn" id="3_car"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_conveyor"]
+size = Vector3(9, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_conveyor"]
+albedo_color = Color(0.35, 0.35, 0.45, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_conveyor_area"]
+size = Vector3(9, 0.5, 0.8)
+
+[node name="ChunkConveyor" type="Node3D"]
+script = ExtResource("1_conveyor")
+type = 5
+belt_speed = 1.35
+move_right = true
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_conveyor")
+surface_material_override/0 = SubResource("StandardMaterial3D_conveyor")
+
+[node name="ConveyorArea" type="Area3D" parent="."]
+collision_layer = 128
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConveyorArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("BoxShape3D_conveyor_area")
+
+[node name="LaneMover" type="Node3D" parent="."]
+script = ExtResource("2_mover")
+object_scene = ExtResource("3_car")
+spawn_rate = 2.2
+speed = 2.2

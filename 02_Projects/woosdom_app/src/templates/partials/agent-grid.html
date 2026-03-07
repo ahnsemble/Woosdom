@@ -1,0 +1,48 @@
+{# ── agent-grid.html — P2: Agent Grid ── #}
+{% set agents = data.agents %}
+{% set summary = agents.summary %}
+
+<section class="panel--half panel-card panel-agent-grid">
+  <div class="panel-card__header">
+    <span>Agent Grid</span>
+    <span class="text-xs text-muted text-mono">{{ summary.total }} agents</span>
+  </div>
+  <div class="panel-card__body">
+
+    {# ── Summary Bar ── #}
+    <div class="summary-bar">
+      <span class="summary-bar__count">{{ summary.total }} agents</span>
+      <span class="summary-bar__item"><span class="freshness-dot freshness-dot--fresh"></span> {{ summary.fresh }} Fresh</span>
+      <span class="summary-bar__item"><span class="freshness-dot freshness-dot--aging"></span> {{ summary.aging }} Aging</span>
+      <span class="summary-bar__item"><span class="freshness-dot freshness-dot--stale"></span> {{ summary.stale }} Stale</span>
+      <span class="summary-bar__item"><span class="freshness-dot freshness-dot--never"></span> {{ summary.never }} Never</span>
+    </div>
+
+    {# ── Department Groups ── #}
+    {% for dept, members in agents.departments.items() %}
+    <div class="dept-group" data-dept="{{ dept }}">
+      <div class="dept-group__header" onclick="toggleDept(this)">
+        <span class="dept-group__chevron">&#9660;</span>
+        <span>{{ dept }}</span>
+        <span class="dept-group__count">({{ members | length }})</span>
+      </div>
+      <div class="dept-group__list">
+        {% for agent in members %}
+        <div class="agent-row">
+          <span class="agent-row__name">{{ agent.name }}</span>
+          <span class="tier-badge tier-badge--{{ agent.tier }}">{{ agent.tier }}</span>
+          {% if agent.model or agent.engine %}
+          <span class="agent-engine">{{ agent.model | model_short }} / {{ agent.engine | engine_short }}</span>
+          {% else %}
+          <span class="agent-engine">&mdash;</span>
+          {% endif %}
+          <span class="agent-row__time">{% if agent.last_seen %}{{ agent.last_seen }}{% else %}never{% endif %}</span>
+          <span class="freshness-dot freshness-dot--{{ agent.freshness }}" title="{{ agent.freshness }}"></span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</section>

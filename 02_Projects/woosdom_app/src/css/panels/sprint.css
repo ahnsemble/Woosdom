@@ -1,0 +1,100 @@
+/* ============================================
+   sprint.css — P4: Sprint Progress
+   ============================================ */
+
+.panel-sprint .sprint-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+}
+
+/* ── Progress Bar ── */
+.sprint-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.sprint-progress__bar {
+  flex: 1;
+  height: 10px;
+  background: var(--color-bg);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.sprint-progress__fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+.sprint-progress__label {
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-accent);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── Counts ── */
+.sprint-counts {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.sprint-count {
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.sprint-count--done { color: var(--color-online); }
+.sprint-count--progress { color: var(--color-accent); }
+.sprint-count--pending { color: var(--color-muted); }
+
+/* ── Recent Done ── */
+.sprint-recent {
+  border-top: var(--border-card);
+  padding-top: var(--space-sm);
+}
+
+.sprint-recent__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-xs);
+}
+
+.sprint-recent__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sprint-recent__list li {
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  padding: 2px 0;
+  padding-left: var(--space-md);
+  position: relative;
+}
+
+.sprint-recent__list li::before {
+  content: "•";
+  position: absolute;
+  left: var(--space-xs);
+  color: var(--color-online);
+}

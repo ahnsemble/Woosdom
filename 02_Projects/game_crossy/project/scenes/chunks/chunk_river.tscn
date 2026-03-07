@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/chunks/ChunkBase.gd" id="1_base"]
+[ext_resource type="Script" path="res://scripts/chunks/LaneMover.gd" id="2_mover"]
+[ext_resource type="PackedScene" path="res://scenes/obstacles/log.tscn" id="3_log"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_water"]
+size = Vector3(9, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_water"]
+albedo_color = Color(0.2, 0.2, 0.8, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_water"]
+size = Vector3(9, 0.5, 0.8)
+
+[node name="ChunkRiver" type="Node3D"]
+script = ExtResource("1_base")
+type = 2
+
+[node name="WaterVisual" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_water")
+surface_material_override/0 = SubResource("StandardMaterial3D_water")
+
+[node name="WaterArea" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WaterArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+shape = SubResource("BoxShape3D_water")
+
+[node name="LaneMover" type="Node3D" parent="."]
+script = ExtResource("2_mover")
+object_scene = ExtResource("3_log")
+spawn_rate = 3.0
+speed = 1.5

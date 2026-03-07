@@ -208,3 +208,56 @@ user_context:
   - "MDD -40% 절대 한도"
   - "FIRE 목표 존재 — P50 기준 49세 (사업소득 추가 시 43세)"
 ```
+
+
+---
+
+## 11. Collaboration Protocol
+
+### MessageBus 바인딩
+```yaml
+inbox: "00_System/MessageBus/inbox/fin-portfolio-analyst.md"
+escalates_to_brain: "00_System/MessageBus/brain_report/"
+deadletter: "00_System/MessageBus/deadletter/"
+```
+
+### 수신 가능 메시지 유형
+- `task_request` — 작업 요청 수신 및 처리
+- `info_share` — 정보 공유 (응답 불필요)
+- `workflow_start` — 워크플로 오케스트레이션 개시
+
+### 발신 가능 대상
+- `fin-quant` — 작업 위임 (task_request)
+- `fin-market-scout` — 작업 위임 (task_request)
+- `fin-backtester` — 작업 위임 (task_request)
+- `fin-tax-optimizer` — 작업 위임 (task_request)
+- `brain` — 에스컬레이션 (brain_report)
+
+### TTL 기본값
+- 기본: 60분
+- 초과 시: cmd-dispatcher로 에스컬레이션
+
+### 즉시 Brain 보고 조건
+- VIX 40+ 감지
+- 일일 손실 -10% 이상
+- P5(파산 확률) 임계치 초과
+- MDD 계산 로직 변경 시도 감지
+
+---
+
+## 12. CC 네이티브 실행 규칙
+
+### .claude/agents/ 등록 완료
+이 에이전트는 CC 네이티브 서브에이전트로 등록되어 있습니다.
+CC가 Task 툴로 자동 스폰합니다.
+
+### MessageBus 기록 의무
+태스크 완료 시 반드시 outbox에 기록:
+- 경로: `00_System/MessageBus/outbox/fin-portfolio-analyst_{{YYYYMMDD-HHMMSS}}.md`
+- 형식: YAML front-matter(from/type/status/completed_at) + 결과 마크다운
+- 기록 누락 시 parser.py가 완료를 감지하지 못함 → 대시보드 오류
+
+### workflow_id 처리
+inbox 메시지에 workflow_id가 있으면:
+- outbox 기록 시 workflow_id, task_id 반드시 포함
+- workflow_engine이 자동으로 다음 태스크 dispatch

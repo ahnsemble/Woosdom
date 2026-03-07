@@ -1,0 +1,39 @@
+{# ── portfolio.html — P5: Portfolio ── #}
+{% set pf = data.portfolio %}
+
+<section class="panel--half panel-card panel-portfolio">
+  <div class="panel-card__header">
+    <span>Portfolio</span>
+    <span class="text-xs text-muted text-mono">D-{{ pf.days_until_check }}</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="portfolio-name">{{ pf.name }}</div>
+
+    <div class="portfolio-table-wrap">
+      <table class="portfolio-table">
+        <thead>
+          <tr>
+            <th>ETF</th>
+            <th>Target</th>
+            <th>Actual</th>
+            <th>Drift</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for h in pf.holdings %}
+          <tr class="portfolio-row{% if h.drift|abs >= pf.drift_threshold %} portfolio-row--alert{% endif %}">
+            <td class="portfolio-row__etf">{{ h.etf }}</td>
+            <td class="portfolio-row__pct">{{ h.target }}%</td>
+            <td class="portfolio-row__pct">{{ h.actual }}%</td>
+            <td class="portfolio-row__drift">{% if h.drift >= 0 %}+{% endif %}{{ h.drift }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="portfolio-footer">
+      다음 드리프트 점검: {{ pf.next_check }} (D-{{ pf.days_until_check }})
+    </div>
+  </div>
+</section>

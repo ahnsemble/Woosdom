@@ -6,8 +6,9 @@ Brain 콜백 횟수, 위험 차단 횟수를 일일 단위로 기록한다.
 """
 import json
 import os
+import re
 import shutil
-from datetime import datetime
+from datetime import datetime, timedelta
 
 STATS_DIR = os.path.dirname(os.path.abspath(__file__))
 STATS_PATH = os.path.join(STATS_DIR, ".cost_stats.json")
@@ -121,4 +122,105 @@ def get_daily_summary() -> str:
     lines.append(f"  합계: {total_tasks}건, ~{total_turns}턴, {total_secs}초")
     lines.append(f"  Brain 콜백: {data['brain_callbacks']}회")
     lines.append(f"  위험 차단: {data['dangerous_blocked']}회")
+    return "\n".join(lines)
+
+
+# ── 한국어 요일 ────────────────────────────────────────────────────────────────
+_KR_WEEKDAYS = ["월", "화", "수", "목", "금", "토", "일"]
+
+_BRAIN_QUOTES = {
+    0: "이번 주도 빡세게 가봅시다.",
+    1: "어제의 나보다 1% 더.",
+    2: "수요일, 고비를 넘기면 내리막입니다.",
+    3: "목요일, 마무리 준비 시작.",
+    4: "주말이 코앞. 오늘만 버팁시다.",
+    5: "토요일, 리프레시 하면서도 한 발짝.",
+    6: "일요일, 다음 주를 위한 충전.",
+}
+
+VAULT_ROOT_CM = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
+TEMPLATES_DIR_CM = os.path.join(VAULT_ROOT_CM, "00_System", "Templates")
+
+
+def _read_yesterday_stats() -> dict | None:
+    """어제 날짜의 .cost_history/YYYY-MM-DD.json 읽기."""
+    yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    path = os.path.join(HISTORY_DIR, f"{yesterday}.json")
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
+def _read_to_status(filename: str) -> str:
+    """to_*.md 파일의 status 필드 읽기."""
+    path = os.path.join(TEMPLATES_DIR_CM, filename)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read(500)
+        m = re.search(r"status:\s*(\S+)", content)
+        if m:
+            return m.group(1).strip()
+    except OSError:
+        pass
+    return "없음"
+
+
+def get_morning_brief() -> str:
+    """TG 발송용 모닝 브리프 생성."""
+    now = datetime.now()
+    today_str = now.strftime("%Y-%m-%d")
+    weekday = _KR_WEEKDAYS[now.weekday()]
+
+    lines = [f"🌅 Woosdom Morning Brief — {today_str} ({weekday})", ""]
+
+    # ── 어제 실적 ──
+    yd = _read_yesterday_stats()
+    lines.append("📌 어제 실적")
+    if yd:
+        eng = yd.get("engines", {})
+        cc = eng.get("claude_code", {})
+        codex = eng.get("codex", {})
+        ag = eng.get("antigravity", {})
+        lines.append(
+            f"  • CC: {cc.get('tasks', 0)}건, {cc.get('total_turns_est', 0)}턴 / "
+            f"Codex: {codex.get('tasks', 0)}건 / "
+            f"AG: {ag.get('tasks', 0)}건"
+        )
+        lines.append(
+            f"  • Brain 콜백: {yd.get('brain_callbacks', 0)}회 | "
+            f"위험 차단: {yd.get('dangerous_blocked', 0)}회"
+        )
+    else:
+        lines.append("  • 데이터 없음")
+
+    # ── 시스템 상태 ──
+    lines.append("")
+    lines.append("⚙️ 시스템 상태")
+    cc_st = _read_to_status("to_claude_code.md")
+    codex_st = _read_to_status("to_codex.md")
+    ag_st = _read_to_status("to_antigravity.md")
+    lines.append(f"  • Watcher: 감시 중 (CC:{cc_st} / Codex:{codex_st} / AG:{ag_st})")
+    lines.append("  • 일일 한도: CC 100턴 / Codex 무제한 / Brain콜백 30회")
+
+    # ── 대기 작업 ──
+    lines.append("")
+    lines.append("🎯 오늘 대기 중인 작업")
+    pending_found = False
+    for fname, label in [("to_claude_code.md", "CC"), ("to_codex.md", "Codex"), ("to_antigravity.md", "AG")]:
+        st = _read_to_status(fname)
+        if st == "pending":
+            pending_found = True
+            lines.append(f"  • [{label}] {fname} — pending")
+    if not pending_found:
+        lines.append("  • 대기 작업 없음")
+
+    # ── Brain 한마디 ──
+    lines.append("")
+    lines.append("💡 Brain 한마디")
+    lines.append(f"  • {_BRAIN_QUOTES.get(now.weekday(), '좋은 아침. 시스템 정상 가동 중.')}")
+
     return "\n".join(lines)

@@ -1,0 +1,3 @@
+display_name: "Health & Training"
+short_description: "운동 프로토콜, 식단, 건강 관리"
+default_prompt: "오늘 운동 루틴을 확인해줘"

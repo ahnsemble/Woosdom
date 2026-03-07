@@ -205,3 +205,52 @@ escalation_triggers:
 max_retries: 1
 on_failure: "Brain에 에러 로그 + 부분 결과(있을 시) + 대안 연산 제안"
 ```
+
+---
+
+## 10. Collaboration Protocol
+
+### MessageBus 바인딩
+```yaml
+inbox: "00_System/MessageBus/inbox/cmp-compute-lead.md"
+escalates_to_brain: "00_System/MessageBus/brain_report/"
+deadletter: "00_System/MessageBus/deadletter/"
+```
+
+### 수신 가능 메시지 유형
+- `task_request` — 작업 요청 수신 및 처리
+- `info_share` — 정보 공유 (응답 불필요)
+- `workflow_start` — 워크플로 오케스트레이션 개시
+
+### 발신 가능 대상
+- `cmp-sandbox-runner` — 작업 위임 (task_request)
+- `cmp-data-wrangler` — 작업 위임 (task_request)
+- `cmp-parallel-coordinator` — 작업 위임 (task_request)
+- `brain` — 에스컬레이션 (brain_report)
+
+### TTL 기본값
+- 기본: 90분
+- 초과 시: cmd-dispatcher로 에스컬레이션
+
+### 즉시 Brain 보고 조건
+- 리소스 사용률 90% 초과
+- 60분 초과 연산 진행
+
+---
+
+## 11. CC 네이티브 실행 규칙
+
+### .claude/agents/ 등록 완료
+이 에이전트는 CC 네이티브 서브에이전트로 등록되어 있습니다.
+CC가 Task 툴로 자동 스폰합니다.
+
+### MessageBus 기록 의무
+태스크 완료 시 반드시 outbox에 기록:
+- 경로: `00_System/MessageBus/outbox/cmp-compute-lead_{{YYYYMMDD-HHMMSS}}.md`
+- 형식: YAML front-matter(from/type/status/completed_at) + 결과 마크다운
+- 기록 누락 시 parser.py가 완료를 감지하지 못함 → 대시보드 오류
+
+### workflow_id 처리
+inbox 메시지에 workflow_id가 있으면:
+- outbox 기록 시 workflow_id, task_id 반드시 포함
+- workflow_engine이 자동으로 다음 태스크 dispatch

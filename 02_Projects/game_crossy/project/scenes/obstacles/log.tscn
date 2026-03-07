@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_log"]
+size = Vector3(2.0, 0.2, 0.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_log"]
+size = Vector3(2.0, 0.2, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_log"]
+albedo_color = Color(0.4, 0.2, 0.1, 1)
+
+[node name="Log" type="Area3D"]
+collision_layer = 4
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("BoxShape3D_log")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("BoxMesh_log")
+surface_material_override/0 = SubResource("StandardMaterial3D_log")

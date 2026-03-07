@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/chunks/ChunkBase.gd" id="1_base"]
+[ext_resource type="Script" path="res://scripts/chunks/LaneMover.gd" id="2_mover"]
+[ext_resource type="PackedScene" path="res://scenes/obstacles/car.tscn" id="3_car"]
+[ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="4_coin"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_road"]
+size = Vector3(9, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_road"]
+albedo_color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="ChunkRoad" type="Node3D"]
+script = ExtResource("1_base")
+type = 1
+coin_scene = ExtResource("4_coin")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_road")
+surface_material_override/0 = SubResource("StandardMaterial3D_road")
+
+[node name="LaneMover" type="Node3D" parent="."]
+script = ExtResource("2_mover")
+object_scene = ExtResource("3_car")
+spawn_rate = 2.5

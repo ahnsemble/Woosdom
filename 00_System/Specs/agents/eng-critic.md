@@ -65,11 +65,11 @@ Stripe의 코드 리뷰 문화에서 6년간 단련된 시니어 리뷰어. Stri
 ## 4. Engine Binding
 
 ```yaml
-primary_engine: "claude_code"
-primary_model: "sonnet-4.5"
-fallback_engine: "brain_direct"
-fallback_model: "opus-4.6"
-execution_mode: "sub_agent"
+primary_engine: "codex"
+primary_model: "gpt-5.3-extra-high"
+fallback_engine: "claude_code"
+fallback_model: "sonnet-4.5"
+execution_mode: "sandbox"
 max_turns: 10
 ```
 
@@ -171,3 +171,48 @@ escalation_triggers:
 max_retries: 0
 on_failure: "eng-foreman에 리뷰 불가 사유 보고"
 ```
+
+
+---
+
+## 10. Collaboration Protocol
+
+### MessageBus 바인딩
+```yaml
+inbox: "00_System/MessageBus/inbox/eng-critic.md"
+escalates_to_brain: "00_System/MessageBus/brain_report/"
+deadletter: "00_System/MessageBus/deadletter/"
+```
+
+### 수신 가능 메시지 유형
+- `task_request` — 작업 요청 수신 및 처리
+- `info_share` — 정보 공유 (응답 불필요)
+
+### 발신 가능 대상
+- `eng-foreman` — 에스컬레이션 (task_request)
+
+### TTL 기본값
+- 기본: 45분
+- 초과 시: cmd-dispatcher로 에스컬레이션
+
+### 즉시 Brain 보고 조건
+- 프로덕션 배포 실패
+- 보안 취약점 발견
+
+---
+
+## 11. Codex 네이티브 실행 규칙
+
+### 실행 엔진: Codex (Hands-3)
+이 에이전트는 Codex 샌드박스에서 실행됩니다.
+PR 리뷰 + 코드 분석에 최적화. CC fallback 지원.
+
+### MessageBus 기록 의무
+태스크 완료 시 반드시 outbox에 기록:
+- 경로: `00_System/MessageBus/outbox/eng-critic_{{YYYYMMDD-HHMMSS}}.md`
+- 형식: YAML front-matter(from/type/status/completed_at) + 결과 마크다운
+
+### workflow_id 처리
+inbox 메시지에 workflow_id가 있으면:
+- outbox 기록 시 workflow_id, task_id 반드시 포함
+- workflow_engine이 자동으로 다음 태스크 dispatch

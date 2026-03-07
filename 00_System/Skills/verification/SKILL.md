@@ -20,7 +20,7 @@ description: >
 ```
 □ 빌드 성공 (exit code 0)
 □ 린트/포매팅 에러 없음
-□ to_hands.md의 모든 서브태스크 검증 명령어 통과
+□ to_[engine].md의 모든 서브태스크 검증 명령어 통과
 □ 의도하지 않은 파일 변경 없음 (git diff --stat 확인)
 □ console.log / print 디버그 코드 제거
 ```
@@ -40,10 +40,10 @@ description: >
 □ 설정 파일 변경 시 → 전체 서버/앱 재시작 후 테스트
 □ 마이그레이션 필요 시 → 마이그레이션 스크립트 실행 확인
 □ README / CLAUDE.md 업데이트 (해당 시)
-□ breaking change → from_hands.md에 명시
+□ breaking change → from_[engine].md에 명시
 ```
 
-## from_hands.md 완료 보고 포맷
+## from_[engine].md 완료 보고 포맷
 
 ```markdown
 # from_hands — [작업 제목]
@@ -75,7 +75,7 @@ description: >
 | 서브태스크 1개라도 검증 실패 | ❌ Done 선언 금지. 수정 후 재검증 |
 | "거의 다 됐는데 한 가지만..." | ❌ Done 선언 금지. 완전히 끝나야 Done |
 | 테스트가 없는 프로젝트 | 수동 테스트라도 수행 + 결과 기록 |
-| 검증 중 새 버그 발견 | from_hands.md에 기록 + Brain에 에스컬레이션 |
+| 검증 중 새 버그 발견 | from_[engine].md에 기록 + Brain에 에스컬레이션 |
 
 ## CLAUDE.md 연동 (TDD 강제)
 
@@ -85,9 +85,9 @@ CC/Codex의 CLAUDE.md에 추가 권장:
 ## 작업 규칙
 - 새 기능: RED → GREEN → REFACTOR (TDD)
 - "Done" 선언 전: verification SKILL 체크리스트 필수 통과
-- from_hands.md 없이 "끝" 선언 금지
+- from_[engine].md 없이 "끝" 선언 금지
 ```
 
-> ⚠️ 이 스킬은 Hands 엔진이 직접 참조하는 것이 아니라,
-> Brain이 to_hands.md 작성 시 검증 기준으로 포함하고,
-> from_hands.md 수신 시 체크리스트 대조에 사용합니다.
+> ⚠️ 이 스킬은 엔진이 직접 참조하는 것이 아니라,
+> Brain이 to_[engine].md 작성 시 검증 기준으로 포함하고,
+> from_[engine].md 수신 시 체크리스트 대조에 사용합니다.

@@ -1,0 +1,158 @@
+/* ============================================
+   system-status.css — P1: Engine Status Cards
+   ============================================ */
+
+.panel-system-status .engine-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+@media (max-width: 600px) {
+  .panel-system-status .engine-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Engine Card ── */
+.engine-card {
+  background: var(--color-bg);
+  border: var(--border-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.engine-card--error {
+  border-color: var(--color-error);
+  background: rgba(231, 76, 60, 0.05);
+}
+
+.engine-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.engine-card__name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+.engine-card__subtitle {
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}
+
+/* ── Status Dot ── */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.status-dot--online {
+  background: var(--color-online);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.status-dot--idle {
+  background: var(--color-idle);
+}
+
+.status-dot--error {
+  background: var(--color-error);
+  animation: blink 1s ease-in-out infinite;
+}
+
+.status-dot--offline {
+  background: #2d2d4a;
+}
+
+/* ── Status Label ── */
+.status-label {
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.status-label--online { color: var(--color-online); }
+.status-label--idle { color: var(--color-idle); }
+.status-label--error { color: var(--color-error); }
+
+/* ── Metric Row ── */
+.engine-card__metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.metric-row__value {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+/* ── Failure Counter Bar ── */
+.failure-bar {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.failure-bar__segment {
+  width: 20px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--color-border);
+  transition: background 0.3s;
+}
+
+.failure-bar__segment--active-1 { background: var(--color-warning); }
+.failure-bar__segment--active-2 { background: #e67e22; }
+.failure-bar__segment--active-3 { background: var(--color-error); }
+
+.failure-bar__label {
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  margin-left: var(--space-xs);
+}
+
+/* ── Sub-Brain Badge ── */
+.sub-brain-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
+
+.sub-brain-badge--active {
+  background: rgba(231, 76, 60, 0.15);
+  color: var(--color-error);
+}

@@ -1,51 +1,71 @@
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
+# =============================
+# Woosdom Brain — .gitignore
+# Updated: 2026-03-07 (보안 점검 후 강화)
+# =============================
 
-# Obsidian
-.obsidian/workspace
-.obsidian/workspace.json
-.obsidian/plugins/*/data.json
-.trash/
-
-# Developer Tools
-.vscode/
-.idea/
-
-# General Environment
+# === CRITICAL: 시크릿/키 ===
 .env
-.env.local
+.env.*
 *.env
+**/.env
+**/.env.*
 
-# Python
+# === 런타임/PID ===
+*.pid
+*.lock
+
+# === OS 메타데이터 ===
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# === Python ===
 __pycache__/
-
-# Pixel Agents build artifacts
-02_Projects/pixel-agents-woosdom/node_modules/
-02_Projects/pixel-agents-woosdom/dist/
-02_Projects/pixel-agents-woosdom/dist-electron/
-02_Projects/pixel-agents-woosdom/release/
-
-# Agent task exchange files (private)
-00_System/Templates/to_claude_code.md
-00_System/Templates/from_claude_code.md
-00_System/Templates/to_codex.md
-00_System/Templates/from_codex.md
-00_System/Templates/to_antigravity*.md
-00_System/Templates/from_antigravity*.md
-00_System/Templates/to_*.md
-00_System/Templates/from_*.md
-
-# Secrets / Tokens (launchd plists contain env vars)
-*.plist
-
-# Cost monitor state
-.cost_stats.json
-.cost_history/
-
-# TG logger state
-.tg_logger_state
-
-# pytest cache
+**/__pycache__/
+*.pyc
+*.pyo
+.venv/
+**/.venv/
+*.egg-info/
 .pytest_cache/
+**/.pytest_cache/
+
+# === Node.js ===
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# === 빌드 아티팩트 ===
+build/
+**/build/
+dist/
+**/dist/
+dist-electron/
+**/dist-electron/
+release/
+**/release/
+
+# === 로컬 DB/벡터DB ===
+data/bot.db
+data/bot.db-shm
+data/bot.db-wal
+**/chroma_db/
+*.db
+*.db-shm
+*.db-wal
+
+# === Obsidian 내부 ===
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/graph.json
+
+# === 아카이브 (API 키 포함 가능) ===
+04_Archive/
+
+# === 기타 ===
+*.log
+.claude/
+.gemini/
+*.bak
+*.tmp

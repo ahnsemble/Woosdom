@@ -170,3 +170,49 @@ escalation_triggers:
 max_retries: 0
 on_failure: "Career Strategist에 네트워킹 현황 + 제안 실패 사유"
 ```
+
+---
+
+## 10. Collaboration Protocol
+
+### MessageBus 바인딩
+```yaml
+inbox: "00_System/MessageBus/inbox/car-network-builder.md"
+escalates_to_brain: "00_System/MessageBus/brain_report/"
+deadletter: "00_System/MessageBus/deadletter/"
+```
+
+### 수신 가능 메시지 유형
+- `task_request` — 작업 요청 수신 및 처리
+- `info_share` — 정보 공유 (응답 불필요)
+
+### 발신 가능 대상
+- `cre-writer` — 작업 위임 (task_request)
+- `res-web-scout` — 작업 위임 (task_request)
+- `car-strategist` — 에스컬레이션 (task_request)
+
+### TTL 기본값
+- 기본: 60분
+- 초과 시: cmd-dispatcher로 에스컬레이션
+
+### 즉시 Brain 보고 조건
+- 해당 없음 (cmd-dispatcher → Brain 경유)
+
+---
+
+## 11. CC 네이티브 실행 규칙
+
+### .claude/agents/ 등록 완료
+이 에이전트는 CC 네이티브 서브에이전트로 등록되어 있습니다.
+CC가 Task 툴로 자동 스폰합니다.
+
+### MessageBus 기록 의무
+태스크 완료 시 반드시 outbox에 기록:
+- 경로: `00_System/MessageBus/outbox/car-network-builder_{{YYYYMMDD-HHMMSS}}.md`
+- 형식: YAML front-matter(from/type/status/completed_at) + 결과 마크다운
+- 기록 누락 시 parser.py가 완료를 감지하지 못함 → 대시보드 오류
+
+### workflow_id 처리
+inbox 메시지에 workflow_id가 있으면:
+- outbox 기록 시 workflow_id, task_id 반드시 포함
+- workflow_engine이 자동으로 다음 태스크 dispatch

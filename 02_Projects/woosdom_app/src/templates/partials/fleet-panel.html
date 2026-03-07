@@ -1,0 +1,116 @@
+{# ── fleet-panel.html — Fleet Health + Engine Badges + System Health + Event Feed ── #}
+{% set fleet = data.fleet %}
+{% set health = fleet.health %}
+{% set engines = fleet.engines %}
+{% set events = fleet.event_feed %}
+{% set sh = fleet.system_health %}
+
+<section class="panel--full panel-card panel-fleet">
+  <div class="panel-card__header">
+    <span>Fleet Status</span>
+    <span class="text-xs text-muted text-mono">{{ health.total }} ops tracked</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="fleet-top-row">
+
+      {# ── 1. Fleet Health Bar ── #}
+      <div class="fleet-health">
+        <div class="fleet-health__label">
+          <span>Fleet Health</span>
+          <span class="fleet-health__pct
+            {%- if health.success_rate >= 80 %} fleet-health__pct--good
+            {%- elif health.success_rate >= 50 %} fleet-health__pct--warn
+            {%- else %} fleet-health__pct--bad{% endif %}">{{ health.success_rate }}%</span>
+        </div>
+        <div class="fleet-health__track">
+          <div class="fleet-health__fill
+            {%- if health.success_rate >= 80 %} fleet-health__fill--good
+            {%- elif health.success_rate >= 50 %} fleet-health__fill--warn
+            {%- else %} fleet-health__fill--bad{% endif %}"
+               style="width: {{ health.success_rate }}%"></div>
+        </div>
+        <div class="fleet-health__detail">
+          <span class="text-xs text-muted">{{ health.success }} success</span>
+          <span class="text-xs text-muted">{{ health.fail }} fail</span>
+        </div>
+      </div>
+
+      {# ── 2. Engine Status Badges ── #}
+      <div class="fleet-badges">
+        {% for key, eng in engines.items() %}
+        {% set badge_class = 'idle' if eng.status == 'idle' else ('working' if eng.status == 'working' else 'error') %}
+        <div class="fleet-badge fleet-badge--{{ badge_class }}">
+          <span class="fleet-badge__dot fleet-badge__dot--{{ badge_class }}"></span>
+          <span class="fleet-badge__name">{{ key | engine_short }}</span>
+          <span class="fleet-badge__status">{{ eng.status | upper }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+
+    {# ── 3. System Health (Heartbeat) ── #}
+    <div class="system-health">
+      <div class="system-health__header">
+        <span class="text-xs text-muted">SYSTEM HEALTH</span>
+        <span class="system-health__indicator system-health__indicator--{{ sh.watcher_status }}">
+          {{ sh.watcher_status | upper }}
+        </span>
+      </div>
+      <div class="system-health__grid">
+        <div class="system-health__item">
+          <span class="system-health__label">Watcher</span>
+          <span class="system-health__dot system-health__dot--{{ sh.watcher_status }}"></span>
+          <span class="system-health__value">
+            {%- if sh.watcher_status == 'alive' -%}PID {{ sh.watcher_pid }}
+            {%- elif sh.watcher_status == 'stale' -%}Stale ({{ sh.last_beat_ago }})
+            {%- else -%}Offline
+            {%- endif -%}
+          </span>
+        </div>
+        <div class="system-health__item">
+          <span class="system-health__label">Uptime</span>
+          <span class="system-health__value text-mono">{{ sh.uptime_display }}</span>
+        </div>
+        <div class="system-health__item">
+          <span class="system-health__label">Last Beat</span>
+          <span class="system-health__value text-mono">{{ sh.last_beat_ago or '—' }}</span>
+        </div>
+        <div class="system-health__item">
+          <span class="system-health__label">Errors/hr</span>
+          <span class="system-health__value text-mono {% if sh.errors_last_hour > 0 %}system-health__value--warn{% endif %}">{{ sh.errors_last_hour }}</span>
+        </div>
+      </div>
+      {%- if sh.pending_files %}
+      <div class="system-health__pending">
+        <span class="text-xs text-muted">Pending:</span>
+        {% for pf in sh.pending_files %}
+        <span class="system-health__pending-tag">{{ pf }}</span>
+        {% endfor %}
+      </div>
+      {%- endif %}
+    </div>
+
+    {# ── 4. Event Feed ── #}
+    <div class="fleet-feed">
+      <div class="fleet-feed__header">
+        <span class="text-xs text-muted">LIVE FEED</span>
+        <span class="fleet-feed__dot"></span>
+      </div>
+      <div class="fleet-feed__list">
+        {% if events %}
+        {% for evt in events | reverse %}
+        <div class="fleet-feed__row fleet-feed__row--{{ evt.type | lower }}">
+          <span class="fleet-feed__time">{{ evt.time }}</span>
+          <span class="fleet-feed__type fleet-feed__type--{{ evt.type | lower }}">{{ evt.type }}</span>
+          <span class="fleet-feed__msg">{{ evt.message }}</span>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="fleet-feed__empty">No events yet.</div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</section>

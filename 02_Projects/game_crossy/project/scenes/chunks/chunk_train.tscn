@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/chunks/ChunkBase.gd" id="1_base"]
+[ext_resource type="Script" path="res://scripts/chunks/TrainSpawner.gd" id="2_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/obstacles/train.tscn" id="3_train"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_track"]
+size = Vector3(9, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_track"]
+albedo_color = Color(0.4, 0.3, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_light"]
+size = Vector3(0.5, 0.5, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_light"]
+albedo_color = Color(1, 1, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 2.0
+
+[node name="ChunkTrain" type="Node3D"]
+script = ExtResource("1_base")
+type = 3
+
+[node name="TrackVisual" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_track")
+surface_material_override/0 = SubResource("StandardMaterial3D_track")
+
+[node name="TrainSpawner" type="Node3D" parent="." node_paths=PackedStringArray("warning_light")]
+script = ExtResource("2_spawner")
+train_scene = ExtResource("3_train")
+warning_light = NodePath("WarningLight")
+
+[node name="WarningLight" type="Node3D" parent="TrainSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 0)
+visible = false
+
+[node name="LightMesh" type="MeshInstance3D" parent="TrainSpawner/WarningLight"]
+mesh = SubResource("BoxMesh_light")
+surface_material_override/0 = SubResource("StandardMaterial3D_light")

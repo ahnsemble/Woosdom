@@ -1,0 +1,10 @@
+{
+  "v5_hist_months": 313,
+  "v5_hist_cagr": 0.09477097399266743,
+  "n_boot": 10000,
+  "block": 12,
+  "acc_seed": 20260218,
+  "wd_seed": 20260219,
+  "sim_start": "2026-03",
+  "sim_end": "2056-02"
+}

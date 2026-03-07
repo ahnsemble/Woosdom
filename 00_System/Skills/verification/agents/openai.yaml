@@ -1,3 +1,0 @@
-display_name: "Verification"
-short_description: "작업 결과 검증 및 완료 판정 프로토콜"
-default_prompt: "이 작업 결과를 검증해줘"

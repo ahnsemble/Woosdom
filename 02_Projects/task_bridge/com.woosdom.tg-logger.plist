@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.woosdom.tg-logger</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Library/Frameworks/Python.framework/Versions/3.14/bin/python3.14</string>
+    <string>/Users/woosung/Desktop/Dev/Woosdom_Brain/02_Projects/task_bridge/tg_logger.py</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/woosung/Desktop/Dev/Woosdom_Brain</string>
+
+  <key>KeepAlive</key>
+  <true/>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/woosdom-tg-logger.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/tmp/woosdom-tg-logger.err</string>
+
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+</dict>
+</plist>

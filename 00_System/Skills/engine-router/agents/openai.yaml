@@ -1,3 +1,0 @@
-display_name: "Engine Router"
-short_description: "Brain→Hands 엔진 선택 및 디스패치 라우팅 프로토콜"
-default_prompt: "이 작업을 어떤 엔진에 위임할지 판단해줘"

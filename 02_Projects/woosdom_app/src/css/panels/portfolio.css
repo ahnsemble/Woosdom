@@ -1,0 +1,84 @@
+/* ============================================
+   portfolio.css — P5: Portfolio
+   ============================================ */
+
+.panel-portfolio .portfolio-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+}
+
+/* ── Table ── */
+.portfolio-table-wrap {
+  overflow-x: auto;
+}
+
+.portfolio-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-data);
+  font-size: var(--font-size-sm);
+}
+
+.portfolio-table th {
+  text-align: left;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: var(--border-card);
+}
+
+.portfolio-table td {
+  padding: var(--space-xs) var(--space-sm);
+  vertical-align: middle;
+}
+
+/* ── Row ── */
+.portfolio-row {
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+
+.portfolio-row:hover {
+  background: var(--color-accent-dim);
+}
+
+.portfolio-row--alert {
+  border-left-color: var(--color-error);
+  background: rgba(231, 76, 60, 0.05);
+}
+
+.portfolio-row__etf {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.portfolio-row__pct {
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.portfolio-row__drift {
+  text-align: right;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.portfolio-row--alert .portfolio-row__drift {
+  color: var(--color-error);
+}
+
+/* ── Footer ── */
+.portfolio-footer {
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: var(--border-card);
+  font-family: var(--font-data);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}

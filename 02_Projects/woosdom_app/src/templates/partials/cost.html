@@ -1,0 +1,59 @@
+{# ── cost.html — P6: Cost Monitor ── #}
+{% set cost = data.cost %}
+
+<section class="panel--full panel-card panel-cost">
+  <div class="panel-card__header">
+    <span>Cost Monitor</span>
+    <span class="text-xs text-muted text-mono">{{ cost.date }}</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="cost-table-wrap">
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>Engine</th>
+            <th>Tasks</th>
+            <th>Turns (est)</th>
+            <th>Seconds</th>
+            <th>Monthly Cap</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for eng in cost.engines %}
+          <tr class="cost-row">
+            <td class="cost-row__name">{{ eng.name }}</td>
+            <td class="cost-row__num">{{ eng.tasks }}</td>
+            <td class="cost-row__num">~{{ eng.turns_est }}</td>
+            <td class="cost-row__num">{{ eng.seconds }}s</td>
+            <td class="cost-row__cap">
+              {% if eng.monthly_cap > 0 %}
+              <div class="cost-cap-bar">
+                <div class="cost-cap-bar__fill" style="width: 0%"></div>
+              </div>
+              <span class="cost-cap-bar__label">${{ eng.monthly_cap }}</span>
+              {% else %}
+              <span class="text-muted">—</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cost-summary">
+      <div class="cost-summary__item">
+        <span class="cost-summary__label">Brain Callbacks</span>
+        <span class="cost-summary__value">{{ cost.brain_callbacks }}</span>
+      </div>
+      <div class="cost-summary__item cost-summary__item--warn">
+        <span class="cost-summary__label">위험 차단</span>
+        <span class="cost-summary__value">{{ cost.dangerous_blocked }}</span>
+      </div>
+      <div class="cost-summary__item">
+        <span class="cost-summary__label">월 상한</span>
+        <span class="cost-summary__value">${{ cost.monthly_total_cap }}</span>
+      </div>
+    </div>
+  </div>
+</section>

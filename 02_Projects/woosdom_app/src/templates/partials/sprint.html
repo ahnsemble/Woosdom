@@ -1,0 +1,36 @@
+{# ── sprint.html — P4: Sprint Progress ── #}
+{% set sprint = data.sprint %}
+
+<section class="panel--half panel-card panel-sprint">
+  <div class="panel-card__header">
+    <span>Sprint</span>
+    <span class="text-xs text-muted text-mono">{{ sprint.progress_pct }}%</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="sprint-title">{{ sprint.name }}</div>
+
+    <div class="sprint-progress">
+      <div class="sprint-progress__bar">
+        <div class="sprint-progress__fill" style="width: {{ sprint.progress_pct }}%"></div>
+      </div>
+      <span class="sprint-progress__label">{{ sprint.progress_pct }}%</span>
+    </div>
+
+    <div class="sprint-counts">
+      <span class="sprint-count sprint-count--done">✅ 완료: {{ sprint.done }}</span>
+      <span class="sprint-count sprint-count--progress">🔄 진행: {{ sprint.in_progress }}</span>
+      <span class="sprint-count sprint-count--pending">⬜ 대기: {{ sprint.pending }}</span>
+    </div>
+
+    {% if sprint.recent_done %}
+    <div class="sprint-recent">
+      <div class="sprint-recent__title">최근 완료</div>
+      <ul class="sprint-recent__list">
+        {% for item in sprint.recent_done %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+</section>

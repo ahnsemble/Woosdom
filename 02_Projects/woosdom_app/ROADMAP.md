@@ -75,7 +75,7 @@
 
 ---
 
-## Sprint 6: Brain-in-the-Loop (자율 에이전트화) — ⬜ 미착수
+## Sprint 6: Brain-in-the-Loop (자율 에이전트화) — 🟡 진행 중 (S-1✅ S-2✅ S-3⬜ S-4⬜)
 
 *참고: mrstack (github.com/whynowlab/mrstack) 아키텍처 벤치마크*
 *3자회의: 2026-03-01 — Gemini/GPT/Brain 합의*
@@ -101,15 +101,16 @@
 대안: task_bridge가 결과를 요약해서 Brain에 전달 (프로세스 1회만)
 예상: 3~4일
 
-### S-2: LaunchAgent 데몬화 — ⬜
+### S-2: LaunchAgent 데몬화 — ✅ 완료 (2026-03-02)
 
 목표: task_bridge.py를 macOS 데몬으로 등록, 24h 상시 실행
 
 | Step | 내용 | 상태 |
 |------|------|------|
-| S-2a | com.woosdom.taskbridge.plist 작성 (LaunchAgent) | ⬜ |
-| S-2b | 자동 재시작 (KeepAlive) + 로그 경로 설정 | ⬜ |
-| S-2c | 부팅 시 자동 시작 검증 | ⬜ |
+| S-2a | plist 검증 + symlink 설치 + bootstrap | ✅ |
+| S-2b | KeepAlive + 로그 경로 + TG 토큰 정상 | ✅ |
+| S-2c | E2E — 데몬→CC→Auto-Brain→DONE→TG (22초) | ✅ PASS |
+| S-2d | ⚠️ 재부팅 자동시작 안 됨 (symlink 이슈) | minor fix 남음 |
 
 예상: 1일
 선행: S-1 완료
@@ -136,31 +137,82 @@
 예상: 3~5일
 선행: S-2 완료 (데몬 필수)
 
-### S-4: 선제적 트리거 (후순위) — ⬜
+### S-4: 선제적 트리거 + TG 메모리 — 파트 A ✅ / 파트 B ⬜
+
+#### Phase A: 대화 기억 시스템 — ✅ 완료 (2026-03-02)
+
+목표: 세션 간 대화 기억 유지 (Claude Desktop + TG 모두)
+
+```
+/00_System/Memory/
+  ├── conversation_memory.md   ← Hot Memory (≤300 tok, Rolling 5)
+  ├── sessions/                ← Warm (아카이브)
+  └── tg_history/              ← Warm (TG 일별 로그)
+```
+
+| Step | 내용 | 상태 |
+|------|------|------|
+| S-4-A1 | Memory 디렉토리 구조 + conversation_memory.md 생성 | ✅ |
+| S-4-A2 | brain_directive.md Hot tier에 conversation_memory.md 등록 | ✅ |
+| S-4-A3 | Memory Write Protocol에 conversation_memory 규칙 추가 | ✅ |
+| S-4-A4 | CLAUDE.md (TG Bot) 메모리 프로토콜 + Memory Paths 업데이트 | ✅ |
+| S-4-A5 | active_context.md + ROADMAP.md 반영 | ✅ |
+
+#### Phase B: TG Bot Opus 승격 — ⬜
+
+목표: TG 봇이 Opus 4.6으로 동작하여 Brain 품질 응답
+
+| Step | 내용 | 상태 |
+|------|------|------|
+| S-4-B1 | claude-telegram-bot의 CC 호출 방식 확인 (ANTHROPIC_MODEL 환경변수 or 코드 수정) | ⬜ |
+| S-4-B2 | plist에 ANTHROPIC_MODEL=opus 추가 + LaunchAgent 재시작 | ⬜ |
+| S-4-B3 | TG에서 Opus 응답 확인 (E2E 테스트) | ⬜ |
+
+예상: 1일
+선행: Phase A 완료
+
+#### Phase C: Tailscale + SSH + tmux 원격 접속 — ⬜
+
+목표: 폰에서 맥북 CC Opus 세션에 직접 접속 (복잡한 전략 대화용)
+
+| Step | 내용 | 상태 |
+|------|------|------|
+| S-4-C1 | Tailscale 맥북 설치 + 계정 설정 (무료) | ⬜ |
+| S-4-C2 | macOS SSH 활성화 (Remote Login) | ⬜ |
+| S-4-C3 | tmux 설치 + CC 전용 세션 설정 | ⬜ |
+| S-4-C4 | 폰에 Tailscale + Termius 설치 | ⬜ |
+| S-4-C5 | E2E 테스트 — 폰→SSH→tmux→claude --model opus | ⬜ |
+
+예상: 2~3일
+선행: Phase B 완료
+
+#### Phase D: 맥북 상태 선제 보고 — ⬜ (후순위)
 
 목표: mrstack식 시스템 상태 감시 + 자동 개입
 
 | Step | 내용 | 상태 |
 |------|------|------|
-| S-4a | 시스템 상태 수집 (배터리, CPU, git 상태, 활성 앱) | ⬜ |
-| S-4b | 상태 분류 (CODING/BROWSING/BREAK/DEEP_WORK/AWAY) | ⬜ |
-| S-4c | 트리거 엔진 (조건부 TG 알림 + Brain 자동 개입) | ⬜ |
-| S-4d | 일일 코칭 리포트 (패턴 분석 + 생산성 메트릭) | ⬜ |
+| S-4-D1 | 시스템 상태 수집 (배터리, CPU, git 상태, 활성 앱) | ⬜ |
+| S-4-D2 | 상태 분류 (CODING/BROWSING/BREAK/DEEP_WORK/AWAY) | ⬜ |
+| S-4-D3 | 트리거 엔진 (조건부 TG 알림 + Brain 자동 개입) | ⬜ |
+| S-4-D4 | 일일 코칭 리포트 (패턴 분석 + 생산성 메트릭) | ⬜ |
 
 예상: 1~2주
-선행: S-1~S-3 안정화 후
+선행: Phase B+C 안정화 후
 
 ---
 
-## Sprint 5-5: 안전장치 강화 (S-1과 병행) — ⬜
+## Sprint 5-5: 안전장치 강화 — ✅ 완료 (2026-03-02)
 
 | 항목 | 내용 | 상태 |
 |------|------|------|
-| 승인 워크플로우 | 위험 작업 시 사용자 확인 필수 (S-1d에 통합) | ⬜ |
-| 비용 모니터링 | 일일/주간 턴 소모 자동 리포트 | ⬜ |
-| 롤백 전략 | 실패 시 자동 복구 / 재실행 | ⬜ |
-| TG 알림 retry | 발송 실패 시 3회 재시도 + 지수 백오프 | ⬜ |
-| 동적 턴 한도 | 작업 크기(S/M/L) 판별 → max-turns 자동 조절 | ⬜ |
+| TG 알림 retry | 3회 재시도 + 지수 백오프 (2s/4s/8s) | ✅ |
+| 동적 턴 한도 | S=15/M=30/L=50 + 키워드 오버라이드 | ✅ |
+| 위험 명령 차단 | git push, rm -rf 등 9패턴 차단 + TG 알림 | ✅ |
+| 비용 모니터링 | cost_monitor.py + JSON 리포트 + 아카이브 | ✅ |
+| git stash 롤백 | 실행전 stash save / 실패시 pop 복원 / 성공시 drop | ✅ |
+
+소요: CC 355초, task_bridge v4.4 → v4.5, pytest 9/9 PASS
 
 ---
 
@@ -174,12 +226,17 @@ Agent Corps D-4~D-5             ✅ 완료
 자동 트리거: Codex+Gemini CLI    ✅ 완료 (2026-03-01)
 VaultWatcher EIO 핫픽스          ✅ 완료 (2026-03-01)
 ────────────────────────────────────────
-Sprint 6: Brain-in-the-Loop     ⬜ ← 현재 여기
-  S-1: Auto-Read Loop           ⬜ (3~4일)
-  S-2: LaunchAgent 데몬          ⬜ (1일)
-  S-3: 양방향 Telegram           ⬜ (3~5일)
-  S-4: 선제적 트리거             ⬜ (1~2주, 후순위)
-Sprint 5-5 (안전장치, 병행)      ⬜
+Sprint 6: Brain-in-the-Loop     🟡 진행 중
+  S-1: Auto-Read Loop           ✅ 완료 (2026-03-01)
+  S-2: LaunchAgent 데몬          ✅ 완료 (2026-03-02)
+  S-3: 양방향 Telegram           ✅ 완료 (2026-03-02)
+  S-4A: 대화 기억 시스템        ✅ 완료 (2026-03-02)
+  S-4B: TG Bot Opus 승격       ✅ 완료 (2026-03-02) + /model 커맨드 추가
+  S-4C: Tailscale 원격 접속     ⚪ 보류 (TG Opus로 충분)
+  S-4D: 맥북 상태 선제 보고    ⬜ (후순위)
+Sprint 5-5 (안전장치)           ✅ 완료 (2026-03-02)
+ArchViz Pro Custom GPT          ⬜ (도메인 인증 + GPT 생성)
+GitHub 3일 커밋                  Day1✅ Day2✅ Day3⬜
 Project Crossy Week 1           ⬜
 ```
 
@@ -188,7 +245,7 @@ Project Crossy Week 1           ⬜
 ## 관련 프로젝트 위치
 - `02_Projects/pixel-agents-woosdom/` — Electron 픽셀아트 앱 (.dmg 빌드 완료)
 - `02_Projects/woosdom_app/` — PyWebView 대시보드
-- `02_Projects/task_bridge/` — Task Bridge v4.2
+- `02_Projects/task_bridge/` — Task Bridge v4.3 (Auto-Brain Callback)
 - `00_System/Specs/agent_corps_spec.md` — Agent Corps 설계서
 - GitHub: https://github.com/ahnsemble/Woosdom
 - 참고: https://github.com/whynowlab/mrstack (mrstack — Brain-in-the-Loop 벤치마크)

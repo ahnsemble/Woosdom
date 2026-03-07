@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.woosdom.telegram-bot</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Library/Frameworks/Python.framework/Versions/3.14/bin/claude-telegram-bot</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/woosung/Desktop/Dev/Woosdom_Brain</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>TELEGRAM_BOT_TOKEN</key>
+    <string>REPLACE_WITH_TG_BOT_TOKEN</string>
+    <key>TELEGRAM_BOT_USERNAME</key>
+    <string>Woosdom_bot</string>
+    <key>APPROVED_DIRECTORY</key>
+    <string>/Users/woosung/Desktop/Dev/Woosdom_Brain</string>
+    <key>ALLOWED_USERS</key>
+    <string>REPLACE_WITH_TG_CHAT_ID</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Library/Frameworks/Python.framework/Versions/3.14/bin</string>
+    <key>CLAUDE_MODEL</key>
+    <string>claude-opus-4-6</string>
+  </dict>
+
+  <key>KeepAlive</key>
+  <true/>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/woosdom-tg-bot.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/tmp/woosdom-tg-bot.err</string>
+
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+</dict>
+</plist>

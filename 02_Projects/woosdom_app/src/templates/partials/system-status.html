@@ -1,0 +1,136 @@
+{# ── system-status.html — P1: Engine Status Cards ── #}
+{% set sys = data.system %}
+{% set brain = sys.brain %}
+{% set engines = sys.engines %}
+
+<section class="panel--half panel-card panel-system-status">
+  <div class="panel-card__header">
+    <span>System Status</span>
+    <span class="text-xs text-muted text-mono">{{ sys.last_updated }}</span>
+  </div>
+  <div class="panel-card__body">
+    <div class="engine-grid">
+
+      {# ── Brain Card ── #}
+      {% set brain_fail = brain.consecutive_failures | default(0) %}
+      <div class="engine-card{% if brain_fail >= brain.failure_threshold %} engine-card--error{% endif %}">
+        <div class="engine-card__header">
+          <div>
+            <span class="engine-card__name">Brain</span>
+            <span class="engine-card__subtitle">Claude Opus 4.6</span>
+          </div>
+          <span class="status-label status-label--{{ brain.status }}">
+            <span class="status-dot status-dot--{{ brain.status }}"></span>
+            {{ brain.status | upper }}
+          </span>
+        </div>
+        <div class="engine-card__metrics">
+          <div class="metric-row">
+            <span>Consecutive Failures</span>
+            <span class="metric-row__value">
+              <span class="failure-bar">
+                {% for i in range(brain.failure_threshold) %}
+                <span class="failure-bar__segment{% if i < brain_fail %} failure-bar__segment--active-{{ i + 1 }}{% endif %}"></span>
+                {% endfor %}
+                <span class="failure-bar__label">{{ brain_fail }}/{{ brain.failure_threshold }}</span>
+              </span>
+            </span>
+          </div>
+          <div class="metric-row">
+            <span>Daily Callbacks</span>
+            <span class="metric-row__value">{{ brain.daily_callbacks }}/{{ brain.daily_callback_limit }}</span>
+          </div>
+          <div class="metric-row">
+            <span>Sub-Brain</span>
+            <span class="sub-brain-badge{% if brain.sub_brain != 'standby' %} sub-brain-badge--active{% endif %}">
+              {{ brain.sub_brain | upper }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {# ── Claude Code Card ── #}
+      {% set cc = engines.claude_code %}
+      <div class="engine-card">
+        <div class="engine-card__header">
+          <div>
+            <span class="engine-card__name">Claude Code</span>
+            <span class="engine-card__subtitle">CC</span>
+          </div>
+          <span class="status-label status-label--{{ cc.status }}">
+            <span class="status-dot status-dot--{{ cc.status }}"></span>
+            {{ cc.status | upper }}
+          </span>
+        </div>
+        <div class="engine-card__metrics">
+          <div class="metric-row">
+            <span>Today Tasks</span>
+            <span class="metric-row__value">{{ cc.today_tasks }}</span>
+          </div>
+          <div class="metric-row">
+            <span>Avg Time</span>
+            <span class="metric-row__value">{% if cc.today_tasks > 0 %}{{ (cc.today_seconds / cc.today_tasks) | int }}s{% else %}&mdash;{% endif %}</span>
+          </div>
+          <div class="metric-row">
+            <span>Est. Turns</span>
+            <span class="metric-row__value">~{{ cc.today_turns_est }}</span>
+          </div>
+        </div>
+      </div>
+
+      {# ── Codex Card ── #}
+      {% set codex = engines.codex %}
+      <div class="engine-card">
+        <div class="engine-card__header">
+          <div>
+            <span class="engine-card__name">Codex</span>
+            <span class="engine-card__subtitle">Codex CLI</span>
+          </div>
+          <span class="status-label status-label--{{ codex.status }}">
+            <span class="status-dot status-dot--{{ codex.status }}"></span>
+            {{ codex.status | upper }}
+          </span>
+        </div>
+        <div class="engine-card__metrics">
+          <div class="metric-row">
+            <span>Today Tasks</span>
+            <span class="metric-row__value">{{ codex.today_tasks }}</span>
+          </div>
+          <div class="metric-row">
+            <span>Total Time</span>
+            <span class="metric-row__value">{{ codex.today_seconds }}s</span>
+          </div>
+        </div>
+      </div>
+
+      {# ── Antigravity Card ── #}
+      {% set ag = engines.antigravity %}
+      <div class="engine-card">
+        <div class="engine-card__header">
+          <div>
+            <span class="engine-card__name">Antigravity</span>
+            <span class="engine-card__subtitle">Gemini CLI</span>
+          </div>
+          <span class="status-label status-label--{{ ag.status }}">
+            <span class="status-dot status-dot--{{ ag.status }}"></span>
+            {{ ag.status | upper }}
+            {% if ag.status == 'idle' and ag.today_seconds == 0 %}
+            <span class="text-xs text-muted">(idle)</span>
+            {% endif %}
+          </span>
+        </div>
+        <div class="engine-card__metrics">
+          <div class="metric-row">
+            <span>Today Tasks</span>
+            <span class="metric-row__value">{{ ag.today_tasks }}</span>
+          </div>
+          <div class="metric-row">
+            <span>Total Time</span>
+            <span class="metric-row__value">{{ ag.today_seconds }}s</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
