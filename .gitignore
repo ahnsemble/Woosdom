@@ -63,6 +63,10 @@ data/bot.db-wal
 # === 아카이브 (API 키 포함 가능) ===
 04_Archive/
 
+# === launchd plist (환경변수 포함) ===
+*.plist
+**/*.plist
+
 # === 기타 ===
 *.log
 .claude/

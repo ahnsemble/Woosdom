@@ -34,7 +34,7 @@ case "$1" in
   reindex)
     echo "🔄 전체 볼트 재인덱싱 시작..."
     cd "$RAG_DIR"
-    GEMINI_API_KEY="AIzaSyDxf8NN_OG4BchTHDE_fGpTQp9In0982Jc" .venv/bin/python indexer.py
+    GEMINI_API_KEY="${GEMINI_API_KEY:?GEMINI_API_KEY 환경변수가 설정되지 않았습니다}" .venv/bin/python indexer.py
     ;;
   logs)
     TARGET="${2:-server}"
